@@ -1,4 +1,5 @@
 ﻿using MedicalAppointmentApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,6 +26,7 @@ namespace MedicalAppointmentApp.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpGet("privacy")]
         public IActionResult Privacy()
         {
