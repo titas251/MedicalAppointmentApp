@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
 {
-    [ApiController]
     [Route("")]
     public class HomeController : Controller
     {
@@ -26,13 +25,13 @@ namespace MedicalAppointmentApp.Controllers
             return View();
         }
 
-        [HttpGet("Privacy")]
+        [HttpGet("privacy")]
         public IActionResult Privacy()
         {
             return View();
         }
 
-        [HttpGet("Error")]
+        [HttpGet("error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
