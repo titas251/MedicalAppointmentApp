@@ -22,8 +22,8 @@ namespace MedicalAppointmentApp.Data
                 {
                     Email = "admin@gmail.com",
                     NormalizedEmail = "ADMIN@GMAIL.COM",
-                    UserName = "admin",
-                    NormalizedUserName = "ADMIN",
+                    UserName = "admin@gmail.com",
+                    NormalizedUserName = "ADMIN@GMAIL.COM",
                     PhoneNumber = "+370622222",
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
