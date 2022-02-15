@@ -16,7 +16,7 @@ namespace MedicalAppointmentApp.Data
 
         public static void SeedUsersAsync(UserManager<IdentityUser> userManager)
         {
-            if (userManager.FindByNameAsync("admin").Result == null)
+            if (userManager.FindByNameAsync("admin@gmail.com").Result == null)
             {
                 var user = new IdentityUser
                 {
