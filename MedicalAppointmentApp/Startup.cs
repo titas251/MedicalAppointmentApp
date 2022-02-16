@@ -100,6 +100,14 @@ namespace MedicalAppointmentApp
 
                 options.ClientId = googleAuthNSection["ClientId"];
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
+            })
+            .AddFacebook(facebookOptions =>
+            {
+                IConfigurationSection facebookAuthNSection =
+                    Configuration.GetSection("Authentication:Facebook");
+
+                facebookOptions.AppId = facebookAuthNSection["AppId"];
+                facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
             });
         }
 
