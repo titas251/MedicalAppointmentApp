@@ -116,17 +116,17 @@ namespace MedicalAppointmentApp
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+             {
+                 c.SwaggerEndpoint("v1/swagger.json", "My API V1");
+                 c.RoutePrefix = "swagger";
+             });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-            });
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("swagger/v1/swagger.json", "My API V1");
-                c.RoutePrefix = "";
             });
 
             //initialize admin user in db
