@@ -1,0 +1,63 @@
+﻿@model RegisteredUsersModel
+@{
+    ViewData["Title"] = "RegisteredUsers";
+}
+
+<h1>Registered users</h1>
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-uppercase mb-0">Manage Users</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Email</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Manage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model.Users)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="font-medium mb-0">@user.User.Email</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@user.User.PhoneNumber</span><br>
+                                    </td>
+                                    <td>
+                                        @foreach (var role in user.Roles)
+                                        {
+                                            <div>@role</div>
+                                        }
+
+                                        <!--<select class="form-control category-select" id="exampleFormControlSelect1">
+                                            <option>Modulator</option>
+                                            <option>Admin</option>
+                                            <option>User</option>
+                                            <option>Subscriber</option>
+                                        </select>-->
+                                    </td>
+                                    <td>
+                                        <form asp-action="Delete" asp-route-id="@user.User.Id" method="post">
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

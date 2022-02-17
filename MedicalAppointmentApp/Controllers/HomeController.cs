@@ -1,5 +1,6 @@
 ﻿using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,11 +14,11 @@ namespace MedicalAppointmentApp.Controllers
     [Route("")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(UserManager<IdentityUser> userManager)
         {
-            _logger = logger;
+            _userManager = userManager;
         }
 
         [HttpGet]
