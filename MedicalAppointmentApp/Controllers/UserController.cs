@@ -1,4 +1,5 @@
-﻿using MedicalAppointmentApp.Models;
+﻿using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,9 @@ namespace MedicalAppointmentApp.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserController(UserManager<IdentityUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -24,7 +25,7 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> RegisteredUsers()
         {
             List<UserWithRoleModel> users = new List<UserWithRoleModel>();
-            foreach (IdentityUser user in _userManager.Users)
+            foreach (ApplicationUser user in _userManager.Users)
             {
                 var roles = await _userManager.GetRolesAsync(user);
                 users.Add(new UserWithRoleModel { User = user, Roles = roles.ToList<string>() });
@@ -40,7 +41,7 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
-            IdentityUser user = await _userManager.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 IdentityResult result = await _userManager.DeleteAsync(user);
