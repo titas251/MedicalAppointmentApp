@@ -1,7 +1,9 @@
-﻿using MedicalAppointmentApp.Models;
+﻿using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,9 @@ namespace MedicalAppointmentApp.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserController(UserManager<IdentityUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
@@ -23,24 +25,31 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisteredUsers()
         {
-            List<UserWithRoleModel> users = new List<UserWithRoleModel>();
-            foreach (IdentityUser user in _userManager.Users)
-            {
-                var roles = await _userManager.GetRolesAsync(user);
-                users.Add(new UserWithRoleModel { User = user, Roles = roles.ToList<string>() });
-            }
+            var userRolesViewModel = new List<UserRolesViewModel>();
 
-            return View(new RegisteredUsersModel
+            foreach (var user in (await _userManager.Users.ToListAsync()))
             {
-                Users = users
-            });
+                var viewModel = new UserRolesViewModel()
+                {
+                    UserId = user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    UserName = user.UserName,
+                    Roles = await _userManager.GetRolesAsync(user)
+                };
+                userRolesViewModel.Add(viewModel);
+            };
+
+            return View(userRolesViewModel);
         }
 
         [HttpPost("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
-            IdentityUser user = await _userManager.FindByIdAsync(id);
+            ApplicationUser user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
                 IdentityResult result = await _userManager.DeleteAsync(user);

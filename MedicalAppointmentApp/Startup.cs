@@ -1,4 +1,5 @@
 using MedicalAppointmentApp.Data;
+using MedicalAppointmentApp.Data.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,7 +32,7 @@ namespace MedicalAppointmentApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
@@ -113,7 +114,7 @@ namespace MedicalAppointmentApp
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+            UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -148,7 +149,7 @@ namespace MedicalAppointmentApp
             });
 
             //initialize admin user in db
-            DbInitializer.SeedData(userManager, roleManager);
+            DbInitializer.SeedData(userManager, roleManager).GetAwaiter().GetResult();
         }
     }
 }

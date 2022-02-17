@@ -1,4 +1,5 @@
-﻿using MedicalAppointmentApp.Models;
+﻿using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,9 @@ namespace MedicalAppointmentApp.Controllers
     [Route("")]
     public class HomeController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(UserManager<IdentityUser> userManager)
+        public HomeController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

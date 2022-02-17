@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MedicalAppointmentApp.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,17 @@ namespace MedicalAppointmentApp.Data
 {
     public class DbInitializer
     {
-        public static void SeedData(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedData(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            SeedRoles(roleManager);
-            SeedUsersAsync(userManager);
+            await SeedRoles(roleManager);
+            await SeedUsersAsync(userManager);
         }
 
-        public static void SeedUsersAsync(UserManager<IdentityUser> userManager)
+        public static async Task SeedUsersAsync(UserManager<ApplicationUser> userManager)
         {
             if (userManager.FindByNameAsync("admin@gmail.com").Result == null)
             {
-                var user = new IdentityUser
+                var user = new ApplicationUser
                 {
                     Email = "admin@gmail.com",
                     NormalizedEmail = "ADMIN@GMAIL.COM",
@@ -30,19 +31,19 @@ namespace MedicalAppointmentApp.Data
                     SecurityStamp = Guid.NewGuid().ToString("D")
                 };
 
-                var password = new PasswordHasher<IdentityUser>();
+                var password = new PasswordHasher<ApplicationUser>();
                 user.PasswordHash = password.HashPassword(user, "123");
 
-                var result = userManager.CreateAsync(user).Result;
+                var result = await userManager.CreateAsync(user);
 
                 if (result.Succeeded)
                 {
-                    userManager.AddToRoleAsync(user, "Admin").Wait();
+                    await userManager.AddToRoleAsync(user, "Admin");
                 }
             }
         }
 
-        public static void SeedRoles(RoleManager<IdentityRole> roleManager)
+        public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
             if (!roleManager.RoleExistsAsync("Admin").Result)
             {
@@ -50,7 +51,7 @@ namespace MedicalAppointmentApp.Data
                 {
                     Name = "Admin"
                 };
-                roleManager.CreateAsync(role);
+                await roleManager.CreateAsync(role);
             }
         }
     }
