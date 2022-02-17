@@ -19,6 +19,8 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Email</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Manage</th>
@@ -30,6 +32,12 @@
                                 <tr>
                                     <td>
                                         <span class="font-medium mb-0">@user.User.Email</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@user.User.FirstName</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@user.User.LastName</span><br>
                                     </td>
                                     <td>
                                         <span class="font-medium mb-0">@user.User.PhoneNumber</span><br>
