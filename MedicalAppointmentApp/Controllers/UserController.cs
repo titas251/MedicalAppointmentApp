@@ -37,10 +37,9 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
-            if (response.Succeeded)
-                return RedirectToAction("RegisteredUsers");
-            else
+            if (!response.Succeeded)
                 Errors(response);
+
             return RedirectToAction("RegisteredUsers");
         }
 
