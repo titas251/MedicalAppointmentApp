@@ -15,8 +15,8 @@ namespace MedicalAppointmentApp.Queries
     {
         public class Query : IRequest<List<UserRolesViewModel>>
         {
-        
         }
+
         public class Handler : IRequestHandler<Query, List<UserRolesViewModel>>
         {
             private readonly UserManager<ApplicationUser> _userManager;
@@ -25,6 +25,7 @@ namespace MedicalAppointmentApp.Queries
             {
                 _userManager = userManager;
             }
+
             public async Task<List<UserRolesViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var userRolesViewModel = new List<UserRolesViewModel>();
@@ -49,12 +50,7 @@ namespace MedicalAppointmentApp.Queries
 
         public class Response
         {
-            public Response(List<UserRolesViewModel> users)
-            {
-                this.users = users;
-            }
-
-            public List<UserRolesViewModel>  users { get;}
+            public List<UserRolesViewModel> Users { get; set; }
         }
     }
 }

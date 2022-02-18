@@ -17,20 +17,18 @@ namespace MedicalAppointmentApp.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
 
-        public UserController(UserManager<ApplicationUser> userManager, IMediator mediator)
+        public UserController(IMediator mediator)
         {
-            _userManager = userManager;
-            this.mediator = mediator;
+            _mediator = mediator;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisteredUsers()
         {
-            var userRolesViewModel = await mediator.Send(new GetRegisteredUsers.Query());
+            var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query());
             return View(userRolesViewModel);
         }
 
@@ -38,7 +36,7 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
-            var response = await mediator.Send(new DeleteRegisteredUser.Command(id));
+            var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
             if (response.Succeeded)
                 return RedirectToAction("RegisteredUsers");
             else

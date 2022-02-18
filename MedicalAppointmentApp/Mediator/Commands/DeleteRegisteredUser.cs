@@ -13,13 +13,9 @@ namespace MedicalAppointmentApp.Commands
     {
         public class Command : IRequest<IdentityResult>
         {
-            public Command(string id)
-            {
-                this.id = id;
-            }
-
-            public string id { get; }
+            public string Id { get; set; }
         }
+
         public class Handler : IRequestHandler<Command, IdentityResult>
         {
             private readonly UserManager<ApplicationUser> _userManager;
@@ -28,17 +24,20 @@ namespace MedicalAppointmentApp.Commands
             {
                 _userManager = userManager;
             }
+
             public async Task<IdentityResult> Handle(Command request, CancellationToken cancellationToken)
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(request.id);
+                ApplicationUser user = await _userManager.FindByIdAsync(request.Id);
                 if (user != null)
                 {
                     IdentityResult result = await _userManager.DeleteAsync(user);
                     return result;
                 }
-                IdentityError error = new IdentityError();
-                error.Code = "";
-                error.Description = "User Not Found";
+                IdentityError error = new IdentityError
+                {
+                    Code = "",
+                    Description = "User Not Found"
+                };
                 return IdentityResult.Failed(error);
             }
         }
