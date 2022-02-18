@@ -1,3 +1,4 @@
+using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using Microsoft.AspNetCore.Builder;
@@ -38,6 +39,7 @@ namespace MedicalAppointmentApp
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddRouting(options => options.LowercaseUrls = true);
+            services.AddMediatR(typeof(Startup).Assembly);
 
             services.Configure<IdentityOptions>(options =>
             {

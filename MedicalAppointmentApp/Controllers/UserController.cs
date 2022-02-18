@@ -1,5 +1,8 @@
-﻿using MedicalAppointmentApp.Data.Models;
+﻿using MediatR;
+using MedicalAppointmentApp.Commands;
+using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,34 +17,18 @@ namespace MedicalAppointmentApp.Controllers
     [Route("[controller]")]
     public class UserController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMediator _mediator;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(IMediator mediator)
         {
-            _userManager = userManager;
+            _mediator = mediator;
         }
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisteredUsers()
         {
-            var userRolesViewModel = new List<UserRolesViewModel>();
-
-            foreach (var user in (await _userManager.Users.ToListAsync()))
-            {
-                var viewModel = new UserRolesViewModel()
-                {
-                    UserId = user.Id,
-                    Email = user.Email,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    PhoneNumber = user.PhoneNumber,
-                    UserName = user.UserName,
-                    Roles = await _userManager.GetRolesAsync(user)
-                };
-                userRolesViewModel.Add(viewModel);
-            };
-
+            var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query());
             return View(userRolesViewModel);
         }
 
@@ -49,17 +36,10 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(id);
-            if (user != null)
-            {
-                IdentityResult result = await _userManager.DeleteAsync(user);
-                if (result.Succeeded)
-                    return RedirectToAction("RegisteredUsers");
-                else
-                    Errors(result);
-            }
-            else
-                ModelState.AddModelError("", "User Not Found");
+            var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
+            if (!response.Succeeded)
+                Errors(response);
+
             return RedirectToAction("RegisteredUsers");
         }
 
