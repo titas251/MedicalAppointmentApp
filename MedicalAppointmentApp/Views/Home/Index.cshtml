@@ -1,8 +1,16 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
     ViewData["Title"] = "Home Page";
+    var statusMessagePath = "~/Views/Shared/_StatusMessage.cshtml";
+    IEnumerable<ModelError> allErrors = ViewData.ModelState.Values.SelectMany(v => v.Errors);
 }
 
 <div class="text-center">
+    @{
+        foreach (var error in allErrors) {
+            @await Html.PartialAsync(statusMessagePath, error.ErrorMessage);
+        }
+     }
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
