@@ -45,13 +45,14 @@ namespace MedicalAppointmentApp.Data
 
         public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (!roleManager.RoleExistsAsync("Admin").Result)
+            string[] roles = { "Admin", "Patient", "Doctor" };
+
+            foreach (var role in roles)
             {
-                IdentityRole role = new IdentityRole()
+                await roleManager.CreateAsync(new IdentityRole()
                 {
-                    Name = "Admin"
-                };
-                await roleManager.CreateAsync(role);
+                    Name = role
+                });
             }
         }
     }
