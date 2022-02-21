@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Commands;
 using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -37,6 +38,17 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
+            if (!response.Succeeded)
+                Errors(response);
+
+            return RedirectToAction("RegisteredUsers");
+        }
+
+        [HttpPost("update")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Update(UpdateUserModel updateUser)
+        {
+            var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });
             if (!response.Succeeded)
                 Errors(response);
 
