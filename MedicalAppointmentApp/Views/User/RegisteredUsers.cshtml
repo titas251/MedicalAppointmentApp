@@ -24,7 +24,8 @@
                                 <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Manage</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Edit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,14 +57,21 @@
                                             <option>Subscriber</option>
                                         </select>-->
                                     </td>
-                                    <td>
-                                        @if (!user.Roles.Contains("Admin"))
-                                        {
+                                    
+                                    @if (!user.Roles.Contains("Admin"))
+                                    {
+                                        <td>
                                             <form asp-action="Delete" asp-route-id="@user.UserId" method="post">
                                                 <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
                                             </form>
-                                        }
-                                    </td>
+                                        </td>
+                                        <td>
+                                            <form asp-action="UpdateUser" asp-route-id="@user.UserId">
+                                                <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                                            </form>
+                                        </td>
+                                    }
+                                    
                                 </tr>
                             }
                         </tbody>

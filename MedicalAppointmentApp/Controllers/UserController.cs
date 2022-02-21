@@ -33,6 +33,14 @@ namespace MedicalAppointmentApp.Controllers
             return View(userRolesViewModel);
         }
 
+        //[HttpGet("updateuser")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateUser(string id)
+        {
+            var updateUserModel = await _mediator.Send(new GetRegisteredUserById.Query(id));
+            return View(updateUserModel);
+        }
+
         [HttpPost("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
@@ -48,6 +56,7 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(UpdateUserModel updateUser)
         {
+            
             var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });
             if (!response.Succeeded)
                 Errors(response);
