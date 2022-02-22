@@ -79,8 +79,9 @@
     </div>
 </div>
 <div class="container">
-    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Manage Doctors</button>
-    <div id="demo" class="collapse">
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#doctors">Manage Doctors</button>
+    <input type="button" class="btn btn-info" value="Create Doctor" onclick="location.href='@Url.Action("CreateDoctor", "Doctor")'" />
+    <div id="doctors" class="collapse">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -93,26 +94,123 @@
                                         <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
                                         <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
                                         <th scope="col" class="border-0 text-uppercase font-medium">MedicalSpeciality</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Institutions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var user in ViewBag.Doctors)
+                                    @foreach (var doctor in ViewBag.Doctors)
                                     {
-                                    <tr>
-                                        <td>
-                                            <span class="font-medium mb-0">@user.FirstName</span><br>
-                                        </td>
-                                        <td>
-                                            <span class="font-medium mb-0">@user.LastName</span><br>
-                                        </td>
-                                        <td>
-                                            <span class="font-medium mb-0">@user.PhoneNumber</span><br>
-                                        </td>
-                                        <td>
-                                            <span class="font-medium mb-0">@user.MedicalSpeciality.Name</span><br>
-                                        </td>
+                                        <tr>
+                                            <td>
+                                                <span class="font-medium mb-0">@doctor.FirstName</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@doctor.LastName</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@doctor.PhoneNumber</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
+                                            </td>
+                                            <td>
+                                                @foreach (var institution in doctor.Institutions)
+                                                {
+                                                    <span class="font-medium mb-0">@institution.Name</span><br>
+                                                }
+                                            </td>
 
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#Institutions">Manage Institutions</button>
+    <input type="button" class="btn btn-info" value="Create Institution" onclick="location.href='@Url.Action("CreateInstitution", "Institution")'" />
+    <div id="Institutions" class="collapse">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table no-wrap user-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Doctors</th>
                                     </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var institution in ViewBag.Institutions)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="font-medium mb-0">@institution.Name</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@institution.Address</span><br>
+                                            </td>
+                                            <td>
+                                                @foreach (var doctor in institution.Doctors)
+                                                {
+                                                <span class="font-medium mb-0">@doctor.FirstName @doctor.LastName</span><br>
+                                                }
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#specialties">Manage Medical specialties</button>
+    <input type="button" class="btn btn-info" value="Create Medical Speciality" onclick="location.href='@Url.Action("CreateMedicalSpeciality", "Speciality")'" />
+    <div id="specialties" class="collapse">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table no-wrap user-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Description</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Doctors</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var specialty in ViewBag.Specialties)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <span class="font-medium mb-0">@specialty.Name</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@specialty.Description</span><br>
+                                            </td>
+                                            <td>
+                                                @foreach (var doctor in specialty.Doctors)
+                                                {
+                                                    <span class="font-medium mb-0">@doctor.FirstName @doctor.LastName</span><br>
+                                                }
+                                            </td>
+
+                                        </tr>
                                     }
                                 </tbody>
                             </table>

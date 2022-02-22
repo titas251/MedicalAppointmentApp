@@ -17,6 +17,12 @@ namespace MedicalAppointmentApp.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public IActionResult CreateMedicalSpeciality()
+        {
+            return View();
+        }
+
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateMedicalSpeciality(CreateMedicalSpecialityModel medicalSpecialityModel)
