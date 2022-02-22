@@ -16,6 +16,8 @@ namespace MedicalAppointmentApp.Data
         }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Institution> Institutions { get; set; }
+        public DbSet<MedicalSpeciality> MedicalSpecialities { get; set; }
+        public DbSet<InstitutionDoctor> InstitutionDoctors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

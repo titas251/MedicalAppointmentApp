@@ -156,7 +156,7 @@ namespace MedicalAppointmentApp.Data.Migrations
 
                     b.HasIndex("InstitutionId");
 
-                    b.ToTable("InstitutionDoctor");
+                    b.ToTable("InstitutionDoctors");
                 });
 
             modelBuilder.Entity("MedicalAppointmentApp.Data.Models.MedicalSpeciality", b =>
@@ -178,7 +178,7 @@ namespace MedicalAppointmentApp.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("MedicalSpeciality");
+                    b.ToTable("MedicalSpecialities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

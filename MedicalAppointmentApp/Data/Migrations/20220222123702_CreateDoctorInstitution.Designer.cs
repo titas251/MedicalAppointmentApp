@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalAppointmentApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220222103602_CreateDoctorInstitutionMedicalSpeciality")]
-    partial class CreateDoctorInstitutionMedicalSpeciality
+    [Migration("20220222123702_CreateDoctorInstitution")]
+    partial class CreateDoctorInstitution
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -158,7 +158,7 @@ namespace MedicalAppointmentApp.Data.Migrations
 
                     b.HasIndex("InstitutionId");
 
-                    b.ToTable("InstitutionDoctor");
+                    b.ToTable("InstitutionDoctors");
                 });
 
             modelBuilder.Entity("MedicalAppointmentApp.Data.Models.MedicalSpeciality", b =>
@@ -180,7 +180,7 @@ namespace MedicalAppointmentApp.Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("MedicalSpeciality");
+                    b.ToTable("MedicalSpecialities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

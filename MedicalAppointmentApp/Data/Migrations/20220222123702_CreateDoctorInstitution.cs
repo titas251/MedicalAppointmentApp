@@ -2,7 +2,7 @@
 
 namespace MedicalAppointmentApp.Data.Migrations
 {
-    public partial class CreateDoctorInstitutionMedicalSpeciality : Migration
+    public partial class CreateDoctorInstitution : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,7 +21,7 @@ namespace MedicalAppointmentApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MedicalSpeciality",
+                name: "MedicalSpecialities",
                 columns: table => new
                 {
                     MedicalSpecialityId = table.Column<int>(nullable: false)
@@ -31,7 +31,7 @@ namespace MedicalAppointmentApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MedicalSpeciality", x => x.MedicalSpecialityId);
+                    table.PrimaryKey("PK_MedicalSpecialities", x => x.MedicalSpecialityId);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,15 +49,15 @@ namespace MedicalAppointmentApp.Data.Migrations
                 {
                     table.PrimaryKey("PK_Doctors", x => x.DoctorId);
                     table.ForeignKey(
-                        name: "FK_Doctors_MedicalSpeciality_MedicalSpecialityId",
+                        name: "FK_Doctors_MedicalSpecialities_MedicalSpecialityId",
                         column: x => x.MedicalSpecialityId,
-                        principalTable: "MedicalSpeciality",
+                        principalTable: "MedicalSpecialities",
                         principalColumn: "MedicalSpecialityId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "InstitutionDoctor",
+                name: "InstitutionDoctors",
                 columns: table => new
                 {
                     DoctorId = table.Column<int>(nullable: false),
@@ -65,15 +65,15 @@ namespace MedicalAppointmentApp.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InstitutionDoctor", x => new { x.DoctorId, x.InstitutionId });
+                    table.PrimaryKey("PK_InstitutionDoctors", x => new { x.DoctorId, x.InstitutionId });
                     table.ForeignKey(
-                        name: "FK_InstitutionDoctor_Doctors_DoctorId",
+                        name: "FK_InstitutionDoctors_Doctors_DoctorId",
                         column: x => x.DoctorId,
                         principalTable: "Doctors",
                         principalColumn: "DoctorId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_InstitutionDoctor_Institutions_InstitutionId",
+                        name: "FK_InstitutionDoctors_Institutions_InstitutionId",
                         column: x => x.InstitutionId,
                         principalTable: "Institutions",
                         principalColumn: "InstitutionId",
@@ -92,8 +92,8 @@ namespace MedicalAppointmentApp.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_InstitutionDoctor_InstitutionId",
-                table: "InstitutionDoctor",
+                name: "IX_InstitutionDoctors_InstitutionId",
+                table: "InstitutionDoctors",
                 column: "InstitutionId");
 
             migrationBuilder.CreateIndex(
@@ -103,8 +103,8 @@ namespace MedicalAppointmentApp.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_MedicalSpeciality_Name",
-                table: "MedicalSpeciality",
+                name: "IX_MedicalSpecialities_Name",
+                table: "MedicalSpecialities",
                 column: "Name",
                 unique: true);
         }
@@ -112,7 +112,7 @@ namespace MedicalAppointmentApp.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "InstitutionDoctor");
+                name: "InstitutionDoctors");
 
             migrationBuilder.DropTable(
                 name: "Doctors");
@@ -121,7 +121,7 @@ namespace MedicalAppointmentApp.Data.Migrations
                 name: "Institutions");
 
             migrationBuilder.DropTable(
-                name: "MedicalSpeciality");
+                name: "MedicalSpecialities");
         }
     }
 }
