@@ -44,7 +44,7 @@ namespace MedicalAppointmentApp.Data
                 .IsUnique();
 
             modelBuilder.Entity<Institution>()
-                .HasIndex(u => u.Name)
+                .HasIndex(u => new { u.Name, u.Address })
                 .IsUnique();
 
             modelBuilder.Entity<MedicalSpeciality>()

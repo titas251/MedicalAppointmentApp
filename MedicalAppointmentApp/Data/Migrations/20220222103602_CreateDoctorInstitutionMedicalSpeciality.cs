@@ -12,7 +12,8 @@ namespace MedicalAppointmentApp.Data.Migrations
                 {
                     InstitutionId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,6 +42,7 @@ namespace MedicalAppointmentApp.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: true),
                     MedicalSpecialityId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -95,9 +97,9 @@ namespace MedicalAppointmentApp.Data.Migrations
                 column: "InstitutionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Institutions_Name",
+                name: "IX_Institutions_Name_Address",
                 table: "Institutions",
-                column: "Name",
+                columns: new[] { "Name", "Address" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

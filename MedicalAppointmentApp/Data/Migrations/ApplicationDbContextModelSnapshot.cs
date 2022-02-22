@@ -108,6 +108,9 @@ namespace MedicalAppointmentApp.Data.Migrations
                     b.Property<int>("MedicalSpecialityId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("DoctorId");
 
                     b.HasIndex("MedicalSpecialityId");
@@ -125,13 +128,17 @@ namespace MedicalAppointmentApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("InstitutionId");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("Name", "Address")
                         .IsUnique();
 
                     b.ToTable("Institutions");

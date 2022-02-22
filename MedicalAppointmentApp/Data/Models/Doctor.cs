@@ -11,6 +11,7 @@ namespace MedicalAppointmentApp.Data.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
 
         public int MedicalSpecialityId { get; set; }
         public virtual MedicalSpeciality MedicalSpeciality { get; set; }
