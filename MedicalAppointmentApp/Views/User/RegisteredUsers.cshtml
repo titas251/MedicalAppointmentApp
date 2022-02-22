@@ -8,76 +8,120 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-uppercase mb-0">Manage Users</h5>
-                </div>
-                <div class="table-responsive">
-                    <table class="table no-wrap user-table mb-0">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Email</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        <span class="font-medium mb-0">@user.Email</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@user.FirstName</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@user.LastName</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@user.PhoneNumber</span><br>
-                                    </td>
-                                    <td>
-                                        @foreach (var role in user.Roles)
-                                        {
-                                            <div>@role</div>
-                                        }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-                                        <!--<select class="form-control category-select" id="exampleFormControlSelect1">
-                                            <option>Modulator</option>
-                                            <option>Admin</option>
-                                            <option>User</option>
-                                            <option>Subscriber</option>
-                                        </select>-->
-                                    </td>
-                                    
-                                    @if (!user.Roles.Contains("Admin"))
+<div class="container">
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#userlist">Manage Users</button>
+    <div id="userlist" class="collapse">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">                       
+                        <div class="table-responsive">
+                            <table class="table no-wrap user-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Email</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in ViewBag.Users)
                                     {
-                                        <td>
-                                            <form asp-action="DeleteUser" asp-route-id="@user.UserId" method="post">
-                                                <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <form asp-action="GetUpdateUserView" asp-route-id="@user.UserId">
-                                                <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
-                                            </form>
-                                        </td>
+                                        <tr>
+                                            <td>
+                                                <span class="font-medium mb-0">@user.Email</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@user.FirstName</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@user.LastName</span><br>
+                                            </td>
+                                            <td>
+                                                <span class="font-medium mb-0">@user.PhoneNumber</span><br>
+                                            </td>
+                                            <td>
+                                                @foreach (var role in user.Roles)
+                                                {
+                                                    <div>@role</div>
+                                                }
+                                            </td>
+                                            @if (!user.Roles.Contains("Admin"))
+                                            {
+                                                <td>
+                                                    <form asp-action="DeleteUser" asp-route-id="@user.UserId" method="post">
+                                                        <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <form asp-action="GetUpdateUserView" asp-route-id="@user.UserId">
+                                                        <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                                                    </form>
+                                                </td>
+                                            }
+
+                                        </tr>
                                     }
-                                    
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="container">
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Manage Doctors</button>
+    <div id="demo" class="collapse">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="table-responsive">
+                            <table class="table no-wrap user-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
+                                        <th scope="col" class="border-0 text-uppercase font-medium">MedicalSpeciality</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var user in ViewBag.Doctors)
+                                    {
+                                    <tr>
+                                        <td>
+                                            <span class="font-medium mb-0">@user.FirstName</span><br>
+                                        </td>
+                                        <td>
+                                            <span class="font-medium mb-0">@user.LastName</span><br>
+                                        </td>
+                                        <td>
+                                            <span class="font-medium mb-0">@user.PhoneNumber</span><br>
+                                        </td>
+                                        <td>
+                                            <span class="font-medium mb-0">@user.MedicalSpeciality.Name</span><br>
+                                        </td>
+
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
