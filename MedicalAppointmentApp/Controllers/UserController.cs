@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Commands;
 using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -32,11 +33,31 @@ namespace MedicalAppointmentApp.Controllers
             return View(userRolesViewModel);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("delete/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
+            if (!response.Succeeded)
+                Errors(response);
+
+            return RedirectToAction("RegisteredUsers");
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetUpdateUserView(string id)
+        {
+            var updateUserModel = await _mediator.Send(new GetRegisteredUserById.Query(id));
+            return View("UpdateUser", updateUserModel);
+        }
+
+        [HttpPost("update")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateUser(UpdateUserModel updateUser)
+        {
+            
+            var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });
             if (!response.Succeeded)
                 Errors(response);
 
