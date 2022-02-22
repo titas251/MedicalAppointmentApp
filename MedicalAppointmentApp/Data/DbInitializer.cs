@@ -17,41 +17,38 @@ namespace MedicalAppointmentApp.Data
 
         public static async Task SeedUsersAsync(UserManager<ApplicationUser> userManager)
         {
-            if (userManager.FindByNameAsync("admin@gmail.com").Result == null)
+            var user = new ApplicationUser
             {
-                var user = new ApplicationUser
-                {
-                    Email = "admin@gmail.com",
-                    NormalizedEmail = "ADMIN@GMAIL.COM",
-                    UserName = "admin@gmail.com",
-                    NormalizedUserName = "ADMIN@GMAIL.COM",
-                    PhoneNumber = "+370622222",
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true,
-                    SecurityStamp = Guid.NewGuid().ToString("D")
-                };
+                Email = "admin@gmail.com",
+                NormalizedEmail = "ADMIN@GMAIL.COM",
+                UserName = "admin@gmail.com",
+                NormalizedUserName = "ADMIN@GMAIL.COM",
+                PhoneNumber = "+370622222",
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString("D")
+            };
 
-                var password = new PasswordHasher<ApplicationUser>();
-                user.PasswordHash = password.HashPassword(user, "123");
+            var password = new PasswordHasher<ApplicationUser>();
+            user.PasswordHash = password.HashPassword(user, "123");
 
-                var result = await userManager.CreateAsync(user);
+            var result = await userManager.CreateAsync(user);
 
-                if (result.Succeeded)
-                {
-                    await userManager.AddToRoleAsync(user, "Admin");
-                }
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(user, Roles.Basic.ToString());
+                await userManager.AddToRoleAsync(user, Roles.Admin.ToString());
             }
         }
 
         public static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (!roleManager.RoleExistsAsync("Admin").Result)
+            foreach (var role in Enum.GetNames(typeof(Roles)))
             {
-                IdentityRole role = new IdentityRole()
+                await roleManager.CreateAsync(new IdentityRole()
                 {
-                    Name = "Admin"
-                };
-                await roleManager.CreateAsync(role);
+                    Name = role
+                });
             }
         }
     }
