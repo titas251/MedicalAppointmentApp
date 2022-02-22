@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Mediator.Commands
 {
-    public class CreateMedicalSpeciality
+    public class CreateDoctor
     {
         public class Command : IRequest<CustomResponse>
         {
-            public CreateMedicalSpecialityModel MedicalSpecialityModel { get; set; }
+            public CreateDoctorModel DoctorModel { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, CustomResponse>
@@ -26,16 +26,20 @@ namespace MedicalAppointmentApp.Mediator.Commands
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var response = new CustomResponse();
-                var medicalSpeciality = new MedicalSpeciality {
-                    Name = request.MedicalSpecialityModel.Name,
-                    Description = request.MedicalSpecialityModel.Description
+                var doctor = new Doctor
+                {
+                    FirstName = request.DoctorModel.FirstName,
+                    LastName = request.DoctorModel.LastName,
+                    PhoneNumber = request.DoctorModel.PhoneNumber,
+                    MedicalSpecialityId = request.DoctorModel.MedicalSpecialityId
                 };
-                await _context.MedicalSpecialities.AddAsync(medicalSpeciality);
+                await _context.Doctors.AddAsync(doctor);
 
                 //save changes and check if success
                 var success = await _context.SaveChangesAsync() > 0;
-                if (!success) {
-                    response.AddErrors(new CustomError {Error = "Failed", Message = "Failed to create medical speciality"});
+                if (!success)
+                {
+                    response.AddErrors(new CustomError { Error = "Failed", Message = "Failed to create doctor" });
                 }
 
                 return response;
