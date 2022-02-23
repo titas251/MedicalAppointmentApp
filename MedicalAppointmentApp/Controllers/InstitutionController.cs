@@ -25,7 +25,7 @@ namespace MedicalAppointmentApp.Controllers
             return View();
         }
 
-        [HttpGet("institutionList")]
+        [HttpGet("list")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> InstitutionList()
         {
@@ -44,7 +44,7 @@ namespace MedicalAppointmentApp.Controllers
             if (!response.Success)
                 Errors(response);
 
-            return View("~/Views/Home/Index.cshtml");
+            return RedirectToAction("InstitutionList");
         }
 
         private void Errors(CustomResponse response)

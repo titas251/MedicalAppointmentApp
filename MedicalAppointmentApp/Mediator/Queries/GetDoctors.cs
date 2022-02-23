@@ -35,32 +35,18 @@ namespace MedicalAppointmentApp.Queries
             {
                 var doctorsViewModel = new List<GetDoctorModel>();
                 
-                foreach (var item in (await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Institutions).ToListAsync()))
+                foreach (var doctor in (await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Institutions).ToListAsync()))
                 {
                     var institutionsList = new List<GetInstitutionModel>();
-                    
-                    foreach (var institution in item.Institutions)
+
+                    foreach (var institution in doctor.Institutions)
                     {
-                        /* var test = (from i in _context.Institutions
-                                    where i.InstitutionId.Equals(institution.InstitutionId)
-                                    select new GetInstitutionModel { 
-                                     InstitutionId = i.InstitutionId,
-                                     Name = i.Name,
-                                     Address = i.Address
-                                    }).First();*/
-                        var test = _context.Institutions.FirstOrDefault(i => i.InstitutionId == institution.InstitutionId);
-                        institutionsList.Add(_mapper.Map<GetInstitutionModel>(test));
+                        var institutionModel = _context.Institutions.FirstOrDefault(i => i.InstitutionId == institution.InstitutionId);
+                        institutionsList.Add(_mapper.Map<GetInstitutionModel>(institutionModel));
                     }
-                    var viewModel = new GetDoctorModel()
-                    {
-                        DoctorId = item.DoctorId,
-                        FirstName = item.FirstName,
-                        LastName = item.LastName,
-                        PhoneNumber = item.PhoneNumber,
-                        MedicalSpecialityId = item.MedicalSpecialityId,
-                        MedicalSpeciality = _mapper.Map<GetMedicalSpecialtyModel>(item.MedicalSpeciality),
-                        Institutions = institutionsList
-                    };
+
+                    var viewModel = _mapper.Map<GetDoctorModel>(doctor);
+                    viewModel.Institutions = institutionsList;
                     doctorsViewModel.Add(viewModel);
                 };
                 return doctorsViewModel;

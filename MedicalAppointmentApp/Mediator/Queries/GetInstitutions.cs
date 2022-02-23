@@ -41,16 +41,13 @@ namespace MedicalAppointmentApp.Queries
 
                     foreach (var doctor in institution.Doctors ?? new List<InstitutionDoctor>())
                     {
-                        var test = _context.Doctors.FirstOrDefault(i => i.DoctorId == doctor.DoctorId);
-                        doctorsList.Add(_mapper.Map<GetDoctorModel>(test));
+                        var doctorModel = _context.Doctors.FirstOrDefault(i => i.DoctorId == doctor.DoctorId);
+                        doctorsList.Add(_mapper.Map<GetDoctorModel>(doctorModel));
                     }
-                    var viewModel = new GetInstitutionModel()
-                    {
-                        InstitutionId = institution.InstitutionId,
-                        Name = institution.Name,
-                        Address = institution.Address,
-                        Doctors = doctorsList
-                    };
+
+                    var viewModel = _mapper.Map<GetInstitutionModel>(institution);
+                    viewModel.Doctors = doctorsList;
+
                     institutionsViewModel.Add(viewModel);
                 };
                 return institutionsViewModel;

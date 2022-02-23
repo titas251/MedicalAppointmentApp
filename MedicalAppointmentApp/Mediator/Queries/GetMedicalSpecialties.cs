@@ -40,17 +40,12 @@ namespace MedicalAppointmentApp.Queries
                     var doctorsList = new List<GetDoctorModel>();
                     foreach (var doctor in specialty.Doctors ?? new List<Doctor>())
                     {
-                        var test = _context.Doctors.FirstOrDefault(i => i.DoctorId == doctor.DoctorId);
-                        doctorsList.Add(_mapper.Map<GetDoctorModel>(test));
+                        var doctorModel = _context.Doctors.FirstOrDefault(i => i.DoctorId == doctor.DoctorId);
+                        doctorsList.Add(_mapper.Map<GetDoctorModel>(doctorModel));
                     }
 
-                    var viewModel = new GetMedicalSpecialtyModel()
-                    {
-                        MedicalSpecialityId = specialty.MedicalSpecialityId,
-                        Name = specialty.Name,
-                        Description = specialty.Description,
-                        Doctors = doctorsList
-                    };
+                    var viewModel = _mapper.Map<GetMedicalSpecialtyModel>(specialty);
+                    viewModel.Doctors = doctorsList;
                     medicalSpecialtiesViewModel.Add(viewModel);
                 };
                 return medicalSpecialtiesViewModel;
