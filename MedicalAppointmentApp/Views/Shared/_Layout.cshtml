@@ -22,16 +22,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
                         @if (User.IsInRole("Admin"))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="RegisteredUsers">Registered Users</a>
+                             <li class="nav-item">
+                                <div class="dropdown show">
+                                    <a class="btn btn-primary dropdown-toggle dropdownButton" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Manage
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="RegisteredUsers">Users</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="DoctorList">Doctors</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Institution" asp-action="InstitutionList">Institutions</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Speciality" asp-action="SpecialityList">Specialities</a>
+                                    </div>
+                                </div>
                             </li>
                         }
-                        
                     </ul>
                 </div>
             </div>
@@ -44,9 +50,6 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - MedicalAppointmentApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

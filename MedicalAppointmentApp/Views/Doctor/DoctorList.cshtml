@@ -1,0 +1,63 @@
+﻿@using MedicalAppointmentApp.Models
+@model List<GetDoctorModel>
+@{
+    ViewData["Title"] = "Doctors";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<input type="button" class="btn btn-info" value="Create Doctor" onclick="location.href='@Url.Action("CreateDoctor", "Doctor")'" />
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">MedicalSpeciality</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Institutions</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Add Institution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var doctor in Model)
+                            {
+                            <tr>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.FirstName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.LastName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.PhoneNumber</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
+                                </td>
+                                <td>
+                                    @foreach (var institution in doctor.Institutions)
+                                    {
+                                        <span class="font-medium mb-0">@institution.Name</span><br>
+                                    }
+                                </td>
+                                <td>
+                                    <form asp-controller="Doctor" asp-action="GetAddInstitutionToDoctorView" asp-route-id="@doctor.DoctorId" method="get">
+                                        <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

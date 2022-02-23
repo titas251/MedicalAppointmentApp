@@ -1,0 +1,19 @@
+﻿@using MedicalAppointmentApp.Models
+@model CreateInstitutionModel
+@{
+    ViewData["Title"] = "CreateInstitution";
+}
+
+<h1>Create Institution</h1>
+
+<form asp-action="CreateInstitution" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>

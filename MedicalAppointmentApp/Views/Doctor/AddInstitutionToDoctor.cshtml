@@ -1,0 +1,63 @@
+﻿@using MedicalAppointmentApp.Models.ViewModels
+@model CreateInstitutionDoctorViewModel
+@{
+    ViewData["Title"] = "Add Institution";
+}
+
+<h1>Selected Doctor Id: @Model.DoctorId</h1>
+
+<form asp-action="AddInstitutionToDoctor" method="post">
+    <div class="form-group">
+        <label asp-for="DoctorId"></label>
+        <input asp-for="DoctorId" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="InstitutionId"></label>
+        <input asp-for="InstitutionId" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Id</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Doctors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var institution in Model.Institutions)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="font-medium mb-0">@institution.InstitutionId</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@institution.Name</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@institution.Address</span><br>
+                                    </td>
+                                    <td>
+                                        @foreach (var doctor in institution.Doctors)
+                                        {
+                                            <span class="font-medium mb-0">@doctor.FirstName @doctor.LastName</span><br>
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

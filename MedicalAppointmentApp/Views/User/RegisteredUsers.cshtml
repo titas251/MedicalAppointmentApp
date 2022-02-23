@@ -8,13 +8,15 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title text-uppercase mb-0">Manage Users</h5>
-                </div>
+            <div class="card">                       
                 <div class="table-responsive">
                     <table class="table no-wrap user-table mb-0">
                         <thead>
@@ -49,15 +51,7 @@
                                         {
                                             <div>@role</div>
                                         }
-
-                                        <!--<select class="form-control category-select" id="exampleFormControlSelect1">
-                                            <option>Modulator</option>
-                                            <option>Admin</option>
-                                            <option>User</option>
-                                            <option>Subscriber</option>
-                                        </select>-->
                                     </td>
-                                    
                                     @if (!user.Roles.Contains("Admin"))
                                     {
                                         <td>
@@ -71,7 +65,7 @@
                                             </form>
                                         </td>
                                     }
-                                    
+
                                 </tr>
                             }
                         </tbody>
@@ -81,3 +75,8 @@
         </div>
     </div>
 </div>
+
+
+
+
+
