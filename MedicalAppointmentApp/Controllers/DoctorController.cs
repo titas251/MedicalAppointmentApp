@@ -34,9 +34,9 @@ namespace MedicalAppointmentApp.Controllers
             return View(doctorsViewModel);
         }
 
-        [HttpGet("createInstitutionDoctor/{id}")]
+        [HttpGet("add/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetCreateInstitutionDoctorView(int id)
+        public async Task<IActionResult> GetAddInstitutionToDoctorView(int id)
         {
             var institutionsViewModel = await _mediator.Send(new GetInstitutions.Query());
             CreateInstitutionDoctorViewModel createInstitutionDoctorViewModel = new CreateInstitutionDoctorViewModel()
@@ -44,21 +44,17 @@ namespace MedicalAppointmentApp.Controllers
                 DoctorId = id,
                 Institutions = institutionsViewModel
             };
-            return View("CreateInstitutionDoctor", createInstitutionDoctorViewModel);
+            return View("AddInstitutionToDoctor", createInstitutionDoctorViewModel);
         }
 
-        [HttpPost("createInstitutionDoctor")]
+        [HttpPost("add")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateInstitutionDoctor(CreateInstitutionDoctorViewModel model)
+        public async Task<IActionResult> AddInstitutionToDoctor(CreateInstitutionDoctorViewModel model)
         {
-            CreateInstitutionDoctorModel _model = new CreateInstitutionDoctorModel
+            var response = await _mediator.Send(new AddInstitutionToDoctor.Command
             {
                 DoctorId = model.DoctorId,
                 InstitutionId = model.InstitutionId
-            };
-            var response = await _mediator.Send(new CreateInstitutionDoctor.Command
-            {
-                InstitutionDoctorModel = _model
             });
             if (!response.Success)
                 Errors(response);
