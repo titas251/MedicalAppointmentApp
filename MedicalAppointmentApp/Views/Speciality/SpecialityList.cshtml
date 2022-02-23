@@ -1,0 +1,52 @@
+﻿@using MedicalAppointmentApp.Models
+@model List<GetMedicalSpecialtyModel>
+@{
+    ViewData["Title"] = "Spelialities";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+
+<input type="button" class="btn btn-info" value="Create Medical Speciality" onclick="location.href='@Url.Action("CreateMedicalSpeciality", "Speciality")'" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Description</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Doctors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var specialty in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="font-medium mb-0">@specialty.Name</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@specialty.Description</span><br>
+                                    </td>
+                                    <td>
+                                        @foreach (var doctor in specialty.Doctors)
+                                        {
+                                            <span class="font-medium mb-0">@doctor.FirstName @doctor.LastName</span><br>
+                                        }
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

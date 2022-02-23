@@ -35,7 +35,7 @@ namespace MedicalAppointmentApp.Queries
             {
                 var institutionsViewModel = new List<GetInstitutionModel>();
 
-                foreach (var institution in (await _context.Institutions.ToListAsync()) )
+                foreach (var institution in (await _context.Institutions.Include(institution => institution.Doctors).ToListAsync()) )
                 {
                     var doctorsList = new List<GetDoctorModel>();
 

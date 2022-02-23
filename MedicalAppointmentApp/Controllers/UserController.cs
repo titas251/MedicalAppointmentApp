@@ -30,14 +30,7 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> RegisteredUsers()
         {
             var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query());
-            var doctorsViewModel = await _mediator.Send(new GetDoctors.Query());
-            var institutionsViewModel = await _mediator.Send(new GetInstitutions.Query());
-            var specialtiesViewModel = await _mediator.Send(new GetMedicalSpecialties.Query());
-            ViewBag.Users = userRolesViewModel;
-            ViewBag.Doctors = doctorsViewModel;
-            ViewBag.Institutions = institutionsViewModel;
-            ViewBag.Specialties = specialtiesViewModel;
-            return View();
+            return View(userRolesViewModel);
         }
 
         [HttpPost("delete/{id}")]

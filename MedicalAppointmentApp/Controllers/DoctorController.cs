@@ -2,6 +2,7 @@
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Models;
+using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -19,9 +20,17 @@ namespace MedicalAppointmentApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateDoctor()
         {
             return View();
+        }
+        [HttpGet("doctorList")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DoctorList()
+        {
+            var doctorsViewModel = await _mediator.Send(new GetDoctors.Query());
+            return View(doctorsViewModel);
         }
 
         [HttpPost]
