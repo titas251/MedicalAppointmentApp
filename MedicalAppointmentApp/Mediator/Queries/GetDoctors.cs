@@ -23,24 +23,18 @@ namespace MedicalAppointmentApp.Queries
         public class Handler : IRequestHandler<Query, List<GetDoctorModel>>
         {
             private readonly ApplicationDbContext _context;
+            private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(ApplicationDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<List<GetDoctorModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var doctorsViewModel = new List<GetDoctorModel>();
-                var config = new MapperConfiguration(cfg =>
-                    {
-                        cfg.CreateMap<MedicalSpeciality, GetMedicalSpecialtyModel>().MaxDepth(1);
-                        cfg.CreateMap<Doctor, GetDoctorModel>().MaxDepth(1);
-                        cfg.CreateMap<Institution, GetInstitutionModel>().MaxDepth(1);
-                    } 
-                );
-                var mapper = new Mapper(config);
-
+                
                 foreach (var item in (await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Institutions).ToListAsync()))
                 {
                     var institutionsList = new List<GetInstitutionModel>();
@@ -55,7 +49,7 @@ namespace MedicalAppointmentApp.Queries
                                      Address = i.Address
                                     }).First();*/
                         var test = _context.Institutions.FirstOrDefault(i => i.InstitutionId == institution.InstitutionId);
-                        institutionsList.Add(mapper.Map<GetInstitutionModel>(test));
+                        institutionsList.Add(_mapper.Map<GetInstitutionModel>(test));
                     }
                     var viewModel = new GetDoctorModel()
                     {
@@ -64,7 +58,7 @@ namespace MedicalAppointmentApp.Queries
                         LastName = item.LastName,
                         PhoneNumber = item.PhoneNumber,
                         MedicalSpecialityId = item.MedicalSpecialityId,
-                        MedicalSpeciality = mapper.Map<GetMedicalSpecialtyModel>(item.MedicalSpeciality),
+                        MedicalSpeciality = _mapper.Map<GetMedicalSpecialtyModel>(item.MedicalSpeciality),
                         Institutions = institutionsList
                     };
                     doctorsViewModel.Add(viewModel);

@@ -23,23 +23,17 @@ namespace MedicalAppointmentApp.Queries
         public class Handler : IRequestHandler<Query, List<GetMedicalSpecialtyModel>>
         {
             private readonly ApplicationDbContext _context;
+            private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(ApplicationDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<List<GetMedicalSpecialtyModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var medicalSpecialtiesViewModel = new List<GetMedicalSpecialtyModel>();
-                var config = new MapperConfiguration(cfg =>
-                {
-                    cfg.CreateMap<MedicalSpeciality, GetMedicalSpecialtyModel>().MaxDepth(1);
-                    cfg.CreateMap<Doctor, GetDoctorModel>().MaxDepth(1);
-                    cfg.CreateMap<Institution, GetInstitutionModel>().MaxDepth(1);
-                }
-                );
-                var mapper = new Mapper(config);
 
                 foreach (var specialty in (await _context.MedicalSpecialities.ToListAsync()))
                 {
@@ -47,7 +41,7 @@ namespace MedicalAppointmentApp.Queries
                     foreach (var doctor in specialty.Doctors ?? new List<Doctor>())
                     {
                         var test = _context.Doctors.FirstOrDefault(i => i.DoctorId == doctor.DoctorId);
-                        doctorsList.Add(mapper.Map<GetDoctorModel>(test));
+                        doctorsList.Add(_mapper.Map<GetDoctorModel>(test));
                     }
 
                     var viewModel = new GetMedicalSpecialtyModel()
