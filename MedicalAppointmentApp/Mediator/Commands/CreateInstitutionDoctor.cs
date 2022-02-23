@@ -26,12 +26,12 @@ namespace MedicalAppointmentApp.Mediator.Commands
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var response = new CustomResponse();
-                var institutionDoctor = new InstitutionDoctor
+                /*var institutionDoctor = new InstitutionDoctor
                 {
                     DoctorId = request.InstitutionDoctorModel.DoctorId,
                     InstitutionId = request.InstitutionDoctorModel.InstitutionId
-                };
-                await _context.InstitutionDoctors.AddAsync(institutionDoctor);
+                };*/
+                //await _context.InstitutionDoctors.AddAsync(institutionDoctor);
 
                 //save changes and check if success
                 var success = await _context.SaveChangesAsync() > 0;

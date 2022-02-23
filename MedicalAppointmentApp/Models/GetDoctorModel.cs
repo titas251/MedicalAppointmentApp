@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MedicalAppointmentApp.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace MedicalAppointmentApp.Models
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public int MedicalSpecialityId { get; set; }
-        public GetMedicalSpecialtyModel MedicalSpeciality { get; set; }
-        public List<GetInstitutionModel> Institutions { get; set; }
+        public MedicalSpeciality MedicalSpeciality { get; set; }
+        public ICollection<Institution> Institutions { get; set; }
     }
 }

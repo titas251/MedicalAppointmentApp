@@ -5,6 +5,11 @@ namespace MedicalAppointmentApp.Data.Models
 {
     public class Doctor
     {
+        public Doctor()
+        {
+            this.Institutions = new HashSet<Institution>();
+        }
+
         [Key]
         public int DoctorId { get; set; }
         [Required]
@@ -15,6 +20,6 @@ namespace MedicalAppointmentApp.Data.Models
 
         public int MedicalSpecialityId { get; set; }
         public virtual MedicalSpeciality MedicalSpeciality { get; set; }
-        public virtual List<InstitutionDoctor> Institutions { get; set; }
+        public virtual ICollection<Institution> Institutions { get; set; }
     }
 }

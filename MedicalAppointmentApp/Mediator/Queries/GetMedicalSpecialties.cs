@@ -34,20 +34,14 @@ namespace MedicalAppointmentApp.Queries
             public async Task<List<GetMedicalSpecialtyModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var medicalSpecialtiesViewModel = new List<GetMedicalSpecialtyModel>();
+                var specialities = await _context.MedicalSpecialities.Include(specialty => specialty.Doctors).ToListAsync();
 
-                foreach (var specialty in (await _context.MedicalSpecialities.Include(specialty => specialty.Doctors).ToListAsync()))
+                foreach (var speciality in specialities)
                 {
-                    var doctorsList = new List<GetDoctorModel>();
-                    foreach (var doctor in specialty.Doctors ?? new List<Doctor>())
-                    {
-                        var doctorModel = _context.Doctors.FirstOrDefault(i => i.DoctorId == doctor.DoctorId);
-                        doctorsList.Add(_mapper.Map<GetDoctorModel>(doctorModel));
-                    }
-
-                    var viewModel = _mapper.Map<GetMedicalSpecialtyModel>(specialty);
-                    viewModel.Doctors = doctorsList;
+                    var viewModel = _mapper.Map<GetMedicalSpecialtyModel>(speciality);
                     medicalSpecialtiesViewModel.Add(viewModel);
-                };
+                }
+
                 return medicalSpecialtiesViewModel;
             }
         }
