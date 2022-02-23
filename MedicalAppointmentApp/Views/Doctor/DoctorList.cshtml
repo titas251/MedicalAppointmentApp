@@ -21,32 +21,37 @@
                                 <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">MedicalSpeciality</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Institutions</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Add Institution</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var doctor in Model)
                             {
-                                <tr>
-                                    <td>
-                                        <span class="font-medium mb-0">@doctor.FirstName</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@doctor.LastName</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@doctor.PhoneNumber</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
-                                    </td>
-                                    <td>
-                                        @foreach (var institution in doctor.Institutions)
-                                        {
-                                            <span class="font-medium mb-0">@institution.Name</span><br>
-                                        }
-                                    </td>
-
-                                </tr>
+                            <tr>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.FirstName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.LastName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.PhoneNumber</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
+                                </td>
+                                <td>
+                                    @foreach (var institution in doctor.Institutions)
+                                    {
+                                        <span class="font-medium mb-0">@institution.Name</span><br>
+                                    }
+                                </td>
+                                <td>
+                                    <form asp-controller="Doctor" asp-action="GetCreateInstitutionDoctorView" asp-route-id="@doctor.DoctorId" method="get">
+                                        <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                                    </form>
+                                </td>
+                            </tr>
                             }
                         </tbody>
                     </table>
