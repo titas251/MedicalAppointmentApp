@@ -7,9 +7,9 @@ namespace MedicalAppointmentApp.Models.MapperProfiles
     {
         public WebMappingProfile()
         {
-            CreateMap<MedicalSpeciality, GetMedicalSpecialtyModel>().MaxDepth(1);
-            CreateMap<Doctor, GetDoctorModel>().MaxDepth(1);
-            CreateMap<Institution, GetInstitutionModel>().MaxDepth(1);
+            CreateMap<MedicalSpeciality, GetMedicalSpecialtyModel>();
+            CreateMap<Doctor, GetDoctorModel>();
+            CreateMap<Institution, GetInstitutionModel>();
         }
     }
 }
