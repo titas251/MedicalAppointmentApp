@@ -54,7 +54,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost("update")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUser)
+        public async Task<IActionResult> UpdateUser([FromForm] UpdateUserModel updateUser)
         {
             
             var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });

@@ -21,6 +21,7 @@ namespace MedicalAppointmentApp.Controllers
             _mediator = mediator;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateDoctor()
@@ -35,6 +36,7 @@ namespace MedicalAppointmentApp.Controllers
             return View(doctorsViewModel);
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("add/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAddInstitutionToDoctorView(int id)
@@ -64,7 +66,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateDoctor([FromBody] CreateDoctorModel doctorModel)
+        public async Task<IActionResult> CreateDoctor([FromForm] CreateDoctorModel doctorModel)
         {
             var response = await _mediator.Send(new CreateDoctor.Command
             {
@@ -76,12 +78,12 @@ namespace MedicalAppointmentApp.Controllers
             return RedirectToAction("DoctorList");
         }
 
-        /*[HttpGet("search")]
+        [HttpGet("search")]
         public async Task<IActionResult> GetDoctorByQuery ([FromQuery(Name = "q")] string query)
         {
-            var doctors = await _mediator.Send(new GetDoctorsByQuery.Query(query));
-            return View("~/Views/Home/Index.cshtml");
-        }*/
+            var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(query));
+            return View("DoctorList", doctorsViewModel);
+        }
 
         private void Errors(CustomResponse response)
         {
