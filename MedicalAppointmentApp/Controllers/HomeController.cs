@@ -1,5 +1,8 @@
-﻿using MedicalAppointmentApp.Data.Models;
+﻿using MediatR;
+using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
+using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +18,24 @@ namespace MedicalAppointmentApp.Controllers
     [Route("")]
     public class HomeController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMediator _mediator;
 
-        public HomeController(UserManager<ApplicationUser> userManager)
+        public HomeController(IMediator mediator)
         {
-            _userManager = userManager;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View();
+            var doctorsViewModel = new List<GetDoctorModel>();
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(searchString));
+            }
+
+            return View(doctorsViewModel);
         }
 
         [Authorize]
