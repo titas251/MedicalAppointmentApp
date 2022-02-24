@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Mediator.Commands;
+using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Models.ViewModels;
 using MedicalAppointmentApp.Queries;
@@ -63,7 +64,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateDoctor(CreateDoctorModel doctorModel)
+        public async Task<IActionResult> CreateDoctor([FromBody] CreateDoctorModel doctorModel)
         {
             var response = await _mediator.Send(new CreateDoctor.Command
             {
@@ -74,6 +75,13 @@ namespace MedicalAppointmentApp.Controllers
 
             return RedirectToAction("DoctorList");
         }
+
+        /*[HttpGet("search")]
+        public async Task<IActionResult> GetDoctorByQuery ([FromQuery(Name = "q")] string query)
+        {
+            var doctors = await _mediator.Send(new GetDoctorsByQuery.Query(query));
+            return View("~/Views/Home/Index.cshtml");
+        }*/
 
         private void Errors(CustomResponse response)
         {
