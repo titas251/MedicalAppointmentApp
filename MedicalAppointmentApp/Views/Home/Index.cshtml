@@ -12,10 +12,9 @@
 
 
 <form asp-controller="Home" asp-action="Index" method="get">
-
     <div class="input-group">
         <input type="search" class="form-control rounded" placeholder="Doctor, institution, speciality" aria-label="Search" aria-describedby="search-addon" name="SearchString" />
-        <button type="button" class="btn btn-outline-primary">search</button>
+        <button type="submit" class="btn btn-outline-primary">search</button>
     </div>
 </form>
 @if (Model.Count > 0)
