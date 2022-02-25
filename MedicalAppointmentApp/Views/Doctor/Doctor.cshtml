@@ -1,0 +1,80 @@
+﻿@using MedicalAppointmentApp.Models
+@model GetDoctorModel
+@{
+    ViewData["Title"] = "Doctor";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">MedicalSpeciality</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                                <tr>
+                                    <td>
+                                        <span class="font-medium mb-0">@Model.FirstName</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@Model.LastName</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@Model.PhoneNumber</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@Model.MedicalSpeciality.Name</span><br>
+                                    </td>
+                                </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    Institutions:
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var institution in Model.Institutions)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="font-medium mb-0">@institution.Name</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@institution.Address</span><br>
+                                    </td>
+                                </tr>
+                            }
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

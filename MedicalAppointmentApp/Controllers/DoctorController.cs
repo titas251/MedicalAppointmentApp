@@ -22,11 +22,18 @@ namespace MedicalAppointmentApp.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        [HttpGet]
+        [HttpGet("create")]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateDoctor()
         {
             return View();
+        }
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpGet]
+        public async Task<IActionResult> Doctor(int id)
+        {
+            var doctorViewModel = await _mediator.Send(new GetDoctorById.Query(id));
+            return View(doctorViewModel);
         }
         [HttpGet("list")]
         [Authorize(Roles = "Admin")]

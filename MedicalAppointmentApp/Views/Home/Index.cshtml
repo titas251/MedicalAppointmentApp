@@ -30,7 +30,7 @@
                                     <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
                                     <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
                                     <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
-                                    <th scope="col" class="border-0 text-uppercase font-medium">MedicalSpeciality</th>
+                                    <th scope="col" class="border-0 text-uppercase font-medium">Medical Speciality</th>
                                     <th scope="col" class="border-0 text-uppercase font-medium">Institutions</th>
                                 </tr>
                             </thead>
@@ -39,7 +39,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            <span class="font-medium mb-0">@doctor.FirstName</span><br>
+                                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Doctor" asp-route-id="@doctor.DoctorId">@doctor.FirstName</a>
                                         </td>
                                         <td>
                                             <span class="font-medium mb-0">@doctor.LastName</span><br>
