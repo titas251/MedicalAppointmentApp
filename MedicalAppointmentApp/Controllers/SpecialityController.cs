@@ -18,6 +18,7 @@ namespace MedicalAppointmentApp.Controllers
             _mediator = mediator;
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateMedicalSpeciality()
@@ -35,7 +36,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateMedicalSpeciality(CreateMedicalSpecialityModel medicalSpecialityModel)
+        public async Task<IActionResult> CreateMedicalSpeciality([FromForm] CreateMedicalSpecialityModel medicalSpecialityModel)
         {
             var response = await _mediator.Send(new CreateMedicalSpeciality.Command 
             {  

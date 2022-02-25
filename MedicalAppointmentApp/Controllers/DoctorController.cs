@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Mediator.Commands;
+using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Models.ViewModels;
 using MedicalAppointmentApp.Queries;
@@ -20,11 +21,19 @@ namespace MedicalAppointmentApp.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpGet("create")]
         [Authorize(Roles = "Admin")]
         public IActionResult CreateDoctor()
         {
             return View();
+        }
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpGet]
+        public async Task<IActionResult> Doctor(int id)
+        {
+            var doctorViewModel = await _mediator.Send(new GetDoctorById.Query(id));
+            return View(doctorViewModel);
         }
         [HttpGet("list")]
         [Authorize(Roles = "Admin")]
@@ -34,6 +43,7 @@ namespace MedicalAppointmentApp.Controllers
             return View(doctorsViewModel);
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("add/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAddInstitutionToDoctorView(int id)
@@ -63,7 +73,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateDoctor(CreateDoctorModel doctorModel)
+        public async Task<IActionResult> CreateDoctor([FromForm] CreateDoctorModel doctorModel)
         {
             var response = await _mediator.Send(new CreateDoctor.Command
             {
@@ -73,6 +83,13 @@ namespace MedicalAppointmentApp.Controllers
                 Errors(response);
 
             return RedirectToAction("DoctorList");
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> GetDoctorByQuery ([FromQuery(Name = "q")] string query)
+        {
+            var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(query));
+            return View("DoctorList", doctorsViewModel);
         }
 
         private void Errors(CustomResponse response)
