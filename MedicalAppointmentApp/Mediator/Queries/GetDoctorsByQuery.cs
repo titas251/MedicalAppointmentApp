@@ -40,7 +40,9 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 var doctors = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Institutions)
                     .Where(doctor => doctor.FirstName.Contains(request.StringQuery) 
                     || doctor.LastName.Contains(request.StringQuery) 
-                    || doctor.MedicalSpeciality.Name.Contains(request.StringQuery))
+                    || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
+                    || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
+                    || doctor.Institutions.Select(c => c.Name).Contains(request.StringQuery))
                     .ToListAsync();
 
                 foreach (var doctor in doctors)
