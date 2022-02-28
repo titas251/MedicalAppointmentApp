@@ -7,6 +7,7 @@ using MedicalAppointmentApp.Models.ViewModels;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -44,6 +45,28 @@ namespace MedicalAppointmentApp.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpGet("appointment")]
+        public IActionResult CreateAppointmentView(string doctorId, string institutionId)
+        {
+            var appointmentViewModel = new CreateAppointmentModel() { DoctorId = Int32.Parse(doctorId),
+            //reik ir current user id paduot
+            };
+            return View("CreateAppointment", appointmentViewModel);
+        }
+        [HttpPost("appointment/create")]
+        public async Task<IActionResult> CreateAppointment([FromForm] CreateAppointmentModel appointmentModel)
+        {
+            var response = await _mediator.Send(new CreateAppointment.Command
+            {
+                AppointmentModel = appointmentModel
+            });
+            if (!response.Success)
+                Errors(response);
+
+            return RedirectToAction("DoctorList");
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("add/{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAddInstitutionToDoctorView(int id)
@@ -71,7 +94,7 @@ namespace MedicalAppointmentApp.Controllers
             return RedirectToAction("DoctorList");
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateDoctor([FromForm] CreateDoctorModel doctorModel)
         {
