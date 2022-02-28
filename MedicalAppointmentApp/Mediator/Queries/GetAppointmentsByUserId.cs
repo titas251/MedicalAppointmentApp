@@ -1,0 +1,54 @@
+﻿using AutoMapper;
+using MediatR;
+using MedicalAppointmentApp.Data;
+using MedicalAppointmentApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace MedicalAppointmentApp.Mediator.Queries
+{
+    public class GetAppointmentsByUserId
+    {
+        public class Query : IRequest<List<GetAppointmentModel>>
+        {
+            public Query(string id)
+            {
+                Id = id;
+            }
+            public string Id { get; }
+        }
+
+        public class Handler : IRequestHandler<Query, List<GetAppointmentModel>>
+        {
+            private readonly ApplicationDbContext _context;
+            private readonly IMapper _mapper;
+
+            public Handler(ApplicationDbContext context, IMapper mapper)
+            {
+                _context = context;
+                _mapper = mapper;
+            }
+
+            public async Task<List<GetAppointmentModel>> Handle(Query request, CancellationToken cancellationToken)
+            {
+                var appointmentsViewModel = new List<GetAppointmentModel>();
+
+                var appointments = await _context.Appointments.Include(a => a.Doctor)
+                    .Where(a => a.ApplicationUserId.Equals(request.Id))
+                    .ToListAsync();
+
+                foreach (var appointment in appointments)
+                {
+                    var viewModel = _mapper.Map<GetAppointmentModel>(appointment);
+                    appointmentsViewModel.Add(viewModel);
+                }
+
+                return appointmentsViewModel;
+            }
+        }
+    }
+}

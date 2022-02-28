@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Mediator.Commands;
+using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -41,11 +43,20 @@ namespace MedicalAppointmentApp.Controllers
             });
             if (!response.Success)
                 Errors(response);
-            
+
             //TODO: route to user appointments list
             return RedirectToAction("Index", "Home");
         }
-        
+
+        [HttpGet("{userId}")]
+        [Authorize(Roles = "Basic")]
+        public async Task<List<GetAppointmentModel>> GetAppointmentsByUserId(string userId)
+        {
+            var doctorViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId));
+
+            return doctorViewModel;
+        }
+
         private void Errors(CustomResponse response)
         {
             foreach (CustomError error in response.Errors)
