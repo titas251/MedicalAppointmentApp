@@ -57,6 +57,18 @@ namespace MedicalAppointmentApp.Controllers
             return doctorViewModel;
         }
 
+        [HttpPost("delete/{id}")]
+        [Authorize(Roles = "Basic")]
+        public async Task<IActionResult> DeleteAppointment(int id)
+        {
+            var response = await _mediator.Send(new DeleteAppointmentId.Command { Id = id });
+            if (!response.Success)
+                Errors(response);
+
+            //change to user appointments
+            return RedirectToAction("Index", "Home");
+        }
+
         private void Errors(CustomResponse response)
         {
             foreach (CustomError error in response.Errors)
