@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
@@ -17,23 +18,19 @@ namespace MedicalAppointmentApp.Mediator.Commands
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
             private readonly ApplicationDbContext _context;
+            private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(ApplicationDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var response = new CustomResponse();
-                var appointment = new Appointment
-                {
-                    StartDateTime = request.AppointmentModel.StartDateTime,
-                    EndDateTime = request.AppointmentModel.EndDateTime,
-                    Detail = request.AppointmentModel.Detail,
-                    ApplicationUserId = request.AppointmentModel.ApplicationUserId,
-                    DoctorId = request.AppointmentModel.DoctorId
-                };
+                var appointment = _mapper.Map<Appointment>(request.AppointmentModel);
+
                 await _context.Appointments.AddAsync(appointment);
 
                 //save changes and check if success
