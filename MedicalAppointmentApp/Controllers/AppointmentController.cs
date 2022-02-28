@@ -44,17 +44,20 @@ namespace MedicalAppointmentApp.Controllers
             if (!response.Success)
                 Errors(response);
 
-            //TODO: route to user appointments list
-            return RedirectToAction("Index", "Home");
+            var parms = new Dictionary<string, string>
+            {
+                { "userId", this.User.FindFirst(ClaimTypes.NameIdentifier).Value }
+            };
+            return RedirectToAction("GetAppointmentsByUserId", "Appointment", parms);
         }
 
         [HttpGet("{userId}")]
         [Authorize(Roles = "Basic")]
-        public async Task<List<GetAppointmentModel>> GetAppointmentsByUserId(string userId)
+        public async Task<IActionResult> GetAppointmentsByUserId(string userId)
         {
-            var doctorViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId));
+            var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId));
 
-            return doctorViewModel;
+            return View("UserAppointmentList", appointmentsListViewModel);
         }
 
         [HttpPost("delete/{id}")]
@@ -65,8 +68,11 @@ namespace MedicalAppointmentApp.Controllers
             if (!response.Success)
                 Errors(response);
 
-            //change to user appointments
-            return RedirectToAction("Index", "Home");
+            var parms = new Dictionary<string, string>
+            {
+                { "userId", this.User.FindFirst(ClaimTypes.NameIdentifier).Value }
+            };
+            return RedirectToAction("GetAppointmentsByUserId", "Appointment", parms);
         }
 
         private void Errors(CustomResponse response)

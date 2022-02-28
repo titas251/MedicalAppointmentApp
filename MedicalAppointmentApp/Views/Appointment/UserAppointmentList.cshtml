@@ -1,0 +1,48 @@
+﻿@model List<GetAppointmentModel>
+@{
+    ViewData["Title"] = "Appointment List";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Date</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Doctor</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Detail</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <span class="font-medium mb-0">@appointment.StartDateTime</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@appointment.Doctor.FirstName @appointment.Doctor.LastName</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@appointment.Detail</span><br>
+                                    </td>
+                                    <td>
+                                        <form asp-action="DeleteAppointment" asp-route-id="@appointment.AppointmentId" method="post">
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
