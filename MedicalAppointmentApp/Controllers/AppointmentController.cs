@@ -25,6 +25,7 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Basic")]
         public IActionResult CreateAppointmentView(string doctorId, string address, DateTime date)
         {
+            if (DateTime.Compare(DateTime.Now, date) >= 0) date = DateTime.Now;
             var appointmentViewModel = new CreateAppointmentModel()
             {
                 DoctorId = Int32.Parse(doctorId),

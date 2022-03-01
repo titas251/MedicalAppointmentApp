@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Create an appointment";
 }
-
 <style>
     .calendar-buttons {
         display: flex;
@@ -52,18 +51,21 @@
 
             @for (int j = 0; j < 7; j++)
             {
-                <div class="col-sm">
-                    @currentDate.AddDays(j).ToString("M")
-
-                    @for (int i = 0; i < 16; i++)
-                    {
-                        DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 9 + i / 2, 30 * (i % 2), 0);
-                        <div class="radio">
-                            <label asp-for="StartDateTime">@neededTime.ToShortTimeString()</label>
-                            <input type="radio" asp-for="StartDateTime" value="@neededTime" />
-                        </div>
-                    }
-                </div>
+                DayOfWeek dayOfWeek = currentDate.AddDays(j).DayOfWeek;
+                if (!(dayOfWeek == DayOfWeek.Sunday || dayOfWeek == DayOfWeek.Saturday))
+                {
+                    <div class="col-sm">
+                        @currentDate.AddDays(j).ToString("M")
+                        @for (int i = 0; i < 16; i++)
+                        {
+                            DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 9 + i / 2, 30 * (i % 2), 0);
+                            <div class="radio">
+                                <label asp-for="StartDateTime">@neededTime.ToShortTimeString()</label>
+                                <input type="radio" asp-for="StartDateTime" value="@neededTime" />
+                            </div>
+                        }
+                    </div>
+                }
             }
         </div>
     </div>
