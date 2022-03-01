@@ -14,5 +14,6 @@ namespace MedicalAppointmentApp.Models
         public string Detail { get; set; }
         public string ApplicationUserId { get; set; }
         public int DoctorId { get; set; }
+        public DateTime CurrentDateTime { get; set; }
     }
 }

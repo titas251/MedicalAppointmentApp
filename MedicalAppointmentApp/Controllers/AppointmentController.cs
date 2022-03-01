@@ -23,13 +23,14 @@ namespace MedicalAppointmentApp.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
         [Authorize(Roles = "Basic")]
-        public IActionResult CreateAppointmentView(string doctorId, string address)
+        public IActionResult CreateAppointmentView(string doctorId, string address, DateTime date)
         {
             var appointmentViewModel = new CreateAppointmentModel()
             {
                 DoctorId = Int32.Parse(doctorId),
                 Address = address,
-                ApplicationUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value
+                ApplicationUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                CurrentDateTime = date
             };
             return View("CreateAppointment", appointmentViewModel);
         }
