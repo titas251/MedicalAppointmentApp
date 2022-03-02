@@ -37,7 +37,7 @@ namespace MedicalAppointmentApp
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMediatR(typeof(Startup).Assembly);

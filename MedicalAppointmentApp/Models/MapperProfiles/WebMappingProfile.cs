@@ -10,6 +10,9 @@ namespace MedicalAppointmentApp.Models.MapperProfiles
             CreateMap<MedicalSpeciality, GetMedicalSpecialtyModel>();
             CreateMap<Doctor, GetDoctorModel>();
             CreateMap<Institution, GetInstitutionModel>();
+            CreateMap<CreateAppointmentModel, Appointment>();
+            CreateMap<Appointment, GetAppointmentModel>();
+
         }
     }
 }

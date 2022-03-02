@@ -17,9 +17,20 @@ namespace MedicalAppointmentApp.Data
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<MedicalSpeciality> MedicalSpecialities { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { 
+        {
+            modelBuilder.Entity<Appointment>()
+                .HasOne(p => p.Doctor)
+                .WithMany(b => b.Appointments)
+                .HasForeignKey(p => p.DoctorId);
+
+            modelBuilder.Entity<Appointment>()
+                .HasOne(p => p.ApplicationUser)
+                .WithMany(b => b.Appointments)
+                .HasForeignKey(p => p.ApplicationUserId);
+
             modelBuilder.Entity<Doctor>()
                 .HasOne(p => p.MedicalSpeciality)
                 .WithMany(b => b.Doctors)

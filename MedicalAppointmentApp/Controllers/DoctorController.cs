@@ -1,13 +1,18 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Data;
+using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Models.ViewModels;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+
 
 namespace MedicalAppointmentApp.Controllers
 {
@@ -71,7 +76,7 @@ namespace MedicalAppointmentApp.Controllers
             return RedirectToAction("DoctorList");
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateDoctor([FromForm] CreateDoctorModel doctorModel)
         {

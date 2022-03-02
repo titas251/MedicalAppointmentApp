@@ -6,7 +6,7 @@
 
 <h1>Create Doctor</h1>
 
-<form asp-action="CreateDoctor" method="post">
+<form asp-controller="Doctor" asp-action="CreateDoctor" method="post">
     <div class="form-group">
         <label asp-for="FirstName"></label>
         <input asp-for="FirstName" class="form-control" />

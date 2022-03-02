@@ -7,6 +7,7 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
 
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -23,20 +24,20 @@
                         </thead>
                         <tbody>
 
-                                <tr>
-                                    <td>
-                                        <span class="font-medium mb-0">@Model.FirstName</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@Model.LastName</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@Model.PhoneNumber</span><br>
-                                    </td>
-                                    <td>
-                                        <span class="font-medium mb-0">@Model.MedicalSpeciality.Name</span><br>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td>
+                                    <span class="font-medium mb-0">@Model.FirstName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@Model.LastName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@Model.PhoneNumber</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@Model.MedicalSpeciality.Name</span><br>
+                                </td>
+                            </tr>
 
                         </tbody>
                     </table>
@@ -61,16 +62,26 @@
                         <tbody>
                             @foreach (var institution in Model.Institutions)
                             {
+                                var parms = new Dictionary<string, string>
+                                {
+                                    { "doctorId", Model.DoctorId.ToString() },
+                                    { "address", institution.Address },
+                                    { "date", DateTime.Now.ToString() }
+                                };
                                 <tr>
                                     <td>
                                         <span class="font-medium mb-0">@institution.Name</span><br>
+                                        <form asp-action="CreateAppointment" >
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                                        </form>
                                     </td>
                                     <td>
+                                        <input type="button" class="btn btn-info" value="Create Appointment" onclick="location.href='@Url.Action("CreateAppointmentView", "Appointment", parms)'" />
                                         <span class="font-medium mb-0">@institution.Address</span><br>
                                     </td>
                                 </tr>
                             }
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
