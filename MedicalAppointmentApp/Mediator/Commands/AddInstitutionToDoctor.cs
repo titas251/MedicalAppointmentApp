@@ -30,7 +30,14 @@ namespace MedicalAppointmentApp.Mediator.Commands
 
                 var doctor = await _context.Doctors.FindAsync(request.DoctorId);
                 var institution = await _context.Institutions.FindAsync(request.InstitutionId);
-                doctor.Institutions.Add(institution);
+
+                var schedule = new Schedule
+                {
+                    Institution = institution,
+                    Doctor = doctor
+                };
+
+                doctor.Schedules.Add(schedule);
                 _context.Doctors.Update(doctor);
 
                 //save changes and check if success

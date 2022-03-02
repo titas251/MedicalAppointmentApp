@@ -37,12 +37,13 @@ namespace MedicalAppointmentApp.Mediator.Queries
             {
                 var doctorsViewModel = new List<GetDoctorModel>();
 
-                var doctors = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Institutions)
-                    .Where(doctor => doctor.FirstName.Contains(request.StringQuery) 
-                    || doctor.LastName.Contains(request.StringQuery) 
+                var doctors = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Schedules)
+                    .ThenInclude(schedule => schedule.Institution)
+                    .Where(doctor => doctor.FirstName.Contains(request.StringQuery)
+                    || doctor.LastName.Contains(request.StringQuery)
                     || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
                     || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
-                    || doctor.Institutions.Select(c => c.Name).Contains(request.StringQuery))
+                    || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
                     .ToListAsync();
 
                 foreach (var doctor in doctors)

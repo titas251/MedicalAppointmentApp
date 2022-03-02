@@ -18,6 +18,7 @@ namespace MedicalAppointmentApp.Data
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<MedicalSpeciality> MedicalSpecialities { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Schedule> Schedule { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,16 @@ namespace MedicalAppointmentApp.Data
                 .HasOne(p => p.MedicalSpeciality)
                 .WithMany(b => b.Doctors)
                 .HasForeignKey(p => p.MedicalSpecialityId);
+
+            modelBuilder.Entity<Schedule>()
+                .HasOne(p => p.Doctor)
+                .WithMany(b => b.Schedules)
+                .HasForeignKey(p => p.DoctorId);
+
+            modelBuilder.Entity<Schedule>()
+                .HasOne(p => p.Institution)
+                .WithMany(b => b.Schedules)
+                .HasForeignKey(p => p.InstitutionId);
 
             //define unique indexes
             modelBuilder.Entity<Doctor>()

@@ -34,7 +34,9 @@ namespace MedicalAppointmentApp.Queries
             public async Task<List<GetDoctorModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var doctorsViewModel = new List<GetDoctorModel>();
-                var doctors = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Institutions).ToListAsync();
+                var doctors = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Schedules)
+                    .ThenInclude(schedule => schedule.Institution)
+                    .ToListAsync();
 
                 foreach (var doctor in doctors) {
                     var viewModel = _mapper.Map<GetDoctorModel>(doctor);

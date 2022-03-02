@@ -14,6 +14,6 @@ namespace MedicalAppointmentApp.Models
         public string PhoneNumber { get; set; }
         public int MedicalSpecialityId { get; set; }
         public MedicalSpeciality MedicalSpeciality { get; set; }
-        public ICollection<Institution> Institutions { get; set; }
+        public ICollection<Schedule> Schedules { get; set; }
     }
 }

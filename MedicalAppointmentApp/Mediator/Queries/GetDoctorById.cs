@@ -36,7 +36,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
             public async Task<GetDoctorModel> Handle(Query request, CancellationToken cancellationToken)
             {
 
-                var doctor = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Institutions)
+                var doctor = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Schedules)
+                    .ThenInclude(schedules => schedules.Institution)
                     .Where(doctor => doctor.DoctorId.Equals(request.Id))
                     .FirstOrDefaultAsync();
 
