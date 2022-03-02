@@ -10,5 +10,6 @@ namespace MedicalAppointmentApp.Models.ViewModels
         public int DoctorId { get; set; }
         public int InstitutionId { get; set; }
         public List<GetInstitutionModel> Institutions { get; set; }
+        public List<ScheduleDetailModel> scheduleDetails { get; set; }
     }
 }

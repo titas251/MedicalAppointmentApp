@@ -12,7 +12,7 @@ namespace MedicalAppointmentApp.Models.MapperProfiles
             CreateMap<Institution, GetInstitutionModel>();
             CreateMap<CreateAppointmentModel, Appointment>();
             CreateMap<Appointment, GetAppointmentModel>();
-
+            CreateMap<ScheduleDetailModel, ScheduleDetail>();
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,15 +15,17 @@ namespace MedicalAppointmentApp.Mediator.Commands
         {
             public int DoctorId { get; set; }
             public int InstitutionId { get; set; }
+            public List<ScheduleDetailModel> scheduleDetails { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
             private readonly ApplicationDbContext _context;
-
-            public Handler(ApplicationDbContext context)
+            private readonly IMapper _mapper;
+            public Handler(ApplicationDbContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -36,7 +40,15 @@ namespace MedicalAppointmentApp.Mediator.Commands
                     Institution = institution,
                     Doctor = doctor
                 };
-
+                foreach (var scheduleDetail in request.scheduleDetails)
+                {
+                    if (scheduleDetail.isWorking)
+                    {
+                        var scheduleDetailModel = _mapper.Map<ScheduleDetail>(scheduleDetail);
+                        scheduleDetailModel.Schedule = schedule;
+                        _context.ScheduleDetails.Add(scheduleDetailModel);
+                    }
+                }
                 doctor.Schedules.Add(schedule);
                 _context.Doctors.Update(doctor);
 

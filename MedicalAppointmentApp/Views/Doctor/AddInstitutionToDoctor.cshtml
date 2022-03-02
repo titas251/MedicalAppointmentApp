@@ -15,6 +15,33 @@
         <label asp-for="InstitutionId"></label>
         <input asp-for="InstitutionId" class="form-control" />
     </div>
+    <div class="container">
+        <div class="row">@{ int i = 0; }
+            @foreach (var scheduleDetail in Model.scheduleDetails)
+            {
+            <div class="col-sm">
+                <h4>@scheduleDetail.Day</h4>
+                <div hidden>
+                    <label asp-for="scheduleDetails[i].Day"></label>
+                    <input type="text" asp-for="scheduleDetails[i].Day" />
+                </div>
+                <div class="time">
+                    <label asp-for="scheduleDetails[i].isWorking"></label>
+                    <input type="checkbox" asp-for="scheduleDetails[i].isWorking" />
+                </div>
+                <div class="time">
+                    <label asp-for="scheduleDetails[i].StartDateTime"></label>
+                    <input type="time" asp-for="scheduleDetails[i].StartDateTime" />
+                </div>
+                <div class="time">
+                    <label asp-for="scheduleDetails[i].EndDateTime"></label>
+                    <input type="time" asp-for="scheduleDetails[i].EndDateTime" />
+                </div>
+            </div>
+                i++;
+            }
+        </div>
+    </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 
