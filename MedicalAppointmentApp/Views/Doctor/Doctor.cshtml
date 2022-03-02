@@ -60,27 +60,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @*@foreach (var institution in Model.Institutions)
+                            @foreach (var schedule in Model.Schedules)
                             {
                                 var parms = new Dictionary<string, string>
                                 {
                                     { "doctorId", Model.DoctorId.ToString() },
-                                    { "address", institution.Address },
+                                    { "address", schedule.Institution.Address },
                                     { "date", DateTime.Now.ToString() }
                                 };
                                 <tr>
                                     <td>
-                                        <span class="font-medium mb-0">@institution.Name</span><br>
+                                        <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
                                         <form asp-action="CreateAppointment" >
                                             <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
                                         </form>
                                     </td>
                                     <td>
                                         <input type="button" class="btn btn-info" value="Create Appointment" onclick="location.href='@Url.Action("CreateAppointmentView", "Appointment", parms)'" />
-                                        <span class="font-medium mb-0">@institution.Address</span><br>
+                                        <span class="font-medium mb-0">@schedule.Institution.Address</span><br>
                                     </td>
                                 </tr>
-                            }*@
+                            }
                         </tbody>
                     </table>
                 </div>

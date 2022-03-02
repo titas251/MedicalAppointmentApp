@@ -41,10 +41,10 @@
                                     <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
                                 </td>
                                 <td>
-                                    @*@foreach (var institution in doctor.Institutions)
+                                    @foreach (var schedule in doctor.Schedules)
                                     {
-                                        <span class="font-medium mb-0">@institution.Name</span><br>
-                                    }*@
+                                        <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
+                                    }
                                 </td>
                                 <td>
                                     <form asp-controller="Doctor" asp-action="GetAddInstitutionToDoctorView" asp-route-id="@doctor.DoctorId" method="get">
