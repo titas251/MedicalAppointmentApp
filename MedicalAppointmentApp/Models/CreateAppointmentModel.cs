@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MedicalAppointmentApp.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,5 +16,6 @@ namespace MedicalAppointmentApp.Models
         public string ApplicationUserId { get; set; }
         public int DoctorId { get; set; }
         public DateTime CurrentDateTime { get; set; }
+        public List<ScheduleDetail> DoctorScheduleDetails { get; set; }
     }
 }
