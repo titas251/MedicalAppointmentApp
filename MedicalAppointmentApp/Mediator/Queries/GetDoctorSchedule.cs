@@ -15,28 +15,27 @@ namespace MedicalAppointmentApp.Mediator.Queries
     {
         public class Query : IRequest<List<ScheduleDetail>>
         {
-            public Query(int doctorId)
+            public Query(int doctorId, string address)
             {
                 DoctorId = doctorId;
+                Address = address;
             }
             public int DoctorId { get; }
+            public string Address { get; }
         }
 
         public class Handler : IRequestHandler<Query, List<ScheduleDetail>>
         {
             private readonly ApplicationDbContext _context;
-            private readonly IMapper _mapper;
-
             public Handler(ApplicationDbContext context, IMapper mapper)
             {
                 _context = context;
-                _mapper = mapper;
             }
 
             public async Task<List<ScheduleDetail>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var schedule = await _context.ScheduleDetails.Include(s => s.Schedule)                  
-                    .Where(s => s.Schedule.DoctorId.Equals(request.DoctorId))
+                var schedule = await _context.ScheduleDetails.Include(s => s.Schedule).ThenInclude(s => s.Institution)
+                    .Where(s => s.Schedule.DoctorId.Equals(request.DoctorId) && s.Schedule.Institution.Address.Equals(request.Address))
                     .ToListAsync();
 
                 return schedule;
