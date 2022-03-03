@@ -45,8 +45,13 @@
         <input asp-for="Detail" class="form-control" />
     </div>
     <div class="calendar-buttons">
-        <input type="button" value="&lt;" onclick="location.href='@Url.Action("CreateAppointmentView", "Appointment", parmsSub)'" />
-        <input type="button" value="&gt;" onclick="location.href='@Url.Action("CreateAppointmentView", "Appointment", parmsAdd)'" />
+
+        <button type="button" class="btn btn-outline-primary" onclick="location.href='@Url.Action("CreateAppointmentView", "Appointment", parmsSub)'">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <button type="button" class="btn btn-outline-primary" onclick="location.href='@Url.Action("CreateAppointmentView", "Appointment", parmsAdd)'">
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
     </div>
     <div class="container">
         <div class="row">

@@ -26,7 +26,6 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> CreateAppointmentView(string doctorId, string address, DateTime date)
         {
             if (DateTime.Compare(DateTime.Now, date) >= 0) date = DateTime.Now;
-            var test = await _mediator.Send(new GetAppointmentsByUserId.Query(doctorId));
             var appointmentViewModel = new CreateAppointmentModel()
             {
                 DoctorId = Int32.Parse(doctorId),
