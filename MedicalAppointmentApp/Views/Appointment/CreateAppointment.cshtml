@@ -10,6 +10,8 @@
 </style>
 @{
     DateTime currentDate = Model.CurrentDateTime;
+    List<DayOfWeek> days = Model.DoctorScheduleDetails.Select(o => o.Day).ToList();
+    List<DateTime> appointments = Model.DoctorAppointments.Select(o => o.StartDateTime).ToList();
     var parmsAdd = new Dictionary<string, string>
 {
         { "doctorId", Model.DoctorId.ToString() },
@@ -52,17 +54,26 @@
             @for (int j = 0; j < 7; j++)
             {
                 DayOfWeek dayOfWeek = currentDate.AddDays(j).DayOfWeek;
-                if (!(dayOfWeek == DayOfWeek.Sunday || dayOfWeek == DayOfWeek.Saturday))
+                if (days.Contains(dayOfWeek))
                 {
+                    var currentDetail = (from detail in Model.DoctorScheduleDetails
+                                        where detail.Day == dayOfWeek
+                                        select detail).First();
+                    TimeSpan interval = currentDetail.EndDateTime - currentDetail.StartDateTime;
+                    int numberOfAppointments = (int)interval.TotalMinutes / 30;
                     <div class="col-sm">
                         @currentDate.AddDays(j).ToString("M")
-                        @for (int i = 0; i < 16; i++)
+                        @for (int i = 0; i < numberOfAppointments; i++)
                         {
-                            DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 9 + i / 2, 30 * (i % 2), 0);
+                            DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day,
+                                (currentDetail.StartDateTime.Hour + i / 2),(currentDetail.StartDateTime.Minute + (30 * (i % 2))), 0);
+                            if(!(appointments.Contains(neededTime)))
+                            {
                             <div class="radio">
                                 <label asp-for="StartDateTime">@neededTime.ToShortTimeString()</label>
                                 <input type="radio" asp-for="StartDateTime" value="@neededTime" />
                             </div>
+                            } 
                         }
                     </div>
                 }

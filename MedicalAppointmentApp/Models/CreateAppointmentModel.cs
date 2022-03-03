@@ -17,5 +17,6 @@ namespace MedicalAppointmentApp.Models
         public int DoctorId { get; set; }
         public DateTime CurrentDateTime { get; set; }
         public List<ScheduleDetail> DoctorScheduleDetails { get; set; }
+        public List<GetAppointmentModel> DoctorAppointments { get; set; }
     }
 }

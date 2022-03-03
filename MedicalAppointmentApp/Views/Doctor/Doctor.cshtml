@@ -57,6 +57,7 @@
                             <tr>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Create Appointment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,13 +72,12 @@
                                 <tr>
                                     <td>
                                         <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
-                                        <form asp-action="CreateAppointment" >
-                                            <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
-                                        </form>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@schedule.Institution.Address</span><br>
                                     </td>
                                     <td>
                                         <input type="button" class="btn btn-info" value="Create Appointment" onclick="location.href='@Url.Action("CreateAppointmentView", "Appointment", parms)'" />
-                                        <span class="font-medium mb-0">@schedule.Institution.Address</span><br>
                                     </td>
                                 </tr>
                             }
