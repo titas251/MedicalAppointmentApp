@@ -66,6 +66,10 @@ namespace MedicalAppointmentApp.Data
                 .HasIndex(u => u.Name)
                 .IsUnique();
 
+            modelBuilder.Entity<Schedule>()
+                .HasIndex(u => new { u.InstitutionId, u.DoctorId })
+                .IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
     }
