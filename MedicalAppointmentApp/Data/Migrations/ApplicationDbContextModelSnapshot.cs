@@ -19,21 +19,6 @@ namespace MedicalAppointmentApp.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DoctorInstitution", b =>
-                {
-                    b.Property<int>("DoctorsDoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InstitutionsInstitutionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("DoctorsDoctorId", "InstitutionsInstitutionId");
-
-                    b.HasIndex("InstitutionsInstitutionId");
-
-                    b.ToTable("DoctorInstitution");
-                });
-
             modelBuilder.Entity("MedicalAppointmentApp.Data.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -188,6 +173,9 @@ namespace MedicalAppointmentApp.Data.Migrations
 
                     b.HasKey("InstitutionId");
 
+                    b.HasIndex("Address")
+                        .IsUnique();
+
                     b.HasIndex("Name", "Address")
                         .IsUnique();
 
@@ -214,6 +202,55 @@ namespace MedicalAppointmentApp.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("MedicalSpecialities");
+                });
+
+            modelBuilder.Entity("MedicalAppointmentApp.Data.Models.Schedule", b =>
+                {
+                    b.Property<int>("ScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ScheduleId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("InstitutionId", "DoctorId")
+                        .IsUnique();
+
+                    b.ToTable("Schedule");
+                });
+
+            modelBuilder.Entity("MedicalAppointmentApp.Data.Models.ScheduleDetail", b =>
+                {
+                    b.Property<int>("ScheduleDetailId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Day")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ScheduleDetailId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("ScheduleDetails");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -351,21 +388,6 @@ namespace MedicalAppointmentApp.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("DoctorInstitution", b =>
-                {
-                    b.HasOne("MedicalAppointmentApp.Data.Models.Doctor", null)
-                        .WithMany()
-                        .HasForeignKey("DoctorsDoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MedicalAppointmentApp.Data.Models.Institution", null)
-                        .WithMany()
-                        .HasForeignKey("InstitutionsInstitutionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MedicalAppointmentApp.Data.Models.Appointment", b =>
                 {
                     b.HasOne("MedicalAppointmentApp.Data.Models.ApplicationUser", "ApplicationUser")
@@ -392,6 +414,36 @@ namespace MedicalAppointmentApp.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("MedicalSpeciality");
+                });
+
+            modelBuilder.Entity("MedicalAppointmentApp.Data.Models.Schedule", b =>
+                {
+                    b.HasOne("MedicalAppointmentApp.Data.Models.Doctor", "Doctor")
+                        .WithMany("Schedules")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MedicalAppointmentApp.Data.Models.Institution", "Institution")
+                        .WithMany("Schedules")
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Institution");
+                });
+
+            modelBuilder.Entity("MedicalAppointmentApp.Data.Models.ScheduleDetail", b =>
+                {
+                    b.HasOne("MedicalAppointmentApp.Data.Models.Schedule", "Schedule")
+                        .WithMany("ScheduleDetails")
+                        .HasForeignKey("ScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -453,11 +505,23 @@ namespace MedicalAppointmentApp.Data.Migrations
             modelBuilder.Entity("MedicalAppointmentApp.Data.Models.Doctor", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("Schedules");
+                });
+
+            modelBuilder.Entity("MedicalAppointmentApp.Data.Models.Institution", b =>
+                {
+                    b.Navigation("Schedules");
                 });
 
             modelBuilder.Entity("MedicalAppointmentApp.Data.Models.MedicalSpeciality", b =>
                 {
                     b.Navigation("Doctors");
+                });
+
+            modelBuilder.Entity("MedicalAppointmentApp.Data.Models.Schedule", b =>
+                {
+                    b.Navigation("ScheduleDetails");
                 });
 #pragma warning restore 612, 618
         }

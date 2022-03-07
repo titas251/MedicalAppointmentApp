@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -54,10 +55,18 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> GetAddInstitutionToDoctorView(int id)
         {
             var institutionsViewModel = await _mediator.Send(new GetInstitutions.Query());
+            List<ScheduleDetailModel> scheduleDetails = new List<ScheduleDetailModel>();
+            for (int i = 0; i < 7; i++)
+            {
+                var scheduleDetail = new ScheduleDetailModel { Day = (DayOfWeek)i };
+                scheduleDetails.Add(scheduleDetail);
+            }
+            
             CreateInstitutionDoctorViewModel createInstitutionDoctorViewModel = new CreateInstitutionDoctorViewModel()
             {
                 DoctorId = id,
-                Institutions = institutionsViewModel
+                Institutions = institutionsViewModel,
+                scheduleDetails = scheduleDetails
             };
             return View("AddInstitutionToDoctor", createInstitutionDoctorViewModel);
         }
@@ -69,7 +78,8 @@ namespace MedicalAppointmentApp.Controllers
             var response = await _mediator.Send(new AddInstitutionToDoctor.Command
             {
                 DoctorId = model.DoctorId,
-                InstitutionId = model.InstitutionId
+                InstitutionId = model.InstitutionId,
+                scheduleDetails = model.scheduleDetails
             });
             if (!response.Success)
                 Errors(response);

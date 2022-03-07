@@ -19,9 +19,9 @@
                                 <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">MedicalSpeciality</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Medical Speciality</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Institutions</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Add Institution</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Create schedule</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,9 +41,9 @@
                                     <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
                                 </td>
                                 <td>
-                                    @foreach (var institution in doctor.Institutions)
+                                    @foreach (var schedule in doctor.Schedules)
                                     {
-                                        <span class="font-medium mb-0">@institution.Name</span><br>
+                                        <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
                                     }
                                 </td>
                                 <td>

@@ -23,7 +23,7 @@ namespace MedicalAppointmentApp.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
         [Authorize(Roles = "Basic")]
-        public IActionResult CreateAppointmentView(string doctorId, string address, DateTime date)
+        public async Task<IActionResult> CreateAppointmentView(string doctorId, string address, DateTime date)
         {
             if (DateTime.Compare(DateTime.Now, date) >= 0) date = DateTime.Now;
             var appointmentViewModel = new CreateAppointmentModel()
@@ -31,8 +31,10 @@ namespace MedicalAppointmentApp.Controllers
                 DoctorId = Int32.Parse(doctorId),
                 Address = address,
                 ApplicationUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
-                CurrentDateTime = date
-            };
+                CurrentDateTime = date,
+                DoctorScheduleDetails = await _mediator.Send(new GetDoctorSchedule.Query(Int32.Parse(doctorId), address)),
+                DoctorAppointments =  await _mediator.Send(new GetAppointmentsByDoctorId.Query(Int32.Parse(doctorId)))
+        };
             return View("CreateAppointment", appointmentViewModel);
         }
 

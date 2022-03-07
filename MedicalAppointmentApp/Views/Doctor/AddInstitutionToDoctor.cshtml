@@ -4,16 +4,50 @@
     ViewData["Title"] = "Add Institution";
 }
 
-<h1>Selected Doctor Id: @Model.DoctorId</h1>
+<style>
+h1 {
+  text-align: center;
+}
+</style>
+
+<h1>Create schedule</h1>
+<h5>Selected Doctor Id: @Model.DoctorId</h5>
 
 <form asp-action="AddInstitutionToDoctor" method="post">
-    <div class="form-group">
-        <label asp-for="DoctorId"></label>
+    <div class="form-group" style="display: none;">
+        <label asp-for="DoctorId">Doctor Id</label>
         <input asp-for="DoctorId" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="InstitutionId"></label>
+        <label asp-for="InstitutionId">Institution Id</label>
         <input asp-for="InstitutionId" class="form-control" />
+    </div>
+    <div class="container">
+        <div class="row">@{ int i = 0; }
+            @foreach (var scheduleDetail in Model.scheduleDetails)
+            {
+            <div class="col-sm">
+                <h4>@scheduleDetail.Day</h4>
+                <div hidden>
+                    <label asp-for="scheduleDetails[i].Day"></label>
+                    <input type="text" asp-for="scheduleDetails[i].Day" />
+                </div>
+                <div class="time">
+                    <label asp-for="scheduleDetails[i].isWorking">Is working?</label>
+                    <input type="checkbox" asp-for="scheduleDetails[i].isWorking" />
+                </div>
+                <div class="time">
+                    <label asp-for="scheduleDetails[i].StartDateTime">Start Time</label>
+                    <input type="time" asp-for="scheduleDetails[i].StartDateTime" value="09:00" />
+                </div>
+                <div class="time">
+                    <label asp-for="scheduleDetails[i].EndDateTime">End Time</label>
+                    <input type="time" asp-for="scheduleDetails[i].EndDateTime" value="17:00"/>
+                </div>
+            </div>
+                i++;
+            }
+        </div>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
@@ -46,9 +80,9 @@
                                         <span class="font-medium mb-0">@institution.Address</span><br>
                                     </td>
                                     <td>
-                                        @foreach (var doctor in institution.Doctors)
+                                        @foreach (var schedule in institution.Schedules)
                                         {
-                                            <span class="font-medium mb-0">@doctor.FirstName @doctor.LastName</span><br>
+                                            <span class="font-medium mb-0">@schedule.Doctor.FirstName @schedule.Doctor.LastName</span><br>
                                         }
                                     </td>
 
