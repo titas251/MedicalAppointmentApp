@@ -131,11 +131,13 @@ namespace MedicalAppointmentApp
                 q.UseMicrosoftDependencyInjectionJobFactory();
                 q.ScheduleJob<SendMailJob>(trigger => trigger
                     .WithIdentity("SendRecurringMailTrigger")
-                    .WithSimpleSchedule(s =>
-                        s.WithIntervalInSeconds(15)
-                        .RepeatForever()
-                    )
-                    .WithDescription("This trigger will run every 15 seconds to send emails.")
+                    .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(18,0))
+                    .WithDescription("This trigger will run every day at 18:00.")
+                    //.WithSimpleSchedule(s =>
+                    //    s.WithIntervalInSeconds(15)
+                    //    .RepeatForever()
+                    //)
+                    //.WithDescription("This trigger will run every 15 seconds to send emails.")
                 );
             });
 

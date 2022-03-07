@@ -70,7 +70,7 @@
                         @currentDate.AddDays(j).ToString("M")
                         @for (int i = 0; i < numberOfAppointments; i++)
                         {
-                            DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day,
+                            DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day+j,
                                 (currentDetail.StartDateTime.Hour + i / 2),(currentDetail.StartDateTime.Minute + (30 * (i % 2))), 0);
                             if(!(appointments.Contains(neededTime)))
                             {
