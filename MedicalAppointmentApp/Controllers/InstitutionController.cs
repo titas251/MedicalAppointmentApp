@@ -31,6 +31,13 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> InstitutionList()
         {
             var institutionsViewModel = await _mediator.Send(new GetInstitutions.Query());
+
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
+            {
+                ViewBag.CustomResponse = customResponse;
+            }
+
             return View(institutionsViewModel);
         }
 
@@ -42,6 +49,8 @@ namespace MedicalAppointmentApp.Controllers
             {
                 InstitutionModel = institutionModel
             });
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("InstitutionList");
         }

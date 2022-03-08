@@ -47,6 +47,8 @@ namespace MedicalAppointmentApp.Controllers
                 AppointmentModel = appointmentModel
             });
 
+            TempData.Put("CustomResponse", response);
+
             var parms = new Dictionary<string, string>
             {
                 { "userId", this.User.FindFirst(ClaimTypes.NameIdentifier).Value }

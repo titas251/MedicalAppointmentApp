@@ -2,10 +2,15 @@
 @model List<GetInstitutionModel>
 @{
     ViewData["Title"] = "Institutions";
+    CustomResponse statusMsg = ViewBag.CustomResponse;
 }
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
+@if (statusMsg != null)
+{
+    <partial name="_StatusMessage" for="@statusMsg" />
+}
 
 <input type="button" class="btn btn-info" value="Create Institution" onclick="location.href='@Url.Action("CreateInstitution", "Institution")'" />
 
