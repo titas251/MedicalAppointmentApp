@@ -46,8 +46,6 @@ namespace MedicalAppointmentApp.Controllers
             {
                 AppointmentModel = appointmentModel
             });
-            if (!response.Success)
-                Errors(response);
 
             var parms = new Dictionary<string, string>
             {
@@ -62,6 +60,11 @@ namespace MedicalAppointmentApp.Controllers
         {
             var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId));
 
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null) {
+                ViewBag.CustomResponse = customResponse;
+            }
+
             return View("UserAppointmentList", appointmentsListViewModel);
         }
 
@@ -70,20 +73,15 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> DeleteAppointment(int id)
         {
             var response = await _mediator.Send(new DeleteAppointmentId.Command { Id = id });
-            if (!response.Success)
-                Errors(response);
 
-            var parms = new Dictionary<string, string>
+            TempData.Put("CustomResponse", response);
+
+             var parms = new Dictionary<string, string>
             {
                 { "userId", this.User.FindFirst(ClaimTypes.NameIdentifier).Value }
             };
-            return RedirectToAction("GetAppointmentsByUserId", "Appointment", parms);
-        }
 
-        private void Errors(CustomResponse response)
-        {
-            foreach (CustomError error in response.Errors)
-                ModelState.AddModelError(error.Error, error.Message);
+            return RedirectToAction("GetAppointmentsByUserId", "Appointment", parms);
         }
     }
 }

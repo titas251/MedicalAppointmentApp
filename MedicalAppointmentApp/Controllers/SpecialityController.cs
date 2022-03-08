@@ -42,16 +42,8 @@ namespace MedicalAppointmentApp.Controllers
             {  
                 MedicalSpecialityModel = medicalSpecialityModel
             });
-            if (!response.Success)
-                Errors(response);
 
             return RedirectToAction("SpecialityList");
-        }
-
-        private void Errors(CustomResponse response)
-        {
-            foreach (CustomError error in response.Errors)
-                ModelState.AddModelError(error.Error, error.Message);
         }
     }
 }

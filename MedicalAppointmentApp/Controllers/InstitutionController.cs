@@ -42,16 +42,8 @@ namespace MedicalAppointmentApp.Controllers
             {
                 InstitutionModel = institutionModel
             });
-            if (!response.Success)
-                Errors(response);
 
             return RedirectToAction("InstitutionList");
-        }
-
-        private void Errors(CustomResponse response)
-        {
-            foreach (CustomError error in response.Errors)
-                ModelState.AddModelError(error.Error, error.Message);
         }
     }
 }

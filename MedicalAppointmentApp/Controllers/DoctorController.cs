@@ -81,8 +81,7 @@ namespace MedicalAppointmentApp.Controllers
                 InstitutionId = model.InstitutionId,
                 scheduleDetails = model.scheduleDetails
             });
-            if (!response.Success)
-                Errors(response);
+
             return RedirectToAction("DoctorList");
         }
 
@@ -94,8 +93,6 @@ namespace MedicalAppointmentApp.Controllers
             {
                 DoctorModel = doctorModel
             });
-            if (!response.Success)
-                Errors(response);
 
             return RedirectToAction("DoctorList");
         }
@@ -105,12 +102,6 @@ namespace MedicalAppointmentApp.Controllers
         {
             var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(query));
             return View("DoctorList", doctorsViewModel);
-        }
-
-        private void Errors(CustomResponse response)
-        {
-            foreach (CustomError error in response.Errors)
-                ModelState.AddModelError(error.Error, error.Message);
         }
     }
 }

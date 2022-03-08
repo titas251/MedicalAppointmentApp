@@ -1,9 +1,15 @@
 ﻿@model List<GetAppointmentModel>
 @{
     ViewData["Title"] = "Appointment List";
+    CustomResponse statusMsg = ViewBag.CustomResponse;
 }
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+@if(statusMsg != null)
+{
+    <partial name="_StatusMessage" for="@statusMsg" />
+}
 
 <div class="container">
     <div class="row">
