@@ -2,23 +2,17 @@ using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models.MapperProfiles;
-using MedicalAppointmentApp.Scheduler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Quartz;
-using SendGrid.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace MedicalAppointmentApp
 {
@@ -120,32 +114,6 @@ namespace MedicalAppointmentApp
             services.AddAutoMapper(c => {
                 c.AddProfile<WebMappingProfile>();
             }, typeof(Startup));
-
-            services.AddSendGrid(options =>
-            {
-                options.ApiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY");
-            });
-
-                services.AddQuartz(q =>
-            {
-                q.UseMicrosoftDependencyInjectionJobFactory();
-                q.ScheduleJob<SendMailJob>(trigger => trigger
-                    .WithIdentity("SendRecurringMailTrigger")
-                    .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(18,0))
-                    .WithDescription("This trigger will run every day at 18:00.")
-                    //.WithSimpleSchedule(s =>
-                    //    s.WithIntervalInSeconds(15)
-                    //    .RepeatForever()
-                    //)
-                    //.WithDescription("This trigger will run every 15 seconds to send emails.")
-                );
-            });
-
-            services.AddQuartzHostedService(options =>
-            {
-                // when shutting down we want jobs to complete gracefully
-                options.WaitForJobsToComplete = true;
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

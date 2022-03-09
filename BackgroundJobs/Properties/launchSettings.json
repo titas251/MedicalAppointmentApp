@@ -1,0 +1,17 @@
+{
+  "profiles": {
+    "BackgroundJobs": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "SENDGRID_API_KEY": "INSERT_API_KEY_HERE"
+      }
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {
+        "SENDGRID_API_KEY": "INSERT_API_KEY_HERE"
+      },
+      "distributionName": ""
+    }
+  }
+}
