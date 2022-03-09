@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using AutoMapper;
 
-namespace MedicalAppointmentApp.Scheduler
+namespace BackgroundJobs.EmailSending
 {
     public static class UpcomingAppointments
     {
@@ -32,7 +32,5 @@ namespace MedicalAppointmentApp.Scheduler
 
             return emails;
         }
-
-
     }
 }
