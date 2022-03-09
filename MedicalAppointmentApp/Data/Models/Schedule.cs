@@ -14,6 +14,8 @@ namespace MedicalAppointmentApp.Data.Models
         [Key]
         public int ScheduleId { get; set; }
         public int InstitutionId { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public Institution Institution { get; set; }
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }

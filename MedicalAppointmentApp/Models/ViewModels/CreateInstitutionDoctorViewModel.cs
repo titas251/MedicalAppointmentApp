@@ -11,5 +11,7 @@ namespace MedicalAppointmentApp.Models.ViewModels
         public int InstitutionId { get; set; }
         public List<GetInstitutionModel> Institutions { get; set; }
         public List<ScheduleDetailModel> scheduleDetails { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

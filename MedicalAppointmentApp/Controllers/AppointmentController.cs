@@ -32,7 +32,7 @@ namespace MedicalAppointmentApp.Controllers
                 Address = address,
                 ApplicationUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
                 CurrentDateTime = date,
-                DoctorScheduleDetails = await _mediator.Send(new GetDoctorSchedule.Query(Int32.Parse(doctorId), address)),
+                DoctorScheduleDetails = await _mediator.Send(new GetDoctorSchedule.Query(Int32.Parse(doctorId), address, date)),
                 DoctorAppointments =  await _mediator.Send(new GetAppointmentsByDoctorId.Query(Int32.Parse(doctorId)))
         };
             return View("CreateAppointment", appointmentViewModel);

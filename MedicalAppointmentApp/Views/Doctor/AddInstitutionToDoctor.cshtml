@@ -19,32 +19,41 @@ h1 {
         <input asp-for="DoctorId" class="form-control" />
     </div>
     <div class="form-group">
+        <label asp-for="StartDate">Schedule start date</label>
+        <input type="date" asp-for="StartDate" class="form-control" value="@DateTime.Now.ToString("d")" />
+    </div>
+    <div class="form-group">
+        <label asp-for="EndDate">Schedule end date</label>
+        <input type="date" asp-for="EndDate" class="form-control" value="@DateTime.Now.AddDays(7).ToString("d")"/>
+    </div>
+    <div class="form-group">
         <label asp-for="InstitutionId">Institution Id</label>
         <input asp-for="InstitutionId" class="form-control" />
     </div>
     <div class="container">
-        <div class="row">@{ int i = 0; }
+        <div class="row">
+            @{ int i = 0; }
             @foreach (var scheduleDetail in Model.scheduleDetails)
             {
-            <div class="col-sm">
-                <h4>@scheduleDetail.Day</h4>
-                <div hidden>
-                    <label asp-for="scheduleDetails[i].Day"></label>
-                    <input type="text" asp-for="scheduleDetails[i].Day" />
+                <div class="col-sm">
+                    <h4>@scheduleDetail.Day</h4>
+                    <div hidden>
+                        <label asp-for="scheduleDetails[i].Day"></label>
+                        <input type="text" asp-for="scheduleDetails[i].Day" />
+                    </div>
+                    <div class="time">
+                        <label asp-for="scheduleDetails[i].isWorking">Is working?</label>
+                        <input type="checkbox" asp-for="scheduleDetails[i].isWorking" />
+                    </div>
+                    <div class="time">
+                        <label asp-for="scheduleDetails[i].StartDateTime">Start Time</label>
+                        <input type="time" asp-for="scheduleDetails[i].StartDateTime" value="09:00" />
+                    </div>
+                    <div class="time">
+                        <label asp-for="scheduleDetails[i].EndDateTime">End Time</label>
+                        <input type="time" asp-for="scheduleDetails[i].EndDateTime" value="17:00" />
+                    </div>
                 </div>
-                <div class="time">
-                    <label asp-for="scheduleDetails[i].isWorking">Is working?</label>
-                    <input type="checkbox" asp-for="scheduleDetails[i].isWorking" />
-                </div>
-                <div class="time">
-                    <label asp-for="scheduleDetails[i].StartDateTime">Start Time</label>
-                    <input type="time" asp-for="scheduleDetails[i].StartDateTime" value="09:00" />
-                </div>
-                <div class="time">
-                    <label asp-for="scheduleDetails[i].EndDateTime">End Time</label>
-                    <input type="time" asp-for="scheduleDetails[i].EndDateTime" value="17:00"/>
-                </div>
-            </div>
                 i++;
             }
         </div>

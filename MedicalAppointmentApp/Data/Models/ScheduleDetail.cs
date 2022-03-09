@@ -10,9 +10,9 @@ namespace MedicalAppointmentApp.Data.Models
         [Required]
         public DayOfWeek Day { get; set; }
         [Required]
-        public DateTime StartDateTime { get; set; }
+        public string StartDateTime { get; set; }
         [Required]
-        public DateTime EndDateTime { get; set; }
+        public string EndDateTime { get; set; }
         public int ScheduleId { get; set; }
         public Schedule Schedule { get; set; }
     }
