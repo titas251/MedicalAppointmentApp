@@ -4,17 +4,23 @@ namespace MedicalAppointmentApp.Models
 {
     public class CustomResponse
     {
-        private bool _success { get; set; } = true;
-        private List<CustomError> _errors = new List<CustomError>();
+        private CustomError _error = new CustomError();
+        public CustomError Error => _error;
+        public bool Success {
+            get
+            {
+                if (_error.Error == null)
+                {
+                    return true;
+                }
+                return false;
+            } 
+        }
 
-        public bool Success => _success;
-        public IEnumerable<CustomError> Errors => _errors;
-
-        public void AddErrors(CustomError customError) {
+        public void AddError(CustomError customError) {
             if (customError != null)
             {
-                _success = false;
-                _errors.Add(customError);
+                _error = customError;
             }
         }
     }

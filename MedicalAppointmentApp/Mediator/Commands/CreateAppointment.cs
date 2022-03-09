@@ -37,7 +37,7 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)
                 {
-                    response.AddErrors(new CustomError { Error = "Failed", Message = "Failed to create doctor" });
+                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to create doctor" });
                 }
 
                 return response;

@@ -56,7 +56,7 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success)
                 {
-                    response.AddErrors(new CustomError { Error = "Failed", Message = "Failed to add institution to doctor" });
+                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to add institution to doctor" });
                 }
 
                 return response;

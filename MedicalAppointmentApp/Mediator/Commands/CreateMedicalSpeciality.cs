@@ -35,7 +35,7 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 //save changes and check if success
                 var success = await _context.SaveChangesAsync() > 0;
                 if (!success) {
-                    response.AddErrors(new CustomError {Error = "Failed", Message = "Failed to create medical speciality"});
+                    response.AddError(new CustomError {Error = "Failed", Message = "Failed to create medical speciality"});
                 }
 
                 return response;

@@ -31,6 +31,13 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> SpecialityList()
         {
             var specialitiesViewModel = await _mediator.Send(new GetMedicalSpecialties.Query());
+
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
+            {
+                ViewBag.CustomResponse = customResponse;
+            }
+
             return View(specialitiesViewModel);
         }
 
@@ -42,16 +49,10 @@ namespace MedicalAppointmentApp.Controllers
             {  
                 MedicalSpecialityModel = medicalSpecialityModel
             });
-            if (!response.Success)
-                Errors(response);
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("SpecialityList");
-        }
-
-        private void Errors(CustomResponse response)
-        {
-            foreach (CustomError error in response.Errors)
-                ModelState.AddModelError(error.Error, error.Message);
         }
     }
 }

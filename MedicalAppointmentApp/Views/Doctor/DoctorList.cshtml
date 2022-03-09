@@ -2,10 +2,15 @@
 @model List<GetDoctorModel>
 @{
     ViewData["Title"] = "Doctors";
+    CustomResponse statusMsg = ViewBag.CustomResponse;
 }
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
+@if (statusMsg != null)
+{
+    <partial name="_StatusMessage" for="@statusMsg" />
+}
 
 <input type="button" class="btn btn-info" value="Create Doctor" onclick="location.href='@Url.Action("CreateDoctor", "Doctor")'" />
 <div class="container">
@@ -27,31 +32,31 @@
                         <tbody>
                             @foreach (var doctor in Model)
                             {
-                            <tr>
-                                <td>
-                                    <span class="font-medium mb-0">@doctor.FirstName</span><br>
-                                </td>
-                                <td>
-                                    <span class="font-medium mb-0">@doctor.LastName</span><br>
-                                </td>
-                                <td>
-                                    <span class="font-medium mb-0">@doctor.PhoneNumber</span><br>
-                                </td>
-                                <td>
-                                    <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
-                                </td>
-                                <td>
-                                    @foreach (var schedule in doctor.Schedules)
-                                    {
-                                        <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
-                                    }
-                                </td>
-                                <td>
-                                    <form asp-controller="Doctor" asp-action="GetAddInstitutionToDoctorView" asp-route-id="@doctor.DoctorId" method="get">
-                                        <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
-                                    </form>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>
+                                        <span class="font-medium mb-0">@doctor.FirstName</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@doctor.LastName</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@doctor.PhoneNumber</span><br>
+                                    </td>
+                                    <td>
+                                        <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
+                                    </td>
+                                    <td>
+                                        @foreach (var schedule in doctor.Schedules)
+                                        {
+                                            <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
+                                        }
+                                    </td>
+                                    <td>
+                                        <form asp-controller="Doctor" asp-action="GetAddInstitutionToDoctorView" asp-route-id="@doctor.DoctorId" method="get">
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                                        </form>
+                                    </td>
+                                </tr>
                             }
                         </tbody>
                     </table>

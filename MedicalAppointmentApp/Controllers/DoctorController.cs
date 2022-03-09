@@ -46,6 +46,13 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> DoctorList()
         {
             var doctorsViewModel = await _mediator.Send(new GetDoctors.Query());
+
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
+            {
+                ViewBag.CustomResponse = customResponse;
+            }
+
             return View(doctorsViewModel);
         }
 
@@ -81,8 +88,9 @@ namespace MedicalAppointmentApp.Controllers
                 InstitutionId = model.InstitutionId,
                 scheduleDetails = model.scheduleDetails
             });
-            if (!response.Success)
-                Errors(response);
+
+            TempData.Put("CustomResponse", response);
+
             return RedirectToAction("DoctorList");
         }
 
@@ -94,8 +102,8 @@ namespace MedicalAppointmentApp.Controllers
             {
                 DoctorModel = doctorModel
             });
-            if (!response.Success)
-                Errors(response);
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("DoctorList");
         }
@@ -105,12 +113,6 @@ namespace MedicalAppointmentApp.Controllers
         {
             var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(query));
             return View("DoctorList", doctorsViewModel);
-        }
-
-        private void Errors(CustomResponse response)
-        {
-            foreach (CustomError error in response.Errors)
-                ModelState.AddModelError(error.Error, error.Message);
         }
     }
 }
