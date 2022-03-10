@@ -59,28 +59,35 @@
             @for (int j = 0; j < 7; j++)
             {
                 DayOfWeek dayOfWeek = currentDate.AddDays(j).DayOfWeek;
-                if (days.Contains(dayOfWeek))
+                if (days.Contains(dayOfWeek) && currentDate.AddDays(j).Date != DateTime.Today)
                 {
                     var currentDetail = (from detail in Model.DoctorScheduleDetails
-                                        where detail.Day == dayOfWeek
-                                        select detail).First();
-                    TimeSpan interval = currentDetail.EndDateTime - currentDetail.StartDateTime;
-                    int numberOfAppointments = (int)interval.TotalMinutes / 30;
-                    <div class="col-sm">
-                        @currentDate.AddDays(j).ToString("M")
-                        @for (int i = 0; i < numberOfAppointments; i++)
-                        {
-                            DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day+j,
-                                (currentDetail.StartDateTime.Hour + i / 2),(currentDetail.StartDateTime.Minute + (30 * (i % 2))), 0);
-                            if(!(appointments.Contains(neededTime)))
+                                         where detail.Day == dayOfWeek 
+                                         && detail.Schedule.StartDate.Date <= currentDate.AddDays(j).Date
+                                         && detail.Schedule.EndDate.Date >= currentDate.AddDays(j).Date
+                                         select detail).FirstOrDefault();
+                    if (currentDetail != null)
+                    {
+                        var parsedEndTime = DateTime.Parse(currentDetail.EndDateTime);
+                        var parsedStartTime = DateTime.Parse(currentDetail.StartDateTime);
+                        TimeSpan interval = parsedEndTime - parsedStartTime;
+                        int numberOfAppointments = (int)interval.TotalMinutes / 30;
+                        <div class="col-sm">
+                            @currentDate.AddDays(j).ToString("M")
+                            @for (int i = 0; i < numberOfAppointments; i++)
                             {
-                            <div class="radio">
-                                <label asp-for="StartDateTime">@neededTime.ToShortTimeString()</label>
-                                <input type="radio" asp-for="StartDateTime" value="@neededTime" />
-                            </div>
-                            } 
-                        }
-                    </div>
+                                DateTime neededTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day,
+                                    parsedStartTime.Hour, parsedStartTime.Minute, 0).AddDays(j).AddHours(i / 2).AddMinutes(30 * (i % 2));
+                                if (!(appointments.Contains(neededTime)))
+                                {
+                                    <div class="radio">
+                                        <label asp-for="StartDateTime">@neededTime.ToShortTimeString()</label>
+                                        <input type="radio" asp-for="StartDateTime" value="@neededTime" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
                 }
             }
         </div>

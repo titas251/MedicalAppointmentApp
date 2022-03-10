@@ -86,7 +86,9 @@ namespace MedicalAppointmentApp.Controllers
             {
                 DoctorId = model.DoctorId,
                 InstitutionId = model.InstitutionId,
-                scheduleDetails = model.scheduleDetails
+                scheduleDetails = model.scheduleDetails,
+                StartDate = model.StartDate,
+                EndDate = model.EndDate
             });
 
             TempData.Put("CustomResponse", response);

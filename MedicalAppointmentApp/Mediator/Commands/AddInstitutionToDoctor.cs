@@ -3,6 +3,7 @@ using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ namespace MedicalAppointmentApp.Mediator.Commands
             public int DoctorId { get; set; }
             public int InstitutionId { get; set; }
             public List<ScheduleDetailModel> scheduleDetails { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
         }
 
         public class Handler : IRequestHandler<Command, CustomResponse>
@@ -38,7 +41,9 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 var schedule = new Schedule
                 {
                     Institution = institution,
-                    Doctor = doctor
+                    Doctor = doctor,
+                    StartDate = request.StartDate,
+                    EndDate = request.EndDate
                 };
                 foreach (var scheduleDetail in request.scheduleDetails)
                 {

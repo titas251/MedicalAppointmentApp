@@ -9,8 +9,8 @@ namespace MedicalAppointmentApp.Models
     {
         public int ScheduleDetailId { get; set; }
         public DayOfWeek Day { get; set; }
-        public DateTime StartDateTime { get; set; }
-        public DateTime EndDateTime { get; set; }
+        public string StartDateTime { get; set; }
+        public string EndDateTime { get; set; }
         public int ScheduleId { get; set; }
         public bool isWorking { get; set; }
     }
