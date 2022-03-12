@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace MedicalAppointmentApp.Models
 {
-    public class GetDoctorScheduleModel
+    public class GetDoctorsWithNextAppointment
     {
         public Doctor Doctor { get; set; }
-        public ClosestDateWithWorkingTime NextFreeAppointmentDate { get; set; } 
+        public DateTime NextFreeAppointmentDate { get; set; } 
     }
 }

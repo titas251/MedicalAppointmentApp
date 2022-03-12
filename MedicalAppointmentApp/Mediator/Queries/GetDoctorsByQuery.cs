@@ -14,7 +14,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
 {
     public class GetDoctorsByQuery
     {
-        public class Query : IRequest<List<GetDoctorModel>>
+        public class Query : IRequest<List<GetDoctorsWithNextAppointment>>
         {
             public Query(string stringQuery)
             {
@@ -23,7 +23,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
             public string StringQuery { get; }
         }
 
-        public class Handler : IRequestHandler<Query, List<GetDoctorModel>>
+        public class Handler : IRequestHandler<Query, List<GetDoctorsWithNextAppointment>>
         {
             private readonly ApplicationDbContext _context;
             private readonly IMapper _mapper;
@@ -34,10 +34,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 _mapper = mapper;
             }
 
-            public async Task<List<GetDoctorModel>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<List<GetDoctorsWithNextAppointment>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var doctorsViewModel = new List<GetDoctorModel>();
-
                 var doctors = await _context.Doctors
                     .Include(doctor => doctor.MedicalSpeciality)
                     .Include(doctor => doctor.Appointments)
@@ -53,26 +51,21 @@ namespace MedicalAppointmentApp.Mediator.Queries
                     .ToListAsync();
 
                 //getting sorted doctors
-                var doctorsWith = GetDoctorWithNextAppointment(doctors);
+                var doctorsWithNextAppointment = GetDoctorWithNextAppointment(doctors);
 
-                foreach (var doctor in doctors)
-                {
-                    var viewModel = _mapper.Map<GetDoctorModel>(doctor);
-                    doctorsViewModel.Add(viewModel);
-                }
-
-                return doctorsViewModel;
+                return doctorsWithNextAppointment;
             }
 
-            private List<GetDoctorScheduleModel> GetDoctorWithNextAppointment(List<Doctor> doctors) 
+            private List<GetDoctorsWithNextAppointment> GetDoctorWithNextAppointment(List<Doctor> doctors) 
             {
-                var doctorsWithAppointments = new List<GetDoctorScheduleModel>();
-                var currentDate = DateTime.Now;
+                var doctorsWithNextAppointment = new List<GetDoctorsWithNextAppointment>();
+                var currentDate = DateTime.Today;
 
                 foreach (var doctor in doctors)
                 {
                     //storing all closes dates from each schedule
-                    var closestDatesWithWorkingTime = new List<ClosestDateWithWorkingTime>();
+                    var closestDates = new List<DateTime>();
+                    var closestDate = DateTime.MaxValue;
 
                     //getting all valid schedules
                     var filteredSchedules = doctor.Schedules
@@ -80,47 +73,70 @@ namespace MedicalAppointmentApp.Mediator.Queries
 
                     foreach (var schedule in filteredSchedules) 
                     {
-                        //getting closest day
-                        var closestDay = schedule.ScheduleDetails
-                            //.Where(p => DateTime.Now.AddDays((double)p.Day) >= DateTime.Parse(p.EndDateTime))
-                            .OrderBy(s => Math.Abs((currentDate.DayOfWeek-7) - s.Day)).First();
+                        //select only days in schedule details
+                        var scheduleDetailsDays = schedule.ScheduleDetails
+                            .Select(s => s.Day)
+                            .ToList();
 
-                        //getting datetime
-                        var closestDate = currentDate.AddDays(Math.Abs(currentDate.DayOfWeek - (closestDay.Day+7)));
-                        
-                        //check if closes date is valid
-                        if (closestDate <= schedule.EndDate) {
-                            var closestDateWithWorkingTime = new ClosestDateWithWorkingTime
+                        //need to check if day is valid
+                        for (var day = currentDate; day.Date <= schedule.EndDate; day = day.AddDays(1))
+                        {
+                            if (scheduleDetailsDays.Contains(day.DayOfWeek)) 
                             {
-                                ClosestDate = closestDate,
-                                EndingDateTime = closestDay.EndDateTime,
-                                StartingDateTime = closestDay.StartDateTime
-                            };
+                                //get current day schedule details
+                                var currentDetail = schedule.ScheduleDetails
+                                    .Where(s => s.Day == day.DayOfWeek)
+                                    .First();
+
+                                TimeSpan startTime = TimeSpan.Parse(currentDetail.StartDateTime);
+                                TimeSpan endTime = TimeSpan.Parse(currentDetail.EndDateTime);
+
+                                var startDateTime = day.Date + startTime;
+                                var startEndTime = day.Date + endTime;
+                                
+                                //check for free appointments
+                                for (var currentStartDT = startDateTime; currentStartDT < startEndTime; currentStartDT = currentStartDT.AddMinutes(30))
+                                {
+                                    var appointment = doctor.Appointments
+                                        .Where(appointment => appointment.StartDateTime == currentStartDT)
+                                        .FirstOrDefault();
+
+                                    if (appointment == null) {
+                                        closestDate = currentStartDT;
+                                        break;
+                                    }
+                                }
+                            }
 
                             //add to closest dates
-                            closestDatesWithWorkingTime.Add(closestDateWithWorkingTime);
+                            if (closestDate != DateTime.MaxValue)
+                            {
+                                closestDates.Add(closestDate);
+                                closestDate = DateTime.MaxValue;
+                                break;
+                            }
                         }
                     }
 
                     //get closest date in all schedules
-                    var closestDateForFreeAppoitment = closestDatesWithWorkingTime
-                        .OrderBy(s => s.ClosestDate).FirstOrDefault();
+                    var closestDateForFreeAppoitment = closestDates
+                        .OrderBy(s => s).FirstOrDefault();
 
-                    var doctorScheduleModel = new GetDoctorScheduleModel 
+                    var doctorWithNextAppointment = new GetDoctorsWithNextAppointment
                     {
                         Doctor = doctor,
                         NextFreeAppointmentDate = closestDateForFreeAppoitment
                     };
 
-                    doctorsWithAppointments.Add(doctorScheduleModel);
+                    doctorsWithNextAppointment.Add(doctorWithNextAppointment);
                 }
 
                 //order by closest free appointment date
-                doctorsWithAppointments = doctorsWithAppointments
-                    .OrderBy(s => s.NextFreeAppointmentDate.ClosestDate)
+                doctorsWithNextAppointment = doctorsWithNextAppointment
+                    .OrderBy(s => s.NextFreeAppointmentDate)
                     .ToList();
 
-                return doctorsWithAppointments;
+                return doctorsWithNextAppointment;
             }
         }
     }

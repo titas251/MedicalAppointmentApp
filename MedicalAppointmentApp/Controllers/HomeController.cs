@@ -28,7 +28,7 @@ namespace MedicalAppointmentApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery(Name = "q")] string q)
         {
-            var doctorsViewModel = new List<GetDoctorModel>();
+            var doctorsViewModel = new List<GetDoctorsWithNextAppointment>();
             
             if (!String.IsNullOrEmpty(q))
             {

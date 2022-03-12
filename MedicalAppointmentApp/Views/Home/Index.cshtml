@@ -1,4 +1,4 @@
-﻿@model List<GetDoctorModel>
+﻿@model List<GetDoctorsWithNextAppointment>
 @{
     ViewData["Title"] = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -41,19 +41,19 @@
                                 {
                                     <tr>
                                         <td>
-                                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Doctor" asp-route-id="@doctor.DoctorId">@doctor.FirstName</a>
+                                            <a class="nav-link text-dark" asp-controller="Doctor" asp-action="Doctor" asp-route-id="@doctor.Doctor.DoctorId">@doctor.Doctor.FirstName</a>
                                         </td>
                                         <td>
-                                            <span class="font-medium mb-0">@doctor.LastName</span><br>
+                                            <span class="font-medium mb-0">@doctor.Doctor.LastName</span><br>
                                         </td>
                                         <td>
-                                            <span class="font-medium mb-0">@doctor.PhoneNumber</span><br>
+                                            <span class="font-medium mb-0">@doctor.Doctor.PhoneNumber</span><br>
                                         </td>
                                         <td>
-                                            <span class="font-medium mb-0">@doctor.MedicalSpeciality.Name</span><br>
+                                            <span class="font-medium mb-0">@doctor.Doctor.MedicalSpeciality.Name</span><br>
                                         </td>
                                         <td>
-                                            @foreach (var schedule in doctor.Schedules)
+                                            @foreach (var schedule in doctor.Doctor.Schedules)
                                             {
                                                 <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
                                             }
