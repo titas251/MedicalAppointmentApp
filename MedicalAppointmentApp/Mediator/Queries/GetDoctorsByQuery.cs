@@ -69,11 +69,11 @@ namespace MedicalAppointmentApp.Mediator.Queries
 
                     //getting all valid schedule details
                     var filteredScheduleDetails = doctor.Schedules
-                        .Where(s => (currentDate >= s.StartDate && currentDate <= s.EndDate))
+                        .Where(s => currentDate <= s.EndDate)
                         .SelectMany(s => s.ScheduleDetails)
                         .OrderByDescending(s => s.Schedule.EndDate);
 
-                    if (filteredScheduleDetails != null) 
+                    if (filteredScheduleDetails.Any())
                     {
                         //taking first end date from ordered list 
                         var maxEndDateTime = filteredScheduleDetails.Select(s => s.Schedule.EndDate).First();
@@ -81,10 +81,12 @@ namespace MedicalAppointmentApp.Mediator.Queries
                         //iterate from current date to end date time of all filtered schedules 
                         for (var day = currentDate; day.Date <= maxEndDateTime; day = day.AddDays(1))
                         {
-                            if (filteredScheduleDetails.Any(s => s.Day == day.DayOfWeek && s.Schedule.EndDate.Date >= day.Date))
+                            if (filteredScheduleDetails.Any(s => s.Day == day.DayOfWeek && s.Schedule.EndDate.Date >= day.Date
+                                && s.Schedule.StartDate.Date <= day.Date))
                             {
                                 var filteredScheduleDetail = filteredScheduleDetails
-                                    .Where(s => s.Day == day.DayOfWeek && s.Schedule.EndDate.Date >= day.Date)
+                                    .Where(s => s.Day == day.DayOfWeek && s.Schedule.EndDate.Date >= day.Date 
+                                        && s.Schedule.StartDate.Date <= day.Date)
                                     .First();
 
                                 TimeSpan startTime = TimeSpan.Parse(filteredScheduleDetail.StartDateTime);
