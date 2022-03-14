@@ -26,16 +26,17 @@ namespace MedicalAppointmentApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string searchString)
+        public IActionResult Index()
         {
-            var doctorsViewModel = new List<GetDoctorModel>();
-            
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(searchString));
-            }
+            return View();
+        }
 
-            return View(doctorsViewModel);
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchView([FromQuery(Name = "q")] string q)
+        {
+            int numOfAppointmentsToGet = 10;
+            var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query((q ?? ""), numOfAppointmentsToGet));
+            return View("Search", doctorsViewModel);
         }
 
         [Authorize]

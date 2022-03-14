@@ -110,11 +110,11 @@ namespace MedicalAppointmentApp.Controllers
             return RedirectToAction("DoctorList");
         }
 
-        [HttpGet("search")]
+        /*[HttpGet("search")]
         public async Task<IActionResult> GetDoctorByQuery ([FromQuery(Name = "q")] string query)
         {
             var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(query));
             return View("DoctorList", doctorsViewModel);
-        }
+        }*/
     }
 }
