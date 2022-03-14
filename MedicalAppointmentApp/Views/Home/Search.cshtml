@@ -6,7 +6,7 @@
 
 <form asp-controller="Home" asp-action="SearchView" asp-route-pageSize="@ViewBag.PageSize" method="get">
     <div class="input-group">
-        <input type="search" class="form-control rounded" placeholder="Doctor, institution, speciality" aria-label="Search" aria-describedby="search-addon" name="q" />
+        <input type="search" class="form-control rounded" placeholder="Doctor, institution, speciality" aria-label="Search" aria-describedby="search-addon" name="q" value="@ViewBag.CurrentFilter"/>
         <button type="submit" class="btn btn-outline-primary">
             <i class="fas fa-search text-grey"
                aria-hidden="true"></i>
@@ -58,7 +58,8 @@
                                             {
                                                 foreach (var date in doctor.NextFreeAppointmentDates)
                                                 {
-                                                    <span class="font-medium mb-0">@date</span><br>
+                                                    var dateNotNull = date ?? DateTime.Now;
+                                                    <span class="font-medium mb-0">@dateNotNull.ToString("g", new CultureInfo("lt-LT"))</span><br>
                                                 }
                                             }
                                             else
