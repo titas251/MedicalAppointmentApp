@@ -16,13 +16,17 @@ namespace MedicalAppointmentApp.Mediator.Queries
     {
         public class Query : IRequest<List<GetDoctorsWithNextAppointments>>
         {
-            public Query(string stringQuery, int numOfAppointmentsToGet)
+            public Query(string stringQuery, int numOfAppointmentsToGet, int page, int pageSize)
             {
                 StringQuery = stringQuery;
                 NumOfAppointmentsToGet = numOfAppointmentsToGet;
+                Page = page;
+                PageSize = pageSize;
             }
             public string StringQuery { get; }
             public int NumOfAppointmentsToGet { get; }
+            public int Page { get; }
+            public int PageSize { get; }
         }
 
         public class Handler : IRequestHandler<Query, List<GetDoctorsWithNextAppointments>>
@@ -50,6 +54,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
                     || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
                     || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
                     || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
+                    .Skip((request.Page-1) * request.PageSize)
+                    .Take(request.PageSize)
                     .ToListAsync();
 
                 //getting sorted doctors
@@ -130,7 +136,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 //order by closest free appointment date
                 doctorsWithNextAppointments = doctorsWithNextAppointments
                     .OrderByDescending(s => s.NextFreeAppointmentDates.FirstOrDefault().HasValue)
-                    .OrderBy(s => s.NextFreeAppointmentDates.FirstOrDefault())
+                    .ThenBy(s => s.NextFreeAppointmentDates.FirstOrDefault())
                     .ToList();
 
                 return doctorsWithNextAppointments;
