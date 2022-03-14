@@ -16,11 +16,13 @@ namespace MedicalAppointmentApp.Mediator.Queries
     {
         public class Query : IRequest<List<GetDoctorsWithNextAppointments>>
         {
-            public Query(string stringQuery)
+            public Query(string stringQuery, int numOfAppointmentsToGet)
             {
                 StringQuery = stringQuery;
+                NumOfAppointmentsToGet = numOfAppointmentsToGet;
             }
             public string StringQuery { get; }
+            public int NumOfAppointmentsToGet { get; }
         }
 
         public class Handler : IRequestHandler<Query, List<GetDoctorsWithNextAppointments>>
@@ -50,10 +52,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
                     || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
                     .ToListAsync();
 
-                //define the number of free appointments to get
-                int numOfFreeAppointmentSpaces = 10;
                 //getting sorted doctors
-                var doctorsWithNextAppointments = GetDoctorWithNextAppointment(doctors, numOfFreeAppointmentSpaces);
+                var doctorsWithNextAppointments = GetDoctorWithNextAppointment(doctors, request.NumOfAppointmentsToGet);
 
                 return doctorsWithNextAppointments;
             }
