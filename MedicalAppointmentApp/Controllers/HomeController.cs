@@ -34,9 +34,8 @@ namespace MedicalAppointmentApp.Controllers
         [HttpGet("search")]
         public async Task<IActionResult> SearchView([FromQuery(Name = "q")] string q)
         {
-            if (q == null) q = "";
             int numOfAppointmentsToGet = 10;
-            var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(q, numOfAppointmentsToGet));
+            var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query((q ?? ""), numOfAppointmentsToGet));
             return View("Search", doctorsViewModel);
         }
 
