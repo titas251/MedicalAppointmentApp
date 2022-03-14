@@ -67,7 +67,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
             private List<GetDoctorsWithNextAppointments> GetDoctorWithNextAppointment(List<Doctor> doctors, int numOfFreeAppointmentSpaces) 
             {
                 var doctorsWithNextAppointments = new List<GetDoctorsWithNextAppointments>();
-                var currentDate = DateTime.Today;
+                //adding one day to start checking from tomorrow
+                var currentDate = DateTime.Today.AddDays(1);
 
                 foreach (var doctor in doctors)
                 {

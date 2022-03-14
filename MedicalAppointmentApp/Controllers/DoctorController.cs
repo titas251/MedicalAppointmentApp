@@ -80,7 +80,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost("add")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddInstitutionToDoctor(CreateInstitutionDoctorViewModel model)
+        public async Task<IActionResult> AddInstitutionToDoctor([FromForm] CreateInstitutionDoctorViewModel model)
         {
             var response = await _mediator.Send(new AddInstitutionToDoctor.Command
             {

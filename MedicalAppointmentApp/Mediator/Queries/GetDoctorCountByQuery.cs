@@ -38,19 +38,12 @@ namespace MedicalAppointmentApp.Queries
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
                 var doctorCount = await _context.Doctors
-                    .Include(doctor => doctor.MedicalSpeciality)
-                    .Include(doctor => doctor.Appointments)
-                    .Include(doctor => doctor.Schedules)
-                        .ThenInclude(schedule => schedule.ScheduleDetails)
-                    .Include(doctor => doctor.Schedules)
-                        .ThenInclude(schedule => schedule.Institution)
                     .Where(doctor => doctor.FirstName.Contains(request.StringQuery)
                     || doctor.LastName.Contains(request.StringQuery)
                     || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
                     || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
                     || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
                     .CountAsync();
-
 
                 return doctorCount;
             }

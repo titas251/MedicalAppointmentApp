@@ -38,7 +38,7 @@ namespace MedicalAppointmentApp.Controllers
             [FromQuery(Name = "pageNumber")] int? pageNumber,
             [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            int numOfAppointmentsToGet = 3;
+            int numOfAppointmentsToGet = 5;
 
             if (q != null) pageNumber = 1;
                 else q = currentFilter;
