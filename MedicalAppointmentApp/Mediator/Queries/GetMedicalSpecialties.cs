@@ -40,9 +40,11 @@ namespace MedicalAppointmentApp.Queries
 
             public async Task<List<GetMedicalSpecialtyModel>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var amountOfDoctorsToTake = 10;
+
                 var medicalSpecialtiesViewModel = new List<GetMedicalSpecialtyModel>();
                 var specialities = await _context.MedicalSpecialities
-                    .Include(specialty => specialty.Doctors)
+                    .Include(specialty => specialty.Doctors.Take(amountOfDoctorsToTake))
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();
