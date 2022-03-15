@@ -27,13 +27,12 @@ namespace MedicalAppointmentApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            //check if user is locked
-            if (this.User.Identity.IsAuthenticated) 
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
             {
-                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var lockedUser = await _mediator.Send(new GetLockedUser.Query(userId));
+                ViewBag.CustomResponse = customResponse;
             }
 
             return View();
