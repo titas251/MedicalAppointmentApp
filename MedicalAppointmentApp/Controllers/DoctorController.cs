@@ -43,9 +43,17 @@ namespace MedicalAppointmentApp.Controllers
         }
         [HttpGet("list")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DoctorList()
+        public async Task<IActionResult> DoctorList(
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var doctorsViewModel = await _mediator.Send(new GetDoctors.Query());
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int doctorCount = await _mediator.Send(new GetDoctorCount.Query());
+            ViewBag.HasNextPage = Math.Ceiling((double)doctorCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
+            var doctorsViewModel = await _mediator.Send(new GetDoctors.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
             if (customResponse != null)
@@ -80,7 +88,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost("add")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddInstitutionToDoctor(CreateInstitutionDoctorViewModel model)
+        public async Task<IActionResult> AddInstitutionToDoctor([FromForm] CreateInstitutionDoctorViewModel model)
         {
             var response = await _mediator.Send(new AddInstitutionToDoctor.Command
             {

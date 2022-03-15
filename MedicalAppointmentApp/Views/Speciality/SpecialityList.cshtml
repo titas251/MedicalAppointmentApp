@@ -38,9 +38,14 @@
                                         <span class="font-medium mb-0">@specialty.Description</span><br>
                                     </td>
                                     <td>
+                                        @{
+                                            int doctorCount = 0;
+                                        }
                                         @foreach (var doctor in specialty.Doctors)
                                         {
+                                            doctorCount++;
                                             <span class="font-medium mb-0">@doctor.FirstName @doctor.LastName</span><br>
+                                            if (doctorCount >= 10) break;
                                         }
                                     </td>
 
@@ -54,3 +59,28 @@
     </div>
 </div>
 
+@{
+    var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="SpecialityList"
+   asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="SpecialityList"
+   asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div>
+    Number per page:
+    <a asp-action="SpecialityList" asp-route-pageSize="10" method="get">10</a>
+    <a asp-action="SpecialityList" asp-route-pageSize="20" method="get">20</a>
+    <a asp-action="SpecialityList" asp-route-pageSize="50" method="get">50</a>
+    <a asp-action="SpecialityList" asp-route-pageSize="100" method="get">100</a>
+</div>

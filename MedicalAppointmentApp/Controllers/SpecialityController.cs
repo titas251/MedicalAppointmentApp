@@ -4,6 +4,7 @@ using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -28,9 +29,17 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpGet("list")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SpecialityList()
+        public async Task<IActionResult> SpecialityList(
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var specialitiesViewModel = await _mediator.Send(new GetMedicalSpecialties.Query());
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int specialtyCount = await _mediator.Send(new GetMedicalSpecialtyCount.Query());
+            ViewBag.HasNextPage = Math.Ceiling((double)specialtyCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
+            var specialitiesViewModel = await _mediator.Send(new GetMedicalSpecialties.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
             if (customResponse != null)
