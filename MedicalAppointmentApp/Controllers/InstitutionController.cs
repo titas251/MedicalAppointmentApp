@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Mediator.Commands;
+using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
@@ -28,9 +29,12 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpGet("list")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> InstitutionList()
+        public async Task<IActionResult> InstitutionList(
+            [FromQuery(Name = "currentFilter")] string currentFilter,
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var institutionsViewModel = await _mediator.Send(new GetInstitutions.Query());
+            var institutionsViewModel = await _mediator.Send(new GetInstitutionsPaging.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
             if (customResponse != null)

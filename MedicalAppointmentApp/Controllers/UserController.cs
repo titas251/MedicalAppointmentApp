@@ -27,9 +27,12 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegisteredUsers()
+        public async Task<IActionResult> RegisteredUsers(
+            [FromQuery(Name = "currentFilter")] string currentFilter,
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query());
+            var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query(pageNumber ?? 1, pageSize ?? 10));
             return View(userRolesViewModel);
         }
 

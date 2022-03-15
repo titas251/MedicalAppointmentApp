@@ -58,9 +58,12 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpGet("{userId}")]
         [Authorize(Roles = "Basic")]
-        public async Task<IActionResult> GetAppointmentsByUserId(string userId)
+        public async Task<IActionResult> GetAppointmentsByUserId(string userId,
+            [FromQuery(Name = "currentFilter")] string currentFilter,
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId));
+            var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId, pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
             if (customResponse != null) {

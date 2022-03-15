@@ -28,9 +28,12 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpGet("list")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> SpecialityList()
+        public async Task<IActionResult> SpecialityList(
+            [FromQuery(Name = "currentFilter")] string currentFilter,
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var specialitiesViewModel = await _mediator.Send(new GetMedicalSpecialties.Query());
+            var specialitiesViewModel = await _mediator.Send(new GetMedicalSpecialties.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
             if (customResponse != null)

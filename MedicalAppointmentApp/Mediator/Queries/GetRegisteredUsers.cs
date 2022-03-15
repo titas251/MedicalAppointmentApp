@@ -15,6 +15,13 @@ namespace MedicalAppointmentApp.Queries
     {
         public class Query : IRequest<List<UserRolesViewModel>>
         {
+            public Query(int page, int pageSize)
+            {
+                Page = page;
+                PageSize = pageSize;
+            }
+            public int Page { get; }
+            public int PageSize { get; }
         }
 
         public class Handler : IRequestHandler<Query, List<UserRolesViewModel>>
@@ -30,7 +37,12 @@ namespace MedicalAppointmentApp.Queries
             {
                 var userRolesViewModel = new List<UserRolesViewModel>();
 
-                foreach (var user in (await _userManager.Users.ToListAsync()))
+                var users = await _userManager.Users
+                    .Skip((request.Page - 1) * request.PageSize)
+                    .Take(request.PageSize)
+                    .ToListAsync();
+
+                foreach (var user in users)
                 {
                     var viewModel = new UserRolesViewModel()
                     {

@@ -1,23 +1,26 @@
 ﻿using AutoMapper;
 using MediatR;
 using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MedicalAppointmentApp.Queries
+namespace MedicalAppointmentApp.Mediator.Queries
 {
-    public static class GetInstitutions
+    public static class GetInstitutionsPaging
     {
         public class Query : IRequest<List<GetInstitutionModel>>
         {
+            public Query(int page, int pageSize)
+            {
+                Page = page;
+                PageSize = pageSize;
+            }
+            public int Page { get; }
+            public int PageSize { get; }
         }
 
         public class Handler : IRequestHandler<Query, List<GetInstitutionModel>>
@@ -37,20 +40,18 @@ namespace MedicalAppointmentApp.Queries
                 var institutions = await _context.Institutions
                     .Include(institution => institution.Schedules)
                     .ThenInclude(schedule => schedule.Doctor)
+                    .Skip((request.Page - 1) * request.PageSize)
+                    .Take(request.PageSize)
                     .ToListAsync();
 
-                foreach (var institution in institutions) {
+                foreach (var institution in institutions)
+                {
                     var viewModel = _mapper.Map<GetInstitutionModel>(institution);
                     institutionsViewModel.Add(viewModel);
                 }
 
                 return institutionsViewModel;
             }
-        }
-
-        public class Response
-        {
-            public List<GetInstitutionModel> Institutions { get; set; }
         }
     }
 }
