@@ -30,6 +30,13 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> RegisteredUsers()
         {
             var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query());
+
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
+            {
+                ViewBag.CustomResponse = customResponse;
+            }
+
             return View(userRolesViewModel);
         }
 
@@ -56,10 +63,18 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser([FromForm] UpdateUserModel updateUser)
         {
-            
             var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });
-            if (!response.Succeeded)
-                Errors(response);
+
+            return RedirectToAction("RegisteredUsers");
+        }
+
+        [HttpPost("lock/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> LockUser (string id)
+        {
+            var response = await _mediator.Send(new LockUser.Command { UserId = id });
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("RegisteredUsers");
         }

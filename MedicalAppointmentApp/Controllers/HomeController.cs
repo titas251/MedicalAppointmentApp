@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -26,8 +27,15 @@ namespace MedicalAppointmentApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //check if user is locked
+            if (this.User.Identity.IsAuthenticated) 
+            {
+                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                var lockedUser = await _mediator.Send(new GetLockedUser.Query(userId));
+            }
+
             return View();
         }
 
