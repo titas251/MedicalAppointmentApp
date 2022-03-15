@@ -15,10 +15,14 @@ namespace MedicalAppointmentApp.Mediator.Queries
     {
         public class Query : IRequest<List<GetAppointmentModel>>
         {
-            public Query(string id)
+            public Query(string id, int page, int pageSize)
             {
                 Id = id;
+                Page = page;
+                PageSize = pageSize;
             }
+            public int Page { get; }
+            public int PageSize { get; }
             public string Id { get; }
         }
 
@@ -37,8 +41,11 @@ namespace MedicalAppointmentApp.Mediator.Queries
             {
                 var appointmentsViewModel = new List<GetAppointmentModel>();
 
-                var appointments = await _context.Appointments.Include(a => a.Doctor)
+                var appointments = await _context.Appointments
+                    .Include(a => a.Doctor)
                     .Where(a => a.ApplicationUserId.Equals(request.Id))
+                    .Skip((request.Page - 1) * request.PageSize)
+                    .Take(request.PageSize)
                     .ToListAsync();
 
                 foreach (var appointment in appointments)

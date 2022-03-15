@@ -27,9 +27,17 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> RegisteredUsers()
+        public async Task<IActionResult> RegisteredUsers(
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query());
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int userCount = await _mediator.Send(new GetRegisteredUserCount.Query());
+            ViewBag.HasNextPage = Math.Ceiling((double)userCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
+            var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query(pageNumber ?? 1, pageSize ?? 10));
             return View(userRolesViewModel);
         }
 

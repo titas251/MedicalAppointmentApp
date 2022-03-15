@@ -18,6 +18,13 @@ namespace MedicalAppointmentApp.Queries
     {
         public class Query : IRequest<List<GetDoctorModel>>
         {
+            public Query(int page, int pageSize)
+            {
+                Page = page;
+                PageSize = pageSize;
+            }
+            public int Page { get; }
+            public int PageSize { get; }
         }
 
         public class Handler : IRequestHandler<Query, List<GetDoctorModel>>
@@ -34,8 +41,12 @@ namespace MedicalAppointmentApp.Queries
             public async Task<List<GetDoctorModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var doctorsViewModel = new List<GetDoctorModel>();
-                var doctors = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Schedules)
-                    .ThenInclude(schedule => schedule.Institution)
+                var doctors = await _context.Doctors
+                    .Include(doctor => doctor.MedicalSpeciality)
+                    .Include(doctor => doctor.Schedules)
+                        .ThenInclude(schedule => schedule.Institution)
+                    .Skip((request.Page - 1) * request.PageSize)
+                    .Take(request.PageSize)
                     .ToListAsync();
 
                 foreach (var doctor in doctors) {

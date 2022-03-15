@@ -16,7 +16,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="card">                       
+            <div class="card">
                 <div class="table-responsive">
                     <table class="table no-wrap user-table mb-0">
                         <thead>
@@ -74,6 +74,31 @@
             </div>
         </div>
     </div>
+</div>
+@{
+    var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="RegisteredUsers"
+   asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="RegisteredUsers"
+   asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div>
+    Number per page:
+    <a asp-action="RegisteredUsers" asp-route-pageSize="10" method="get">10</a>
+    <a asp-action="RegisteredUsers" asp-route-pageSize="20" method="get">20</a>
+    <a asp-action="RegisteredUsers" asp-route-pageSize="50" method="get">50</a>
+    <a asp-action="RegisteredUsers" asp-route-pageSize="100" method="get">100</a>
 </div>
 
 
