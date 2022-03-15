@@ -66,3 +66,28 @@
     </div>
 </div>
 
+@{
+    var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="DoctorList"
+   asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="DoctorList"
+   asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div>
+    Number per page:
+    <a asp-action="DoctorList" asp-route-pageSize="10" method="get">10</a>
+    <a asp-action="DoctorList" asp-route-pageSize="20" method="get">20</a>
+    <a asp-action="DoctorList" asp-route-pageSize="50" method="get">50</a>
+    <a asp-action="DoctorList" asp-route-pageSize="100" method="get">100</a>
+</div>

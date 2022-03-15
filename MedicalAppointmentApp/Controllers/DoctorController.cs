@@ -44,10 +44,15 @@ namespace MedicalAppointmentApp.Controllers
         [HttpGet("list")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DoctorList(
-            [FromQuery(Name = "currentFilter")] string currentFilter,
             [FromQuery(Name = "pageNumber")] int? pageNumber,
             [FromQuery(Name = "pageSize")] int? pageSize)
         {
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int doctorCount = await _mediator.Send(new GetDoctorCount.Query());
+            ViewBag.HasNextPage = Math.Ceiling((double)doctorCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
             var doctorsViewModel = await _mediator.Send(new GetDoctors.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
