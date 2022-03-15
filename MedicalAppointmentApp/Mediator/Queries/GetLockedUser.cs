@@ -10,7 +10,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
 {
     public static class GetLockedUser
     {
-        public class Query : IRequest<LockedUser>
+        public class Query : IRequest<BlackedListedUser>
         {
             public Query(string userId) {
                 UserId = userId; 
@@ -19,7 +19,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
             public string UserId { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, LockedUser>
+        public class Handler : IRequestHandler<Query, BlackedListedUser>
         {
             private readonly UserManager<ApplicationUser> _userManager;
 
@@ -28,14 +28,14 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 _userManager = userManager;
             }
 
-            public async Task<LockedUser> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<BlackedListedUser> Handle(Query request, CancellationToken cancellationToken)
             {
-                var lockedUser = new LockedUser() { UserId = request.UserId };
+                var blackedListedUser = new BlackedListedUser() { UserId = request.UserId };
                 var user = await _userManager.FindByIdAsync(request.UserId);
-                lockedUser.IsLocked = user.LockoutEnabled;
-                lockedUser.LockoutEndDate = user.LockoutEnd.GetValueOrDefault().UtcDateTime;
+                blackedListedUser.IsBlackListed = user.IsBlackListed;
+                blackedListedUser.BlackListedEndDate = user.BlackListedEndDate;
 
-                return lockedUser;
+                return blackedListedUser;
             }
         }
     }

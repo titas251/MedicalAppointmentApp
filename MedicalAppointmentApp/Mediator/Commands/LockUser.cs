@@ -30,8 +30,8 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 var user = await _userManager.FindByIdAsync(request.UserId);
 
                 //add 14 day lock
-                user.LockoutEnabled = true;
-                user.LockoutEnd = DateTime.Today.AddDays(14);
+                user.IsBlackListed = true;
+                user.BlackListedEndDate = DateTime.Today.AddDays(14);
 
                 var result = await _userManager.UpdateAsync(user);
 

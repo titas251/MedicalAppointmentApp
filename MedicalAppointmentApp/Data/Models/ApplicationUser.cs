@@ -14,6 +14,8 @@ namespace MedicalAppointmentApp.Data.Models
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public bool IsBlackListed { get; set; }
+        public DateTime? BlackListedEndDate { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
     }
 }
