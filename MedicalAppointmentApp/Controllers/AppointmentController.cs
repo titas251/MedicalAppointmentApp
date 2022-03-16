@@ -25,6 +25,7 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Basic")]
         public async Task<IActionResult> CreateAppointmentView(string doctorId, string address, DateTime date)
         {
+            if (await IsUserLocked()) return RedirectToAction("Index", "Home");
             if (DateTime.Compare(DateTime.Now, date) >= 0) date = DateTime.Now;
             var appointmentViewModel = new CreateAppointmentModel()
             {
@@ -36,6 +37,20 @@ namespace MedicalAppointmentApp.Controllers
                 DoctorAppointments =  await _mediator.Send(new GetAppointmentsByDoctorId.Query(Int32.Parse(doctorId)))
         };
             return View("CreateAppointment", appointmentViewModel);
+        }
+
+        private async Task<bool> IsUserLocked()
+        {
+            //check if user is locked
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var lockedUser = await _mediator.Send(new GetLockedUser.Query(userId));
+            if (lockedUser.IsBlackListed)
+            {
+                var response = new CustomResponse();
+                response.AddError(new CustomError { Error = "Failed", Message = "Account is locked until " + lockedUser.BlackListedEndDate });
+                TempData.Put("CustomResponse", response);
+            }
+            return lockedUser.IsBlackListed;
         }
 
         [HttpPost]

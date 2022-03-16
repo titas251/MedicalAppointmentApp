@@ -2,6 +2,7 @@
 @model List<UserRolesViewModel>
 @{
     ViewData["Title"] = "RegisteredUsers";
+    CustomResponse statusMsg = ViewBag.CustomResponse;
 }
 
 <h1>Registered users</h1>
@@ -12,6 +13,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
+@if(statusMsg != null)
+{
+    <partial name="_StatusMessage" for="@statusMsg" />
+}
 
 <div class="container">
     <div class="row">
@@ -25,9 +30,11 @@
                                 <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Is black listed?</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Edit</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Lock</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,6 +54,15 @@
                                         <span class="font-medium mb-0">@user.PhoneNumber</span><br>
                                     </td>
                                     <td>
+                                        @if (user.IsBlackListed)
+                                        {
+                                            <span class="font-medium mb-0">Yes, until @user.BlackListedEndDate.GetValueOrDefault().ToString("yyyy-MM-dd")</span><br>
+                                        } else
+                                        {
+                                            <span class="font-medium mb-0">No</span><br>
+                                        }
+                                    </td>
+                                    <td>
                                         @foreach (var role in user.Roles)
                                         {
                                             <div>@role</div>
@@ -62,6 +78,11 @@
                                         <td>
                                             <form asp-action="GetUpdateUserView" asp-route-id="@user.UserId">
                                                 <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form asp-action="LockUser" asp-route-id="@user.UserId" method="post">
+                                                <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fas fa-lock"></i> </button>
                                             </form>
                                         </td>
                                     }

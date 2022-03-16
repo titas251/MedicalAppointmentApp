@@ -31,6 +31,13 @@ namespace MedicalAppointmentApp.Controllers
             [FromQuery(Name = "pageNumber")] int? pageNumber,
             [FromQuery(Name = "pageSize")] int? pageSize)
         {
+            //response from black list user action
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
+            {
+                ViewBag.CustomResponse = customResponse;
+            }
+
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
 
@@ -38,6 +45,7 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.HasNextPage = Math.Ceiling((double)userCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
 
             var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query(pageNumber ?? 1, pageSize ?? 10));
+
             return View(userRolesViewModel);
         }
 
@@ -64,10 +72,18 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser([FromForm] UpdateUserModel updateUser)
         {
-            
             var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });
-            if (!response.Succeeded)
-                Errors(response);
+
+            return RedirectToAction("RegisteredUsers");
+        }
+
+        [HttpPost("lock/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> LockUser (string id)
+        {
+            var response = await _mediator.Send(new LockUser.Command { UserId = id });
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("RegisteredUsers");
         }
