@@ -1,22 +1,25 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MedicalAppointmentApp.Models;
 
 namespace MedicalAppointmentApp.Commands
 {
     public static class DeleteRegisteredUser
     {
-        public class Command : IRequest<IdentityResult>
+        public class Command : IRequest<CustomResponse>
         {
             public string Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, IdentityResult>
+        public class Handler : IRequestHandler<Command, CustomResponse>
         {
             private readonly UserManager<ApplicationUser> _userManager;
 
@@ -25,20 +28,21 @@ namespace MedicalAppointmentApp.Commands
                 _userManager = userManager;
             }
 
-            public async Task<IdentityResult> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
-                ApplicationUser user = await _userManager.FindByIdAsync(request.Id);
-                if (user != null)
+                var response = new CustomResponse();
+
+                try
                 {
-                    IdentityResult result = await _userManager.DeleteAsync(user);
-                    return result;
+                    var user = await _userManager.FindByIdAsync(request.Id);
+                    await _userManager.DeleteAsync(user);
                 }
-                IdentityError error = new IdentityError
+                catch (DbUpdateException)
                 {
-                    Code = "",
-                    Description = "User Not Found"
-                };
-                return IdentityResult.Failed(error);
+                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to delete user" });
+                }
+
+                return response;
             }
         }
     }

@@ -3,6 +3,7 @@ using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -54,12 +55,14 @@ namespace MedicalAppointmentApp.Mediator.Commands
                         _context.ScheduleDetails.Add(scheduleDetailModel);
                     }
                 }
-                doctor.Schedules.Add(schedule);
-                _context.Doctors.Update(doctor);
 
-                //save changes and check if success
-                var success = await _context.SaveChangesAsync() > 0;
-                if (!success)
+                try
+                {
+                    doctor.Schedules.Add(schedule);
+                    _context.Doctors.Update(doctor);
+                    _context.SaveChanges();
+                }
+                catch (DbUpdateException)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to add institution to doctor" });
                 }

@@ -1,4 +1,5 @@
-﻿using MedicalAppointmentApp.Data.Models;
+﻿using EntityFramework.Exceptions.SqlServer;
+using MedicalAppointmentApp.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +19,13 @@ namespace MedicalAppointmentApp.Data
         public DbSet<Institution> Institutions { get; set; }
         public DbSet<MedicalSpeciality> MedicalSpecialities { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<Schedule> Schedule { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
         public DbSet<ScheduleDetail> ScheduleDetails { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseExceptionProcessor();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,10 +62,6 @@ namespace MedicalAppointmentApp.Data
             //define unique indexes
             modelBuilder.Entity<Doctor>()
                 .HasIndex(u => new { u.FirstName, u.LastName })
-                .IsUnique();
-
-            modelBuilder.Entity<Institution>()
-                .HasIndex(u => new { u.Name, u.Address })
                 .IsUnique();
 
             modelBuilder.Entity<MedicalSpeciality>()

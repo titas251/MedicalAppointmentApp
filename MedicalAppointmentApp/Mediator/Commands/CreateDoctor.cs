@@ -1,7 +1,11 @@
-﻿using MediatR;
+﻿using EntityFramework.Exceptions.Common;
+using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +21,6 @@ namespace MedicalAppointmentApp.Mediator.Commands
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
             private readonly ApplicationDbContext _context;
-
             public Handler(ApplicationDbContext context)
             {
                 _context = context;
@@ -33,11 +36,21 @@ namespace MedicalAppointmentApp.Mediator.Commands
                     PhoneNumber = request.DoctorModel.PhoneNumber,
                     MedicalSpecialityId = request.DoctorModel.MedicalSpecialityId
                 };
-                await _context.Doctors.AddAsync(doctor);
 
-                //save changes and check if success
-                var success = await _context.SaveChangesAsync() > 0;
-                if (!success)
+                try
+                {
+                    await _context.Doctors.AddAsync(doctor);
+                    await _context.SaveChangesAsync();
+                }
+                catch (UniqueConstraintException)
+                {
+                    response.AddError(new CustomError { Error = "Failed", Message = "Doctor with given first name and last name already exists" });
+                }
+                catch (ReferenceConstraintException)
+                {
+                    response.AddError(new CustomError { Error = "Failed", Message = "Medical speciality id doesn't exist" });
+                }
+                catch (DbUpdateException)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to create doctor" });
                 }

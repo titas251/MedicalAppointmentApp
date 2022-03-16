@@ -54,9 +54,7 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> DeleteUser(string id)
         {
             var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
-            if (!response.Succeeded)
-                Errors(response);
-
+           
             return RedirectToAction("RegisteredUsers");
         }
 
@@ -86,12 +84,6 @@ namespace MedicalAppointmentApp.Controllers
             TempData.Put("CustomResponse", response);
 
             return RedirectToAction("RegisteredUsers");
-        }
-
-        private void Errors(IdentityResult result)
-        {
-            foreach (IdentityError error in result.Errors)
-                ModelState.AddModelError("", error.Description);
         }
     }
 }
