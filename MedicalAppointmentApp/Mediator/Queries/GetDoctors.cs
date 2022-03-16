@@ -41,6 +41,8 @@ namespace MedicalAppointmentApp.Queries
                     .Include(doctor => doctor.MedicalSpeciality)
                     .Include(doctor => doctor.Schedules)
                         .ThenInclude(schedule => schedule.Institution)
+                    .OrderBy(doctor => doctor.LastName)
+                        .ThenBy(doctor => doctor.FirstName)
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();

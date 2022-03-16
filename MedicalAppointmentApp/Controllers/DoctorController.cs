@@ -80,9 +80,18 @@ namespace MedicalAppointmentApp.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("add/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAddInstitutionToDoctorView(int id)
+        public async Task<IActionResult> GetAddInstitutionToDoctorView(int id,
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var institutionsViewModel = await _mediator.Send(new GetInstitutions.Query());
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int institutionCount = await _mediator.Send(new GetInstitutionCount.Query());
+            ViewBag.HasNextPage = Math.Ceiling((double)institutionCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
+            var institutionsViewModel = await _mediator.Send(new GetInstitutionsPaging.Query(pageNumber ?? 1, pageSize ?? 10));
+
             List<ScheduleDetailModel> scheduleDetails = new List<ScheduleDetailModel>();
             for (int i = 0; i < 7; i++)
             {

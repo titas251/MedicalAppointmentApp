@@ -39,7 +39,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 var institutionsViewModel = new List<GetInstitutionModel>();
                 var institutions = await _context.Institutions
                     .Include(institution => institution.Schedules)
-                    .ThenInclude(schedule => schedule.Doctor)
+                        .ThenInclude(schedule => schedule.Doctor)
+                    .OrderBy(institution => institution.InstitutionId)
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();

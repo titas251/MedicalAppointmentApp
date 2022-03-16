@@ -24,7 +24,6 @@
                             <tr>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Description</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Doctors</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,18 +36,6 @@
                                     <td>
                                         <span class="font-medium mb-0">@specialty.Description</span><br>
                                     </td>
-                                    <td>
-                                        @{
-                                            int doctorCount = 0;
-                                        }
-                                        @foreach (var doctor in specialty.Doctors)
-                                        {
-                                            doctorCount++;
-                                            <span class="font-medium mb-0">@doctor.FirstName @doctor.LastName</span><br>
-                                            if (doctorCount >= 10) break;
-                                        }
-                                    </td>
-
                                 </tr>
                             }
                         </tbody>

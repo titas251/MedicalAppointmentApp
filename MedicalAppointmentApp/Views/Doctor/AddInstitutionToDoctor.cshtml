@@ -104,3 +104,32 @@ h1 {
         </div>
     </div>
 </div>
+
+
+@{
+    var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="GetAddInstitutionToDoctorView"
+   asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+   asp-route-userId="@ViewBag.CurrentFilter"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="GetAddInstitutionToDoctorView"
+   asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+   asp-route-userId="@ViewBag.CurrentFilter"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div>
+    Number per page:
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="10" asp-route-userId="@ViewBag.CurrentFilter" method="get">10</a>
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="20" asp-route-userId="@ViewBag.CurrentFilter" method="get">20</a>
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="50" asp-route-userId="@ViewBag.CurrentFilter" method="get">50</a>
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="100" asp-route-userId="@ViewBag.CurrentFilter" method="get">100</a>
+</div>

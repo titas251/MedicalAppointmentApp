@@ -54,6 +54,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
                     || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
                     || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
                     || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
+                    .OrderBy(doctor => doctor.LastName)
+                        .ThenBy(doctor => doctor.FirstName)
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();

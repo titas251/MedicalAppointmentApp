@@ -33,7 +33,6 @@ namespace MedicalAppointmentApp.Mediator.Queries
                     .Where(a => a.ApplicationUserId.Equals(request.Id))
                     .CountAsync();
 
-
                 return appointmentCount;
             }
         }

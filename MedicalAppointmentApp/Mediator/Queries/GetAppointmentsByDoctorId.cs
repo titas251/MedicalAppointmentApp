@@ -38,6 +38,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
 
                 var appointments = await _context.Appointments.Include(a => a.Doctor)
                     .Where(a => a.DoctorId.Equals(request.Id))
+                    .OrderBy(a => a.StartDateTime)
                     .ToListAsync();
 
                 foreach (var appointment in appointments)

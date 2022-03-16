@@ -37,6 +37,7 @@ namespace MedicalAppointmentApp.Queries
                 var userRolesViewModel = new List<UserRolesViewModel>();
 
                 var users = await _userManager.Users
+                    .OrderBy(user => user.Email)
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();
