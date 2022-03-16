@@ -25,3 +25,66 @@
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Id</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var specialty in Model.MedicalSpecialities)
+                            {
+                            <tr>
+                                <td>
+                                    <span class="font-medium mb-0">@specialty.MedicalSpecialityId</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@specialty.Name</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@specialty.Description</span><br>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="CreateDoctor"
+   asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @prevDisabled"
+   method="get">
+    Previous
+</a>
+<a asp-action="CreateDoctor"
+   asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @nextDisabled"
+   method="get">
+    Next
+</a>
+
+<div>
+    Number per page:
+    <a asp-action="CreateDoctor" asp-route-pageSize="10" method="get">10</a>
+    <a asp-action="CreateDoctor" asp-route-pageSize="20" method="get">20</a>
+    <a asp-action="CreateDoctor" asp-route-pageSize="50" method="get">50</a>
+    <a asp-action="CreateDoctor" asp-route-pageSize="100" method="get">100</a>
+</div>

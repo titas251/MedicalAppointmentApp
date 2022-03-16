@@ -26,9 +26,26 @@ namespace MedicalAppointmentApp.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("create")]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateDoctor()
+        public async Task<IActionResult> CreateDoctor(
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            return View();
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int specialtyCount = await _mediator.Send(new GetMedicalSpecialtyCount.Query());
+            ViewBag.HasNextPage = Math.Ceiling((double)specialtyCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
+            var specialitiesList = await _mediator.Send(new GetMedicalSpecialties.Query(pageNumber ?? 1, pageSize ?? 10));
+
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
+            {
+                ViewBag.CustomResponse = customResponse;
+            }
+            var createDoctorViewModel = new CreateDoctorModel();
+            createDoctorViewModel.MedicalSpecialities = specialitiesList;
+            return View(createDoctorViewModel);
         }
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
