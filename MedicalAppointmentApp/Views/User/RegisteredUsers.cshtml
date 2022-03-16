@@ -30,6 +30,7 @@
                                 <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Is black listed?</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Edit</th>
@@ -51,6 +52,15 @@
                                     </td>
                                     <td>
                                         <span class="font-medium mb-0">@user.PhoneNumber</span><br>
+                                    </td>
+                                    <td>
+                                        @if (user.IsBlackListed)
+                                        {
+                                            <span class="font-medium mb-0">Yes, until @user.BlackListedEndDate.GetValueOrDefault().ToString("yyyy-MM-dd")</span><br>
+                                        } else
+                                        {
+                                            <span class="font-medium mb-0">No</span><br>
+                                        }
                                     </td>
                                     <td>
                                         @foreach (var role in user.Roles)

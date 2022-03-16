@@ -52,6 +52,8 @@ namespace MedicalAppointmentApp.Queries
                         LastName = user.LastName,
                         PhoneNumber = user.PhoneNumber,
                         UserName = user.UserName,
+                        IsBlackListed = user.IsBlackListed,
+                        BlackListedEndDate = user.BlackListedEndDate,
                         Roles = await _userManager.GetRolesAsync(user)
                     };
                     userRolesViewModel.Add(viewModel);
