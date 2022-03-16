@@ -1,0 +1,97 @@
+﻿@model List<GetAppointmentModel>
+@{
+    ViewData["Title"] = "Appointment List";
+    CustomResponse statusMsg = ViewBag.CustomResponse;
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+@if (statusMsg != null)
+{
+    <partial name="_StatusMessage" for="@statusMsg" />
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table no-wrap user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="border-0 text-uppercase font-medium">User Id</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">User</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">User Email</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Date</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Doctor</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Detail</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in Model)
+                            {
+                            <tr>
+                                <td>
+                                    <span class="font-medium mb-0">@appointment.ApplicationUser.UserId</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@appointment.ApplicationUser.FirstName @appointment.ApplicationUser.LastName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@appointment.ApplicationUser.Email</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@appointment.StartDateTime</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@appointment.Doctor.FirstName @appointment.Doctor.LastName</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@appointment.Address</span><br>
+                                </td>
+                                <td>
+                                    <span class="font-medium mb-0">@appointment.Detail</span><br>
+                                </td>
+                                <td>
+                                    <form asp-action="DeleteAppointment" asp-route-id="@appointment.AppointmentId" method="post">
+                                        <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="GetAppointmentsByUserId"
+   asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="GetAppointmentsByUserId"
+   asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div>
+    Number per page:
+    <a asp-action="GetAppointments" asp-route-pageSize="10" method="get">10</a>
+    <a asp-action="GetAppointments" asp-route-pageSize="20" method="get">20</a>
+    <a asp-action="GetAppointments" asp-route-pageSize="50" method="get">50</a>
+    <a asp-action="GetAppointments" asp-route-pageSize="100" method="get">100</a>
+</div>
