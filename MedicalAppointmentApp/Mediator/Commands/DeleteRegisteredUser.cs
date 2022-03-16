@@ -3,12 +3,8 @@ using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MedicalAppointmentApp.Models;
 
 namespace MedicalAppointmentApp.Commands
 {

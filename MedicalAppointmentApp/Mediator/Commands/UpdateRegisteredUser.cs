@@ -31,7 +31,7 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 try
                 {
                     var user = await _userManager.FindByIdAsync(request.UpdateUser.UserId);
-                    
+
                     //set updated user fields
                     user.FirstName = request.UpdateUser.FirstName;
                     user.LastName = request.UpdateUser.LastName;

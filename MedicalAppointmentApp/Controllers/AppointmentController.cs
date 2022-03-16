@@ -34,8 +34,8 @@ namespace MedicalAppointmentApp.Controllers
                 ApplicationUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
                 CurrentDateTime = date,
                 DoctorScheduleDetails = await _mediator.Send(new GetDoctorSchedule.Query(Int32.Parse(doctorId), address, date)),
-                DoctorAppointments =  await _mediator.Send(new GetAppointmentsByDoctorId.Query(Int32.Parse(doctorId)))
-        };
+                DoctorAppointments = await _mediator.Send(new GetAppointmentsByDoctorId.Query(Int32.Parse(doctorId)))
+            };
             return View("CreateAppointment", appointmentViewModel);
         }
 
@@ -88,7 +88,8 @@ namespace MedicalAppointmentApp.Controllers
             var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId, pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
-            if (customResponse != null) {
+            if (customResponse != null)
+            {
                 ViewBag.CustomResponse = customResponse;
             }
 
@@ -103,7 +104,7 @@ namespace MedicalAppointmentApp.Controllers
 
             TempData.Put("CustomResponse", response);
 
-             var parms = new Dictionary<string, string>
+            var parms = new Dictionary<string, string>
             {
                 { "userId", this.User.FindFirst(ClaimTypes.NameIdentifier).Value }
             };

@@ -3,9 +3,7 @@ using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,7 +28,8 @@ namespace MedicalAppointmentApp.Mediator.Commands
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var response = new CustomResponse();
-                var medicalSpeciality = new MedicalSpeciality {
+                var medicalSpeciality = new MedicalSpeciality
+                {
                     Name = request.MedicalSpecialityModel.Name,
                     Description = request.MedicalSpecialityModel.Description
                 };

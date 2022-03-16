@@ -1,5 +1,4 @@
-﻿using MedicalAppointmentApp.Data.Models;
-using System;
+﻿using System;
 
 namespace MedicalAppointmentApp.Models
 {

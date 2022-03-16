@@ -1,11 +1,7 @@
 ﻿using EntityFramework.Exceptions.SqlServer;
 using MedicalAppointmentApp.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MedicalAppointmentApp.Data
 {

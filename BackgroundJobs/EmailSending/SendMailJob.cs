@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MedicalAppointmentApp.Data;
+﻿using MedicalAppointmentApp.Data;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using SendGrid;
@@ -32,7 +31,8 @@ namespace BackgroundJobs.EmailSending
 
             foreach (var emailDetails in emailsDetails)
             {
-                if (emailDetails.AppointmentStartDateTime <= DateTime.Now.AddDays(1)) {
+                if (emailDetails.AppointmentStartDateTime <= DateTime.Now.AddDays(1))
+                {
                     var message = new SendGridMessage()
                     {
                         From = senderEmail,
@@ -45,7 +45,7 @@ namespace BackgroundJobs.EmailSending
                     var response = await _sendGridClient.SendEmailAsync(message);
 
                     // If email is not received, use this URL to debug: https://app.sendgrid.com/email_activity 
-                    _logger.LogInformation(response.IsSuccessStatusCode ? "Email to " + emailDetails.Email 
+                    _logger.LogInformation(response.IsSuccessStatusCode ? "Email to " + emailDetails.Email
                         + " queued successfully!" : "Something went wrong!");
                 }
             }

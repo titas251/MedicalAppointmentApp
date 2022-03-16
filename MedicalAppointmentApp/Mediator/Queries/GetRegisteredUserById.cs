@@ -2,10 +2,6 @@
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,9 +29,10 @@ namespace MedicalAppointmentApp.Queries
 
             public async Task<UpdateUserModel> Handle(Query request, CancellationToken cancellationToken)
             {
-                
+
                 ApplicationUser user = await _userManager.FindByIdAsync(request.Id);
-                var updateUserModel = new UpdateUserModel() { 
+                var updateUserModel = new UpdateUserModel()
+                {
                     UserId = user.Id,
                     FirstName = user.FirstName,
                     LastName = user.LastName,

@@ -54,8 +54,8 @@ namespace MedicalAppointmentApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateMedicalSpeciality([FromForm] CreateMedicalSpecialityModel medicalSpecialityModel)
         {
-            var response = await _mediator.Send(new CreateMedicalSpeciality.Command 
-            {  
+            var response = await _mediator.Send(new CreateMedicalSpeciality.Command
+            {
                 MedicalSpecialityModel = medicalSpecialityModel
             });
 

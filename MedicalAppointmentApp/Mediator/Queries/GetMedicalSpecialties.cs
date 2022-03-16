@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;

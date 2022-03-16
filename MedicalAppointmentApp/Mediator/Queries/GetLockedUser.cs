@@ -2,7 +2,6 @@
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,8 +11,9 @@ namespace MedicalAppointmentApp.Mediator.Queries
     {
         public class Query : IRequest<BlackedListedUser>
         {
-            public Query(string userId) {
-                UserId = userId; 
+            public Query(string userId)
+            {
+                UserId = userId;
             }
 
             public string UserId { get; set; }

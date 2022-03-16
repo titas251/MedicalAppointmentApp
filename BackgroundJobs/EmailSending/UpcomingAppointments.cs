@@ -1,11 +1,10 @@
 ﻿using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
-using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BackgroundJobs.EmailSending
 {
@@ -21,7 +20,8 @@ namespace BackgroundJobs.EmailSending
 
             foreach (var appointment in appointments)
             {
-                var emailDetails = new AppointmentEmailDetails {
+                var emailDetails = new AppointmentEmailDetails
+                {
                     Address = appointment.Address,
                     Detail = appointment.Detail,
                     Email = appointment.ApplicationUser.Email,

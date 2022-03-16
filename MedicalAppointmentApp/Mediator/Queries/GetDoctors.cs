@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -49,7 +45,8 @@ namespace MedicalAppointmentApp.Queries
                     .Take(request.PageSize)
                     .ToListAsync();
 
-                foreach (var doctor in doctors) {
+                foreach (var doctor in doctors)
+                {
                     var viewModel = _mapper.Map<GetDoctorModel>(doctor);
                     doctorsViewModel.Add(viewModel);
                 }

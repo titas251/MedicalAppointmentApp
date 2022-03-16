@@ -1,17 +1,10 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -48,7 +41,7 @@ namespace MedicalAppointmentApp.Controllers
             int numOfAppointmentsToGet = 5;
 
             if (q != null) pageNumber = 1;
-                else q = currentFilter;
+            else q = currentFilter;
 
             ViewBag.CurrentFilter = q;
             ViewBag.PageNumber = pageNumber ?? 1;

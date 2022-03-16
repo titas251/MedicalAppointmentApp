@@ -1,17 +1,13 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Models.ViewModels;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -76,7 +72,7 @@ namespace MedicalAppointmentApp.Controllers
                 var scheduleDetail = new ScheduleDetailModel { Day = (DayOfWeek)i };
                 scheduleDetails.Add(scheduleDetail);
             }
-            
+
             CreateInstitutionDoctorViewModel createInstitutionDoctorViewModel = new CreateInstitutionDoctorViewModel()
             {
                 DoctorId = id,

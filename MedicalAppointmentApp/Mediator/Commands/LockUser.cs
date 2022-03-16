@@ -28,7 +28,7 @@ namespace MedicalAppointmentApp.Mediator.Commands
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var response = new CustomResponse();
-                
+
                 try
                 {
                     var user = await _userManager.FindByIdAsync(request.UserId);
