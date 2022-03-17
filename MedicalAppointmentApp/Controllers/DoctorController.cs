@@ -143,6 +143,17 @@ namespace MedicalAppointmentApp.Controllers
             return RedirectToAction("DoctorList");
         }
 
+        [HttpGet("updateAppointments")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateAppointments()
+        {
+            var response = await _mediator.Send(new UpdateDoctorNextFreeAppointment.Command());
+
+            TempData.Put("CustomResponse", response);
+
+            return RedirectToAction("DoctorList");
+        }
+
         /*[HttpGet("search")]
         public async Task<IActionResult> GetDoctorByQuery ([FromQuery(Name = "q")] string query)
         {
