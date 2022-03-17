@@ -83,7 +83,8 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.CurrentFilter = userId;
 
             int appointmentCount = await _mediator.Send(new GetAppointmentCountByUserId.Query(userId));
-            ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+            if (appointmentCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
 
             var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId, pageNumber ?? 1, pageSize ?? 10));
 
@@ -96,20 +97,48 @@ namespace MedicalAppointmentApp.Controllers
             return View("UserAppointmentList", appointmentsListViewModel);
         }
 
-        [HttpPost("delete/{id}")]
-        [Authorize(Roles = "Basic")]
+        [HttpPost("adminDelete/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteAppointment(int id)
         {
             var response = await _mediator.Send(new DeleteAppointmentId.Command { Id = id });
 
             TempData.Put("CustomResponse", response);
 
+            return RedirectToAction("GetAppointments", "Appointment");
+        }
+
+        [HttpPost("delete/{id}")]
+        [Authorize(Roles = "Basic")]
+        public async Task<IActionResult> UserDeleteAppointment(int id)
+        {
             var parms = new Dictionary<string, string>
             {
                 { "userId", this.User.FindFirst(ClaimTypes.NameIdentifier).Value }
             };
 
+            if (await IsUsersAppointment(id))
+            {
+                return RedirectToAction("GetAppointmentsByUserId", "Appointment", parms);
+            }
+            var response = await _mediator.Send(new DeleteAppointmentId.Command { Id = id });
+
+            TempData.Put("CustomResponse", response);
+
             return RedirectToAction("GetAppointmentsByUserId", "Appointment", parms);
+        }
+
+        private async Task<bool> IsUsersAppointment(int appointmentId)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userAppointments = await _mediator.Send(new GetAppointmentsByUserIdAndAppointmentId.Query(userId, appointmentId));
+            if (userAppointments == 0)
+            {
+                var response = new CustomResponse();
+                response.AddError(new CustomError { Error = "Failed", Message = "You can only delete your appointments"});
+                TempData.Put("CustomResponse", response);
+            }
+            return userAppointments == 0;
         }
 
         [HttpGet("list")]
@@ -122,7 +151,8 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageSize = pageSize ?? 10;
 
             int appointmentCount = await _mediator.Send(new GetAppointmentCount.Query());
-            ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+            if (appointmentCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
 
             var appointmentsListViewModel = await _mediator.Send(new GetAppointments.Query(pageNumber ?? 1, pageSize ?? 10));
 

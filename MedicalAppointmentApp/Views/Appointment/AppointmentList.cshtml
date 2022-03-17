@@ -6,6 +6,7 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
+<h1>Appointments</h1>
 
 @if (statusMsg != null)
 {
@@ -35,7 +36,7 @@
                             {
                             <tr>
                                 <td>
-                                    <span class="font-medium mb-0">@appointment.ApplicationUser.UserId</span><br>
+                                    <span class="font-medium mb-0">@appointment.ApplicationUserId</span><br>
                                 </td>
                                 <td>
                                     <span class="font-medium mb-0">@appointment.ApplicationUser.FirstName @appointment.ApplicationUser.LastName</span><br>

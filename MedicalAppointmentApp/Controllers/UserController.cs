@@ -37,7 +37,8 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageSize = pageSize ?? 10;
 
             int userCount = await _mediator.Send(new GetRegisteredUserCount.Query());
-            ViewBag.HasNextPage = Math.Ceiling((double)userCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+            if (userCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)userCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
 
             var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query(pageNumber ?? 1, pageSize ?? 10));
 
@@ -49,6 +50,8 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> DeleteUser(string id)
         {
             var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("RegisteredUsers");
         }
@@ -66,6 +69,8 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> UpdateUser([FromForm] UpdateUserModel updateUser)
         {
             var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("RegisteredUsers");
         }
