@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace MedicalAppointmentApp.Models
+﻿namespace MedicalAppointmentApp.Models
 {
     public class GetUserModel
     {

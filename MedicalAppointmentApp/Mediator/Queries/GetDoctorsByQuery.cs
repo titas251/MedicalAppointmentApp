@@ -54,8 +54,9 @@ namespace MedicalAppointmentApp.Mediator.Queries
                     || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
                     || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
                     || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
-                    .OrderBy(doctor => doctor.LastName)
-                        .ThenBy(doctor => doctor.FirstName)
+                    .OrderByDescending(doctor => doctor.NextFreeAppointmentDate.HasValue)
+                        .ThenBy(doctor => doctor.NextFreeAppointmentDate)
+                        .ThenBy(doctor => doctor.LastName)
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();
@@ -136,12 +137,6 @@ namespace MedicalAppointmentApp.Mediator.Queries
 
                     doctorsWithNextAppointments.Add(doctorWithNextAppointments);
                 }
-
-                //order by closest free appointment date
-                doctorsWithNextAppointments = doctorsWithNextAppointments
-                    .OrderByDescending(s => s.NextFreeAppointmentDates.FirstOrDefault().HasValue)
-                    .ThenBy(s => s.NextFreeAppointmentDates.FirstOrDefault())
-                    .ToList();
 
                 return doctorsWithNextAppointments;
             }
