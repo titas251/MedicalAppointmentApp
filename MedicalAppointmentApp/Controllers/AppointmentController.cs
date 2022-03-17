@@ -117,7 +117,7 @@ namespace MedicalAppointmentApp.Controllers
                 { "userId", this.User.FindFirst(ClaimTypes.NameIdentifier).Value }
             };
 
-            if (await IsUsersAppointment(id))
+            if (!(await IsUsersAppointment(id)))
             {
                 return RedirectToAction("GetAppointmentsByUserId", "Appointment", parms);
             }
@@ -132,13 +132,13 @@ namespace MedicalAppointmentApp.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var userAppointments = await _mediator.Send(new GetAppointmentsByUserIdAndAppointmentId.Query(userId, appointmentId));
-            if (userAppointments == 0)
+            if (!userAppointments)
             {
                 var response = new CustomResponse();
                 response.AddError(new CustomError { Error = "Failed", Message = "You can only delete your appointments"});
                 TempData.Put("CustomResponse", response);
             }
-            return userAppointments == 0;
+            return userAppointments;
         }
 
         [HttpGet("list")]

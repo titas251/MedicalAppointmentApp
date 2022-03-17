@@ -12,7 +12,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
 {
     public class GetAppointmentsByUserIdAndAppointmentId
     {
-        public class Query : IRequest<int>
+        public class Query : IRequest<bool>
         {
             public Query(string userId, int appointmentId)
             {
@@ -24,7 +24,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
             public int AppointmentId { get; }
         }
 
-        public class Handler : IRequestHandler<Query, int>
+        public class Handler : IRequestHandler<Query, bool>
         {
             private readonly ApplicationDbContext _context;
 
@@ -33,11 +33,10 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 _context = context;
             }
 
-            public async Task<int> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<bool> Handle(Query request, CancellationToken cancellationToken)
             {
                 var appointmentCount = await _context.Appointments
-                    .Where(a => a.ApplicationUserId.Equals(request.UserId) && a.AppointmentId.Equals(request.AppointmentId))
-                    .CountAsync();
+                    .AnyAsync(a => a.ApplicationUserId.Equals(request.UserId) && a.AppointmentId.Equals(request.AppointmentId));
                 return appointmentCount;
             }
         }
