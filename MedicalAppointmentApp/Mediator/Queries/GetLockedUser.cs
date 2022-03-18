@@ -33,7 +33,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 var blackedListedUser = new BlackedListedUser() { UserId = request.UserId };
                 var user = await _userManager.FindByIdAsync(request.UserId);
                 blackedListedUser.IsBlackListed = user.IsBlackListed;
-                blackedListedUser.BlackListedEndDate = user.BlackListedEndDate.GetValueOrDefault();
+                blackedListedUser.BlackListedEndDate = user.BlackListedEndDate;
 
                 return blackedListedUser;
             }

@@ -62,7 +62,7 @@ namespace MedicalAppointmentApp.Mediator.Commands
                     doctor.Schedules.Add(schedule);
 
                     //add next free appoitment date
-                    doctor.NextFreeAppointmentDate = GetNextFreeAppointment(doctor).GetValueOrDefault();
+                    doctor.NextFreeAppointmentDate = GetNextFreeAppointment(doctor);
 
                     _context.Doctors.Update(doctor);
                     _context.SaveChanges();

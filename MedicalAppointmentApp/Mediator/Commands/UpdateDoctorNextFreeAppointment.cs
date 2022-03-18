@@ -39,7 +39,7 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 {
                     foreach (var doctor in doctors)
                     {
-                        doctor.NextFreeAppointmentDate = GetNextFreeAppointment(doctor).GetValueOrDefault();
+                        doctor.NextFreeAppointmentDate = GetNextFreeAppointment(doctor);
                         _context.Doctors.Update(doctor);
                     }
                     _context.SaveChanges();
