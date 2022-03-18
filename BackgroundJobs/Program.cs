@@ -1,4 +1,5 @@
 ﻿using BackgroundJobs.EmailSending;
+using BackgroundJobs.UpdateAppointment;
 using MedicalAppointmentApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,6 +38,11 @@ namespace BackgroundJobs
                     .WithIdentity("SendRecurringMailTrigger")
                     .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(18, 0))
                     .WithDescription("This trigger will run every day at 18:00.")
+                    );
+                    q.ScheduleJob<UpdateNextFreeAppointments>(trigger => trigger
+                    .WithIdentity("RecurringUpdateNextFreeAppointmentsTrigger")
+                    .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(00, 01))
+                    .WithDescription("This trigger will run every day at 00:01.")
                     );
                 });
 
