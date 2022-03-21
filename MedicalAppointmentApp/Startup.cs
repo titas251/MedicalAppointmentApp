@@ -93,7 +93,7 @@ namespace MedicalAppointmentApp
                 });
             });
 
-            services.AddAuthentication()
+            /*services.AddAuthentication()
             .AddGoogle(options =>
             {
                 IConfigurationSection googleAuthNSection =
@@ -109,7 +109,7 @@ namespace MedicalAppointmentApp
 
                 facebookOptions.AppId = facebookAuthNSection["AppId"];
                 facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
-            });
+            });*/
 
             services.AddAutoMapper(c =>
             {
