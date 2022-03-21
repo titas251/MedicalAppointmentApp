@@ -2,7 +2,6 @@
 using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
-using MedicalAppointmentApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -38,10 +37,10 @@ namespace MedicalAppointmentApp.Mediator.Queries
             public async Task<List<ScheduleDetail>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var schedule = await _context.ScheduleDetails.Include(s => s.Schedule).ThenInclude(s => s.Institution)
-                    .Where(s => s.Schedule.DoctorId.Equals(request.DoctorId) 
-                    && s.Schedule.Institution.Address.Equals(request.Address) 
+                    .Where(s => s.Schedule.DoctorId.Equals(request.DoctorId)
+                    && s.Schedule.Institution.Address.Equals(request.Address)
                     && s.Schedule.StartDate <= request.CurrentDate.AddDays(7)
-                    && s.Schedule.EndDate > request.CurrentDate) 
+                    && s.Schedule.EndDate > request.CurrentDate)
                     .ToListAsync();
 
                 return schedule;

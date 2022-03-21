@@ -2,6 +2,7 @@
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,17 +28,20 @@ namespace MedicalAppointmentApp.Mediator.Commands
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var response = new CustomResponse();
-                var user = await _userManager.FindByIdAsync(request.UserId);
 
-                //add 14 day lock
-                user.IsBlackListed = true;
-                user.BlackListedEndDate = DateTime.Today.AddDays(14);
-
-                var result = await _userManager.UpdateAsync(user);
-
-                if (!result.Succeeded)
+                try
                 {
-                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to add lock on user" });
+                    var user = await _userManager.FindByIdAsync(request.UserId);
+
+                    //add 14 day lock
+                    user.IsBlackListed = true;
+                    user.BlackListedEndDate = DateTime.Today.AddDays(14);
+
+                    var result = await _userManager.UpdateAsync(user);
+                }
+                catch (DbUpdateException)
+                {
+                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to black list user" });
                 }
 
                 return response;

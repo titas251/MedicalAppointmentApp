@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace MedicalAppointmentApp.Models
+﻿namespace MedicalAppointmentApp.Models
 {
     public class CustomResponse
     {
         private CustomError _error = new CustomError();
         public CustomError Error => _error;
-        public bool Success {
+        public bool Success
+        {
             get
             {
                 if (_error.Error == null)
@@ -14,10 +13,11 @@ namespace MedicalAppointmentApp.Models
                     return true;
                 }
                 return false;
-            } 
+            }
         }
 
-        public void AddError(CustomError customError) {
+        public void AddError(CustomError customError)
+        {
             if (customError != null)
             {
                 _error = customError;

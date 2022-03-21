@@ -1,5 +1,3 @@
-using System;
-
 namespace MedicalAppointmentApp.Models
 {
     public class ErrorViewModel

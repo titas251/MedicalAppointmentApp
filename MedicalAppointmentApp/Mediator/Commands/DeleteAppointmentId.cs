@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,12 +28,14 @@ namespace MedicalAppointmentApp.Mediator.Commands
             {
                 var response = new CustomResponse();
 
-                _context.Appointments.Remove(new Appointment { AppointmentId = request.Id });
-
-                var success = await _context.SaveChangesAsync() > 0;
-                if (!success)
+                try
                 {
-                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to create appointment" });
+                    _context.Appointments.Remove(new Appointment { AppointmentId = request.Id });
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException)
+                {
+                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to delete appointment" });
                 }
 
                 return response;

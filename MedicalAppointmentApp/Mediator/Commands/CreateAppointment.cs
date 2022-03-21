@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using EntityFramework.Exceptions.Common;
 using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,13 +33,18 @@ namespace MedicalAppointmentApp.Mediator.Commands
                 var response = new CustomResponse();
                 var appointment = _mapper.Map<Appointment>(request.AppointmentModel);
 
-                await _context.Appointments.AddAsync(appointment);
-
-                //save changes and check if success
-                var success = await _context.SaveChangesAsync() > 0;
-                if (!success)
+                try
                 {
-                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to create doctor" });
+                    await _context.Appointments.AddAsync(appointment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (ReferenceConstraintException)
+                {
+                    response.AddError(new CustomError { Error = "Failed", Message = "Doctor or institution doesn't exist" });
+                }
+                catch (DbUpdateException)
+                {
+                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to create appointment" });
                 }
 
                 return response;

@@ -116,9 +116,6 @@ namespace MedicalAppointmentApp.Data.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime2");
 
@@ -149,6 +146,9 @@ namespace MedicalAppointmentApp.Data.Migrations
                     b.Property<int>("MedicalSpecialityId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("NextFreeAppointmentDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -175,14 +175,11 @@ namespace MedicalAppointmentApp.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("InstitutionId");
 
                     b.HasIndex("Address")
-                        .IsUnique();
-
-                    b.HasIndex("Name", "Address")
                         .IsUnique();
 
                     b.ToTable("Institutions");
@@ -236,7 +233,7 @@ namespace MedicalAppointmentApp.Data.Migrations
                     b.HasIndex("InstitutionId", "DoctorId")
                         .IsUnique();
 
-                    b.ToTable("Schedule");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("MedicalAppointmentApp.Data.Models.ScheduleDetail", b =>

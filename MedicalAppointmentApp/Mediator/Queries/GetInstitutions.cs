@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
 using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -37,9 +33,11 @@ namespace MedicalAppointmentApp.Queries
                 var institutions = await _context.Institutions
                     .Include(institution => institution.Schedules)
                     .ThenInclude(schedule => schedule.Doctor)
+                    .OrderBy(institution => institution.Address)
                     .ToListAsync();
 
-                foreach (var institution in institutions) {
+                foreach (var institution in institutions)
+                {
                     var viewModel = _mapper.Map<GetInstitutionModel>(institution);
                     institutionsViewModel.Add(viewModel);
                 }

@@ -1,17 +1,13 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Mediator.Queries;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Models.ViewModels;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 
@@ -30,9 +26,27 @@ namespace MedicalAppointmentApp.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("create")]
         [Authorize(Roles = "Admin")]
-        public IActionResult CreateDoctor()
+        public async Task<IActionResult> CreateDoctor(
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            return View();
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int specialtyCount = await _mediator.Send(new GetMedicalSpecialtyCount.Query());
+            if (specialtyCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)specialtyCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
+            var specialitiesList = await _mediator.Send(new GetMedicalSpecialties.Query(pageNumber ?? 1, pageSize ?? 10));
+
+            var customResponse = TempData.Get<CustomResponse>("CustomResponse");
+            if (customResponse != null)
+            {
+                ViewBag.CustomResponse = customResponse;
+            }
+            var createDoctorViewModel = new CreateDoctorModel();
+            createDoctorViewModel.MedicalSpecialities = specialitiesList;
+            return View(createDoctorViewModel);
         }
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
@@ -51,7 +65,8 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageSize = pageSize ?? 10;
 
             int doctorCount = await _mediator.Send(new GetDoctorCount.Query());
-            ViewBag.HasNextPage = Math.Ceiling((double)doctorCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+            if (doctorCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)doctorCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
 
             var doctorsViewModel = await _mediator.Send(new GetDoctors.Query(pageNumber ?? 1, pageSize ?? 10));
 
@@ -67,16 +82,26 @@ namespace MedicalAppointmentApp.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("add/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAddInstitutionToDoctorView(int id)
+        public async Task<IActionResult> GetAddInstitutionToDoctorView(int id,
+            [FromQuery(Name = "pageNumber")] int? pageNumber,
+            [FromQuery(Name = "pageSize")] int? pageSize)
         {
-            var institutionsViewModel = await _mediator.Send(new GetInstitutions.Query());
+            ViewBag.PageNumber = pageNumber ?? 1;
+            ViewBag.PageSize = pageSize ?? 10;
+
+            int institutionCount = await _mediator.Send(new GetInstitutionCount.Query());
+            if (institutionCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)institutionCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+
+            var institutionsViewModel = await _mediator.Send(new GetInstitutionsPaging.Query(pageNumber ?? 1, pageSize ?? 10));
+
             List<ScheduleDetailModel> scheduleDetails = new List<ScheduleDetailModel>();
             for (int i = 0; i < 7; i++)
             {
                 var scheduleDetail = new ScheduleDetailModel { Day = (DayOfWeek)i };
                 scheduleDetails.Add(scheduleDetail);
             }
-            
+
             CreateInstitutionDoctorViewModel createInstitutionDoctorViewModel = new CreateInstitutionDoctorViewModel()
             {
                 DoctorId = id,
@@ -112,6 +137,17 @@ namespace MedicalAppointmentApp.Controllers
             {
                 DoctorModel = doctorModel
             });
+
+            TempData.Put("CustomResponse", response);
+
+            return RedirectToAction("DoctorList");
+        }
+
+        [HttpGet("updateAppointments")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateAppointments()
+        {
+            var response = await _mediator.Send(new UpdateDoctorNextFreeAppointment.Command());
 
             TempData.Put("CustomResponse", response);
 

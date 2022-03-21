@@ -38,7 +38,8 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageSize = pageSize ?? 10;
 
             int institutionCount = await _mediator.Send(new GetInstitutionCount.Query());
-            ViewBag.HasNextPage = Math.Ceiling((double)institutionCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+            if (institutionCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)institutionCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
 
             var institutionsViewModel = await _mediator.Send(new GetInstitutionsPaging.Query(pageNumber ?? 1, pageSize ?? 10));
 

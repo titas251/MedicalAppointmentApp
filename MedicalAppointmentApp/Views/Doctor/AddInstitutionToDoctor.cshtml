@@ -11,7 +11,6 @@ h1 {
 </style>
 
 <h1>Create schedule</h1>
-<h5>Selected Doctor Id: @Model.DoctorId</h5>
 
 <form asp-action="AddInstitutionToDoctor" method="post">
     <div class="form-group" style="display: none;">
@@ -20,15 +19,15 @@ h1 {
     </div>
     <div class="form-group">
         <label asp-for="StartDate">Schedule start date</label>
-        <input type="date" asp-for="StartDate" class="form-control" value="@DateTime.Now.ToString("d")" />
+        <input type="date" asp-for="StartDate" class="form-control" value="@DateTime.Now.ToString("d")" required/>
     </div>
     <div class="form-group">
         <label asp-for="EndDate">Schedule end date</label>
-        <input type="date" asp-for="EndDate" class="form-control" value="@DateTime.Now.AddDays(7).ToString("d")"/>
+        <input type="date" asp-for="EndDate" class="form-control" value="@DateTime.Now.AddDays(7).ToString("d")" required/>
     </div>
     <div class="form-group">
         <label asp-for="InstitutionId">Institution Id</label>
-        <input asp-for="InstitutionId" class="form-control" />
+        <input asp-for="InstitutionId" class="form-control" required/>
     </div>
     <div class="container">
         <div class="row">
@@ -58,7 +57,7 @@ h1 {
             }
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btn btn-primary" id="checkBtn">Save</button>
 </form>
 
 <div class="container">
@@ -103,4 +102,33 @@ h1 {
             </div>
         </div>
     </div>
+</div>
+
+
+@{
+    var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
+    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="GetAddInstitutionToDoctorView"
+   asp-route-pageNumber="@(ViewBag.PageNumber - 1)"
+   asp-route-userId="@ViewBag.CurrentFilter"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="GetAddInstitutionToDoctorView"
+   asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
+   asp-route-userId="@ViewBag.CurrentFilter"
+   asp-route-pageSize="@ViewBag.PageSize"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>
+
+<div>
+    Number per page:
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="10" asp-route-userId="@ViewBag.CurrentFilter" method="get">10</a>
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="20" asp-route-userId="@ViewBag.CurrentFilter" method="get">20</a>
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="50" asp-route-userId="@ViewBag.CurrentFilter" method="get">50</a>
+    <a asp-action="GetAddInstitutionToDoctorView" asp-route-pageSize="100" asp-route-userId="@ViewBag.CurrentFilter" method="get">100</a>
 </div>

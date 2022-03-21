@@ -5,6 +5,8 @@
     CustomResponse statusMsg = ViewBag.CustomResponse;
 }
 
+<h1>Doctors</h1>
+
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
 @if (statusMsg != null)
@@ -13,6 +15,7 @@
 }
 
 <input type="button" class="btn btn-info" value="Create Doctor" onclick="location.href='@Url.Action("CreateDoctor", "Doctor")'" />
+<input type="button" class="btn btn-info" value="Update Doctors" onclick="location.href='@Url.Action("UpdateAppointments", "Doctor")'" />
 <div class="container">
     <div class="row">
         <div class="col-md-12">

@@ -1,16 +1,11 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Commands;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Models;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -42,7 +37,8 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageSize = pageSize ?? 10;
 
             int userCount = await _mediator.Send(new GetRegisteredUserCount.Query());
-            ViewBag.HasNextPage = Math.Ceiling((double)userCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
+            if (userCount == 0) ViewBag.HasNextPage = true;
+            else ViewBag.HasNextPage = Math.Ceiling((double)userCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
 
             var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query(pageNumber ?? 1, pageSize ?? 10));
 
@@ -54,8 +50,8 @@ namespace MedicalAppointmentApp.Controllers
         public async Task<IActionResult> DeleteUser(string id)
         {
             var response = await _mediator.Send(new DeleteRegisteredUser.Command { Id = id });
-            if (!response.Succeeded)
-                Errors(response);
+
+            TempData.Put("CustomResponse", response);
 
             return RedirectToAction("RegisteredUsers");
         }
@@ -74,24 +70,20 @@ namespace MedicalAppointmentApp.Controllers
         {
             var response = await _mediator.Send(new UpdateRegisteredUser.Command { UpdateUser = updateUser });
 
+            TempData.Put("CustomResponse", response);
+
             return RedirectToAction("RegisteredUsers");
         }
 
         [HttpPost("lock/{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> LockUser (string id)
+        public async Task<IActionResult> LockUser(string id)
         {
             var response = await _mediator.Send(new LockUser.Command { UserId = id });
 
             TempData.Put("CustomResponse", response);
 
             return RedirectToAction("RegisteredUsers");
-        }
-
-        private void Errors(IdentityResult result)
-        {
-            foreach (IdentityError error in result.Errors)
-                ModelState.AddModelError("", error.Description);
         }
     }
 }

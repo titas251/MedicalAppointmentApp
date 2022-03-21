@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 </head>
 <body>
     <header>
@@ -38,6 +39,7 @@
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="DoctorList">Doctors</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Institution" asp-action="InstitutionList">Institutions</a>
                                         <a class="nav-link text-dark" asp-area="" asp-controller="Speciality" asp-action="SpecialityList">Specialities</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="GetAppointments">Appointments</a>
                                     </div>
                                 </div>
                             </li>
@@ -64,6 +66,20 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#checkBtn').click(function () {
+                checked = $("input[type=checkbox]:checked").length;
+
+                if (!checked) {
+                    alert("You must check at least one checkbox.");
+                    return false;
+                }
+
+            });
+        });
+
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

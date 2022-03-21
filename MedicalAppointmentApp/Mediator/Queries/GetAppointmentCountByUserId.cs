@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,7 +32,6 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 var appointmentCount = await _context.Appointments
                     .Where(a => a.ApplicationUserId.Equals(request.Id))
                     .CountAsync();
-
 
                 return appointmentCount;
             }

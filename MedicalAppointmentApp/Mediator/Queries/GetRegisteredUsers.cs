@@ -3,7 +3,6 @@ using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -38,6 +37,7 @@ namespace MedicalAppointmentApp.Queries
                 var userRolesViewModel = new List<UserRolesViewModel>();
 
                 var users = await _userManager.Users
+                    .OrderBy(user => user.Email)
                     .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();

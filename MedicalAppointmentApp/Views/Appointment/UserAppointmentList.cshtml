@@ -45,7 +45,7 @@
                                         <span class="font-medium mb-0">@appointment.Detail</span><br>
                                     </td>
                                     <td>
-                                        <form asp-action="DeleteAppointment" asp-route-id="@appointment.AppointmentId" method="post">
+                                        <form asp-action="UserDeleteAppointment" asp-route-id="@appointment.AppointmentId" method="post">
                                             <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash"></i> </button>
                                         </form>
                                     </td>

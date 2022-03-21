@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace MedicalAppointmentApp.Models
 {
-    public static  class TempDataExtensions
+    public static class TempDataExtensions
     {
         public static void Put<T>(this ITempDataDictionary tempData, string key, T value) where T : class
         {

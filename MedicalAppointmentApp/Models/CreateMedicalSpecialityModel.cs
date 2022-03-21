@@ -1,7 +1,4 @@
-﻿using MedicalAppointmentApp.Data.Models;
-using System.Collections.Generic;
-
-namespace MedicalAppointmentApp.Models
+﻿namespace MedicalAppointmentApp.Models
 {
     public class CreateMedicalSpecialityModel
     {

@@ -111,7 +111,8 @@ namespace MedicalAppointmentApp
                 facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
             });
 
-            services.AddAutoMapper(c => {
+            services.AddAutoMapper(c =>
+            {
                 c.AddProfile<WebMappingProfile>();
             }, typeof(Startup));
         }

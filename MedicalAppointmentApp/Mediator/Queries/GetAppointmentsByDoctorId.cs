@@ -2,7 +2,6 @@
 using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +38,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
 
                 var appointments = await _context.Appointments.Include(a => a.Doctor)
                     .Where(a => a.DoctorId.Equals(request.Id))
+                    .OrderBy(a => a.StartDateTime)
                     .ToListAsync();
 
                 foreach (var appointment in appointments)

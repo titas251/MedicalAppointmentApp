@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 namespace MedicalAppointmentApp.Mediator.Queries
 {
@@ -39,6 +37,8 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 var doctor = await _context.Doctors.Include(doctor => doctor.MedicalSpeciality).Include(doctor => doctor.Schedules)
                     .ThenInclude(schedules => schedules.Institution)
                     .Where(doctor => doctor.DoctorId.Equals(request.Id))
+                    .OrderBy(doctor => doctor.LastName)
+                        .ThenBy(doctor => doctor.FirstName)
                     .FirstOrDefaultAsync();
 
                 var doctorViewModel = _mapper.Map<GetDoctorModel>(doctor);

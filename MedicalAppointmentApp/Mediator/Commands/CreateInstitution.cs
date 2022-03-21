@@ -1,7 +1,9 @@
-﻿using MediatR;
+﻿using EntityFramework.Exceptions.Common;
+using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,11 +33,17 @@ namespace MedicalAppointmentApp.Mediator.Commands
                     Name = request.InstitutionModel.Name,
                     Address = request.InstitutionModel.Address
                 };
-                await _context.Institutions.AddAsync(institution);
 
-                //save changes and check if success
-                var success = await _context.SaveChangesAsync() > 0;
-                if (!success)
+                try
+                {
+                    await _context.Institutions.AddAsync(institution);
+                    await _context.SaveChangesAsync();
+                }
+                catch (UniqueConstraintException)
+                {
+                    response.AddError(new CustomError { Error = "Failed", Message = "Institution with given name and address already exists" });
+                }
+                catch (DbUpdateException)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to create institution" });
                 }

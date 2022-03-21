@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using MediatR;
 using MedicalAppointmentApp.Data;
+using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using MedicalAppointmentApp.Data.Models;
 
 namespace MedicalAppointmentApp.Mediator.Queries
 {
@@ -54,7 +54,10 @@ namespace MedicalAppointmentApp.Mediator.Queries
                     || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
                     || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
                     || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
-                    .Skip((request.Page-1) * request.PageSize)
+                    .OrderByDescending(doctor => doctor.NextFreeAppointmentDate.HasValue)
+                        .ThenBy(doctor => doctor.NextFreeAppointmentDate)
+                        .ThenBy(doctor => doctor.LastName)
+                    .Skip((request.Page - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync();
 
@@ -64,7 +67,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
                 return doctorsWithNextAppointments;
             }
 
-            private List<GetDoctorsWithNextAppointments> GetDoctorWithNextAppointment(List<Doctor> doctors, int numOfFreeAppointmentSpaces) 
+            private List<GetDoctorsWithNextAppointments> GetDoctorWithNextAppointment(List<Doctor> doctors, int numOfFreeAppointmentSpaces)
             {
                 var doctorsWithNextAppointments = new List<GetDoctorsWithNextAppointments>();
                 //adding one day to start checking from tomorrow
@@ -92,7 +95,7 @@ namespace MedicalAppointmentApp.Mediator.Queries
                                 && s.Schedule.StartDate.Date <= day.Date))
                             {
                                 var filteredScheduleDetail = filteredScheduleDetails
-                                    .Where(s => s.Day == day.DayOfWeek && s.Schedule.EndDate.Date >= day.Date 
+                                    .Where(s => s.Day == day.DayOfWeek && s.Schedule.EndDate.Date >= day.Date
                                         && s.Schedule.StartDate.Date <= day.Date)
                                     .First();
 
@@ -111,13 +114,14 @@ namespace MedicalAppointmentApp.Mediator.Queries
                                     if (appointment == null)
                                     {
                                         upcomingFreeAppointmentSpaces.Add(currentStartDT);
-                                        if (upcomingFreeAppointmentSpaces.Count() >= numOfFreeAppointmentSpaces) {
+                                        if (upcomingFreeAppointmentSpaces.Count() >= numOfFreeAppointmentSpaces)
+                                        {
                                             break;
                                         }
                                     }
                                 }
 
-                                if (upcomingFreeAppointmentSpaces.Count() >= numOfFreeAppointmentSpaces) 
+                                if (upcomingFreeAppointmentSpaces.Count() >= numOfFreeAppointmentSpaces)
                                 {
                                     break;
                                 }
@@ -133,12 +137,6 @@ namespace MedicalAppointmentApp.Mediator.Queries
 
                     doctorsWithNextAppointments.Add(doctorWithNextAppointments);
                 }
-
-                //order by closest free appointment date
-                doctorsWithNextAppointments = doctorsWithNextAppointments
-                    .OrderByDescending(s => s.NextFreeAppointmentDates.FirstOrDefault().HasValue)
-                    .ThenBy(s => s.NextFreeAppointmentDates.FirstOrDefault())
-                    .ToList();
 
                 return doctorsWithNextAppointments;
             }
