@@ -21,32 +21,32 @@
                     <table class="table no-wrap user-table mb-0">
                         <thead>
                             <tr>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Date</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Doctor</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Detail</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Date</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Doctor</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Address</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Detail</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var appointment in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@appointment.StartDateTime</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@appointment.Doctor.FirstName @appointment.Doctor.LastName</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@appointment.Address</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@appointment.Detail</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <form asp-action="UserDeleteAppointment" asp-route-id="@appointment.AppointmentId" method="post">
-                                            <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash"></i> </button>
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
                                         </form>
                                     </td>
                                 </tr>

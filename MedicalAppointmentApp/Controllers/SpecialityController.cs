@@ -64,5 +64,16 @@ namespace MedicalAppointmentApp.Controllers
 
             return RedirectToAction("SpecialityList");
         }
+
+        [HttpPost("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteSpeciality(int id)
+        {
+            var response = await _mediator.Send(new DeleteSpeciality.Command { Id = id });
+
+            TempData.Put("CustomResponse", response);
+
+            return RedirectToAction("SpecialityList");
+        }
     }
 }

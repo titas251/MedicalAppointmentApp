@@ -23,34 +23,34 @@
                         <table class="table no-wrap user-table mb-0">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
-                                    <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
-                                    <th scope="col" class="border-0 text-uppercase font-medium">Medical Speciality</th>
-                                    <th scope="col" class="border-0 text-uppercase font-medium">Institutions</th>
-                                    <th scope="col" class="border-0 text-uppercase font-medium">Available appointments</th>
-                                    <th scope="col" class="border-0 text-uppercase font-medium">More info</th>
+                                    <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Name</th>
+                                    <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Phone Number</th>
+                                    <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Medical Speciality</th>
+                                    <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Institutions</th>
+                                    <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Available appointments</th>
+                                    <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">More info</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var doctor in Model)
                                 {
                                     <tr>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             <span class="font-medium mb-0">@doctor.Doctor.FirstName @doctor.Doctor.LastName</span><br>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             <span class="font-medium mb-0">@doctor.Doctor.PhoneNumber</span><br>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             <span class="font-medium mb-0">@doctor.Doctor.MedicalSpeciality.Name</span><br>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             @foreach (var schedule in doctor.Doctor.Schedules)
                                             {
                                                 <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
                                             }
                                         </td>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             @if (doctor.NextFreeAppointmentDates.Count() != 0)
                                             {
                                                 foreach (var date in doctor.NextFreeAppointmentDates)
@@ -64,7 +64,7 @@
                                                 <span class="font-medium mb-0">No available dates</span><br>
                                             }
                                         </td>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             <a class="btn btn-outline-primary" asp-controller="Doctor" asp-action="Doctor" asp-route-id="@doctor.Doctor.DoctorId">Info</a>
                                         </td>
                                     </tr>
