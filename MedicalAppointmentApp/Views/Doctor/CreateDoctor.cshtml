@@ -8,19 +8,19 @@
 
 <form asp-controller="Doctor" asp-action="CreateDoctor" method="post">
     <div class="form-group">
-        <label asp-for="FirstName"></label>
+        <label asp-for="FirstName">First Name</label>
         <input asp-for="FirstName" class="form-control" required/>
     </div>
     <div class="form-group">
-        <label asp-for="LastName"></label>
+        <label asp-for="LastName">Last Name</label>
         <input asp-for="LastName" class="form-control" required/>
     </div>
     <div class="form-group">
-        <label asp-for="PhoneNumber"></label>
+        <label asp-for="PhoneNumber">Phone Number</label>
         <input asp-for="PhoneNumber" class="form-control" required/>
     </div>
     <div class="form-group">
-        <label asp-for="MedicalSpecialityId"></label>
+        <label asp-for="MedicalSpecialityId">Medical Speciality Id</label>
         <input asp-for="MedicalSpecialityId" class="form-control" required/>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
@@ -34,22 +34,22 @@
                     <table class="table no-wrap user-table mb-0">
                         <thead>
                             <tr>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Id</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Description</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Id</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Description</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var specialty in Model.MedicalSpecialities)
                             {
                             <tr>
-                                <td>
+                                <td style="text-align: center; vertical-align: middle;">
                                     <span class="font-medium mb-0">@specialty.MedicalSpecialityId</span><br>
                                 </td>
-                                <td>
+                                <td style="text-align: center; vertical-align: middle;">
                                     <span class="font-medium mb-0">@specialty.Name</span><br>
                                 </td>
-                                <td>
+                                <td style="text-align: center; vertical-align: middle;">
                                     <span class="font-medium mb-0">@specialty.Description</span><br>
                                 </td>
                             </tr>

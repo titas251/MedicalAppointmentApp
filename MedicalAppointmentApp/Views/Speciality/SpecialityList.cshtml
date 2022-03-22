@@ -24,24 +24,24 @@
                     <table class="table no-wrap user-table mb-0">
                         <thead>
                             <tr>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Description</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Delete Speciality</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Description</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Delete Speciality</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var specialty in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@specialty.Name</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@specialty.Description</span><br>
                                     </td>
                                      <td style="text-align: center; vertical-align: middle;">
                                         <form asp-controller="Speciality" asp-action="DeleteSpeciality" asp-route-id="@specialty.MedicalSpecialityId" method="post">
-                                            <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash fa-3x"></i> </button>
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
                                         </form>
                                     </td>
                                 </tr>

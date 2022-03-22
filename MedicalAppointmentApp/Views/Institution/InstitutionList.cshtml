@@ -24,23 +24,23 @@
                     <table class="table no-wrap user-table mb-0">
                         <thead>
                             <tr>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Doctors</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Delete Institution</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Address</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Doctors</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Delete Institution</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var institution in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@institution.Name</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@institution.Address</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         @{
                                             int doctorCount = 0;
                                         }
@@ -53,7 +53,7 @@
                                     </td>
                                      <td style="text-align: center; vertical-align: middle;">
                                         <form asp-controller="Institution" asp-action="DeleteInstitution" asp-route-id="@institution.InstitutionId" method="post">
-                                            <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash fa-3x"></i> </button>
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
                                         </form>
                                     </td>
                                 </tr>
