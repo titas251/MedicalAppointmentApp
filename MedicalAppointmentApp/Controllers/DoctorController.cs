@@ -154,6 +154,17 @@ namespace MedicalAppointmentApp.Controllers
             return RedirectToAction("DoctorList");
         }
 
+        [HttpPost("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteDoctor(int id)
+        {
+            var response = await _mediator.Send(new DeleteDoctor.Command { Id = id });
+
+            TempData.Put("CustomResponse", response);
+
+            return RedirectToAction("DoctorList");
+        }
+
         /*[HttpGet("search")]
         public async Task<IActionResult> GetDoctorByQuery ([FromQuery(Name = "q")] string query)
         {

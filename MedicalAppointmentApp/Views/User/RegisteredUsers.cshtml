@@ -26,34 +26,34 @@
                     <table class="table no-wrap user-table mb-0">
                         <thead>
                             <tr>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Email</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">First Name</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Last Name</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Phone Number</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Is black listed?</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Roles</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Delete</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Edit</th>
-                                <th scope="col" class="border-0 text-uppercase font-medium">Lock</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Email</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">First Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Last Name</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Phone Number</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Is black listed?</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Roles</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Delete</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Edit</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium" style="text-align: center; vertical-align: middle;">Lock</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var user in Model)
                             {
                                 <tr>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@user.Email</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@user.FirstName</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@user.LastName</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <span class="font-medium mb-0">@user.PhoneNumber</span><br>
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         @if (user.IsBlackListed)
                                         {
                                             <span class="font-medium mb-0">Yes, until @user.BlackListedEndDate.GetValueOrDefault().ToString("yyyy-MM-dd")</span><br>
@@ -62,7 +62,7 @@
                                             <span class="font-medium mb-0">No</span><br>
                                         }
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         @foreach (var role in user.Roles)
                                         {
                                             <div>@role</div>
@@ -70,23 +70,27 @@
                                     </td>
                                     @if (!user.Roles.Contains("Admin"))
                                     {
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             <form asp-action="DeleteUser" asp-route-id="@user.UserId" method="post">
                                                 <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-trash"></i> </button>
                                             </form>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             <form asp-action="GetUpdateUserView" asp-route-id="@user.UserId">
                                                 <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
                                             </form>
                                         </td>
-                                        <td>
+                                        <td style="text-align: center; vertical-align: middle;">
                                             <form asp-action="LockUser" asp-route-id="@user.UserId" method="post">
                                                 <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fas fa-lock"></i> </button>
                                             </form>
                                         </td>
+                                    } else
+                                    {
+                                        <td/>
+                                        <td/>
+                                        <td/>
                                     }
-
                                 </tr>
                             }
                         </tbody>
