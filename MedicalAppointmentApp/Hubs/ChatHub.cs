@@ -10,7 +10,13 @@ namespace MedicalAppointmentApp.Hubs
     {
         public async Task SendMessage(string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", this.Context.User.Identity.Name, message);
+            var user = this.Context.User.Identity.Name;
+            if (user == "admin@gmail.com") 
+            {
+                user = "admin";
+            }
+
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
     }
 }
