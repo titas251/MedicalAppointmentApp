@@ -1,6 +1,7 @@
 using MediatR;
 using MedicalAppointmentApp.Data;
 using MedicalAppointmentApp.Data.Models;
+using MedicalAppointmentApp.Hubs;
 using MedicalAppointmentApp.Models.MapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,7 @@ namespace MedicalAppointmentApp
             services.AddRazorPages();
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMediatR(typeof(Startup).Assembly);
+            services.AddSignalR();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -151,6 +153,7 @@ namespace MedicalAppointmentApp
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
 
             //initialize admin user in db
