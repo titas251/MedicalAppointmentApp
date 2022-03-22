@@ -27,6 +27,7 @@
                                 <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Address</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Doctors</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Delete Institution</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,7 +51,11 @@
                                             if (doctorCount >= 10) break;
                                         }
                                     </td>
-
+                                     <td style="text-align: center; vertical-align: middle;">
+                                        <form asp-controller="Institution" asp-action="DeleteInstitution" asp-route-id="@institution.InstitutionId" method="post">
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash fa-3x"></i> </button>
+                                        </form>
+                                    </td>
                                 </tr>
                             }
                         </tbody>

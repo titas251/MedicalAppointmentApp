@@ -30,6 +30,7 @@
                                 <th scope="col" class="border-0 text-uppercase font-medium">Medical Speciality</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Institutions</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Create schedule</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Delete doctor</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,9 +55,14 @@
                                             <span class="font-medium mb-0">@schedule.Institution.Name</span><br>
                                         }
                                     </td>
-                                    <td>
+                                    <td style="text-align: center; vertical-align: middle;">
                                         <form asp-controller="Doctor" asp-action="GetAddInstitutionToDoctorView" asp-route-id="@doctor.DoctorId" method="get">
                                             <button type="submit" class="btn btn-outline-info btn-circle btn-lg btn-circle ml-2"><i class="fa fa-edit"></i> </button>
+                                        </form>
+                                    </td>
+                                    <td style="text-align: center; vertical-align: middle;">
+                                        <form asp-controller="Doctor" asp-action="DeleteDoctor" asp-route-id="@doctor.DoctorId" method="post">
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash fa-3x"></i> </button>
                                         </form>
                                     </td>
                                 </tr>

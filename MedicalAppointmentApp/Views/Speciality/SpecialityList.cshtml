@@ -26,6 +26,7 @@
                             <tr>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Name</th>
                                 <th scope="col" class="border-0 text-uppercase font-medium">Description</th>
+                                <th scope="col" class="border-0 text-uppercase font-medium">Delete Speciality</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,6 +38,11 @@
                                     </td>
                                     <td>
                                         <span class="font-medium mb-0">@specialty.Description</span><br>
+                                    </td>
+                                     <td style="text-align: center; vertical-align: middle;">
+                                        <form asp-controller="Speciality" asp-action="DeleteSpeciality" asp-route-id="@specialty.MedicalSpecialityId" method="post">
+                                            <button type="submit" class="btn btn-outline-info btn-circle btn-sm btn-circle ml-2"><i class="fa fa-trash fa-3x"></i> </button>
+                                        </form>
                                     </td>
                                 </tr>
                             }
