@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiddleProject.Queries
 {
-    public static class GetMedicalSpecialtyCount
+    public static class GetInstitutionCount
     {
         public class Query : IRequest<int>
         {
@@ -23,12 +23,12 @@ namespace MiddleProject.Queries
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
-                var specialityCount = await _context.MedicalSpecialities
+                var institutionCount = await _context.Institutions
                     .CountAsync();
 
-                return specialityCount;
+
+                return institutionCount;
             }
         }
-
     }
 }

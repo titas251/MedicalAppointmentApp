@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Mediator.Commands;
-using MedicalAppointmentApp.Mediator.Queries;
-using MedicalAppointmentApp.Queries;
+using MiddleProject.Commands;
+using MiddleProject.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiddleProject.Models;

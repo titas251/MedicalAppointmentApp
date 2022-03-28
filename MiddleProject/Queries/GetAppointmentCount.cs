@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using DAL.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MiddleProject.Queries
 {
-    public static class GetMedicalSpecialtyCount
+    public class GetAppointmentCount
     {
         public class Query : IRequest<int>
         {
@@ -23,12 +24,11 @@ namespace MiddleProject.Queries
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
-                var specialityCount = await _context.MedicalSpecialities
+                var appointmentCount = await _context.Appointments
                     .CountAsync();
 
-                return specialityCount;
+                return appointmentCount;
             }
         }
-
     }
 }
