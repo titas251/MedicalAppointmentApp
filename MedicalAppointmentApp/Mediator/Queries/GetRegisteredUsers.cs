@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using DAL.Data.Models;
-using MedicalAppointmentApp.Models;
+using MiddleProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using DAL.Data;
-using MedicalAppointmentApp.Models;
+using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

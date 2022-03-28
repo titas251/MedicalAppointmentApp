@@ -1,7 +1,7 @@
 ﻿using DAL.Data.Models;
 using System.Collections.Generic;
 
-namespace MedicalAppointmentApp.Models
+namespace MiddleProject.Models
 {
     public class GetInstitutionModel
     {

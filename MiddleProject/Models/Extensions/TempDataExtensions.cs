@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 
-namespace MedicalAppointmentApp.Models
+namespace MiddleProject.Models
 {
     public static class TempDataExtensions
     {

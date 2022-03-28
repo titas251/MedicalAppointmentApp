@@ -7,8 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MedicalAppointmentApp.Models;
+using MiddleProject.Models;
 using DAL.Data;
+using MiddleProject.Models;
 
 namespace MedicalAppointmentApp.Mediator.Commands
 {

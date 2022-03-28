@@ -20,6 +20,7 @@ namespace MedicalAppointmentApp.Queries
             {
                 /*var specialityCount = await _context.MedicalSpecialities
                     .CountAsync();*/
+
                 var specialityCount = 100;
 
                 //call another project

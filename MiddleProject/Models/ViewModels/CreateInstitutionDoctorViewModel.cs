@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MedicalAppointmentApp.Models.ViewModels
+namespace MiddleProject.Models.ViewModels
 {
     public class CreateInstitutionDoctorViewModel
     {

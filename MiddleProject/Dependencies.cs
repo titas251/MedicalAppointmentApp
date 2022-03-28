@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MediatR;
+using MiddleProject.Models.MapperProfiles;
 
 namespace MiddleProject
 {
@@ -9,6 +10,17 @@ namespace MiddleProject
             this IServiceCollection services)
         {
             return services.AddMediatR(typeof(Dependencies).Assembly);
+        }
+
+        public static IServiceCollection RegisterMapper(
+            this IServiceCollection services)
+        {
+            services.AddAutoMapper(c =>
+            {
+                c.AddProfile<WebMappingProfile>();
+            }, typeof(Dependencies));
+
+            return services;
         }
     }
 }

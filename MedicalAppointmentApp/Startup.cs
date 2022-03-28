@@ -3,7 +3,6 @@ using MediatR;
 using DAL.Data;
 using DAL.Data.Models;
 using MedicalAppointmentApp.Hubs;
-using MedicalAppointmentApp.Models.MapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -115,10 +114,8 @@ namespace MedicalAppointmentApp
                 facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
             });
 
-            services.AddAutoMapper(c =>
-            {
-                c.AddProfile<WebMappingProfile>();
-            }, typeof(Startup));
+            //register automapper
+            services.RegisterMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

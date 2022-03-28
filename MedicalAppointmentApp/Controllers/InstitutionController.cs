@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using MedicalAppointmentApp.Mediator.Commands;
 using MedicalAppointmentApp.Mediator.Queries;
-using MedicalAppointmentApp.Models;
+using MiddleProject.Models;
 using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiddleProject.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -54,7 +55,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateInstitution([FromForm] CreateInstitutionModel institutionModel)
+        public async Task<IActionResult> CreateInstitution([FromForm] MiddleProject.Models.CreateInstitutionModel institutionModel)
         {
             var response = await _mediator.Send(new CreateInstitution.Command
             {

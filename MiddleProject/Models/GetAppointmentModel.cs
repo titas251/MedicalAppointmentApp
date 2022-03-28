@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MedicalAppointmentApp.Models
+namespace MiddleProject.Models
 {
     public class GetAppointmentModel
     {

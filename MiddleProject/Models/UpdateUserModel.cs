@@ -1,4 +1,4 @@
-﻿namespace MedicalAppointmentApp.Models
+﻿namespace MiddleProject.Models
 {
     public class UpdateUserModel
     {

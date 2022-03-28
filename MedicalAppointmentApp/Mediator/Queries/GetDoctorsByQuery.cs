@@ -2,7 +2,7 @@
 using MediatR;
 using DAL.Data;
 using DAL.Data.Models;
-using MedicalAppointmentApp.Models;
+using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

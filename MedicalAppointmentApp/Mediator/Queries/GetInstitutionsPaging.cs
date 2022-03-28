@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
 using DAL.Data;
-using MedicalAppointmentApp.Models;
+using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 
 namespace MedicalAppointmentApp.Mediator.Queries
 {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Data.Models;
 
-namespace MedicalAppointmentApp.Models.MapperProfiles
+namespace MiddleProject.Models.MapperProfiles
 {
     public class WebMappingProfile : Profile
     {

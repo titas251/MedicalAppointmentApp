@@ -3,10 +3,11 @@ using EntityFramework.Exceptions.Common;
 using MediatR;
 using DAL.Data;
 using DAL.Data.Models;
-using MedicalAppointmentApp.Models;
+using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using MiddleProject.Models;
 
 namespace MedicalAppointmentApp.Mediator.Commands
 {
