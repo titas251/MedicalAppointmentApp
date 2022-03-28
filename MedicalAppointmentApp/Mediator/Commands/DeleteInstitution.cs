@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
+using DAL.Data;
+using DAL.Data.Models;
 using MedicalAppointmentApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;

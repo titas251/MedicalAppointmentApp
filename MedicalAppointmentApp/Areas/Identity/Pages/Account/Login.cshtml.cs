@@ -1,4 +1,4 @@
-﻿using MedicalAppointmentApp.Data.Models;
+﻿using DAL.Data.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

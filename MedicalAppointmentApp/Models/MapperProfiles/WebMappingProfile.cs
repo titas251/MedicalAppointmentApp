@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MedicalAppointmentApp.Data.Models;
+using DAL.Data.Models;
 
 namespace MedicalAppointmentApp.Models.MapperProfiles
 {

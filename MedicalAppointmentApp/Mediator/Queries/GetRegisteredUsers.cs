@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Data.Models;
+using DAL.Data.Models;
 using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

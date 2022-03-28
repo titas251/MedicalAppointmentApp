@@ -1,6 +1,7 @@
+using DAL;
 using MediatR;
-using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
+using DAL.Data;
+using DAL.Data.Models;
 using MedicalAppointmentApp.Hubs;
 using MedicalAppointmentApp.Models.MapperProfiles;
 using Microsoft.AspNetCore.Builder;
@@ -30,12 +31,9 @@ namespace MedicalAppointmentApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //Register DbContext from DAL project
+            services.RegisterDbContext();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddRouting(options => options.LowercaseUrls = true);
@@ -161,7 +159,7 @@ namespace MedicalAppointmentApp
             });
 
             //initialize admin user in db
-            DbInitializer.SeedData(userManager, roleManager).GetAwaiter().GetResult();
+            //DbInitializer.SeedData(userManager, roleManager).GetAwaiter().GetResult();
         }
     }
 }

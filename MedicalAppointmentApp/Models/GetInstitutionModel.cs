@@ -1,4 +1,4 @@
-﻿using MedicalAppointmentApp.Data.Models;
+﻿using DAL.Data.Models;
 using System.Collections.Generic;
 
 namespace MedicalAppointmentApp.Models
