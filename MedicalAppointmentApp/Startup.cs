@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MiddleProject;
 using Quartz;
 using System;
 
@@ -40,6 +41,9 @@ namespace MedicalAppointmentApp
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddSignalR();
+
+            // Register the MediatR request handlers
+            services.RegisterRequestHandlers();
 
             services.Configure<IdentityOptions>(options =>
             {

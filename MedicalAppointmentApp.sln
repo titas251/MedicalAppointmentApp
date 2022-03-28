@@ -5,7 +5,11 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MedicalAppointmentApp", "MedicalAppointmentApp\MedicalAppointmentApp.csproj", "{706DCFBC-173E-4902-BDFF-DD51A169B207}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackgroundJobs", "BackgroundJobs\BackgroundJobs.csproj", "{24E20143-1622-40AA-A419-B7A9E2A6E764}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundJobs", "BackgroundJobs\BackgroundJobs.csproj", "{24E20143-1622-40AA-A419-B7A9E2A6E764}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiddleProject", "MiddleProject\MiddleProject.csproj", "{34590C26-6B26-4B85-945F-114E5B5DEBFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "Database\DAL.csproj", "{99FE8720-AD14-4569-B5BF-EC43FCF05D0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{24E20143-1622-40AA-A419-B7A9E2A6E764}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E20143-1622-40AA-A419-B7A9E2A6E764}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E20143-1622-40AA-A419-B7A9E2A6E764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34590C26-6B26-4B85-945F-114E5B5DEBFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34590C26-6B26-4B85-945F-114E5B5DEBFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34590C26-6B26-4B85-945F-114E5B5DEBFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34590C26-6B26-4B85-945F-114E5B5DEBFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99FE8720-AD14-4569-B5BF-EC43FCF05D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99FE8720-AD14-4569-B5BF-EC43FCF05D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99FE8720-AD14-4569-B5BF-EC43FCF05D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99FE8720-AD14-4569-B5BF-EC43FCF05D0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
