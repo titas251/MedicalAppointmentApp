@@ -30,9 +30,9 @@ namespace MedicalAppointmentApp
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             //Register DbContext from DAL project
-            services.RegisterDbContext();
+            services.RegisterDbContext(Configuration);
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
@@ -159,7 +159,7 @@ namespace MedicalAppointmentApp
             });
 
             //initialize admin user in db
-            //DbInitializer.SeedData(userManager, roleManager).GetAwaiter().GetResult();
+            DbInitializer.SeedData(userManager, roleManager).GetAwaiter().GetResult();
         }
     }
 }
