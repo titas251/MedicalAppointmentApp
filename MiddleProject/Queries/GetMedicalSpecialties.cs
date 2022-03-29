@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using DAL.Repositories;
 
 namespace MiddleProject.Queries
 {
@@ -26,23 +26,19 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, List<GetMedicalSpecialtyModel>>
         {
-            private readonly ApplicationDbContext _context;
             private readonly IMapper _mapper;
+            private IMedicalSpecialityRepository _medicalSpecialityRepository;
 
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            public Handler(IMedicalSpecialityRepository medicalSpecialityRepository, IMapper mapper)
             {
-                _context = context;
+                _medicalSpecialityRepository = medicalSpecialityRepository;
                 _mapper = mapper;
             }
 
             public async Task<List<GetMedicalSpecialtyModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var medicalSpecialtiesViewModel = new List<GetMedicalSpecialtyModel>();
-                var specialities = await _context.MedicalSpecialities
-                    .OrderBy(specialty => specialty.Name)
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync();
+                var specialities = await _medicalSpecialityRepository.GetAllAsync(request.Page, request.PageSize);
 
                 foreach (var speciality in specialities)
                 {

@@ -3,6 +3,7 @@ using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories;
 
 namespace MiddleProject.Queries
 {
@@ -14,19 +15,16 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, int>
         {
-            private readonly ApplicationDbContext _context;
+            private IMedicalSpecialityRepository _medicalSpecialityRepository;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(IMedicalSpecialityRepository medicalSpecialityRepository)
             {
-                _context = context;
+                _medicalSpecialityRepository = medicalSpecialityRepository;
             }
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
-                var specialityCount = await _context.MedicalSpecialities
-                    .CountAsync();
-
-                return specialityCount;
+                return await _medicalSpecialityRepository.GetCountAsync();
             }
         }
 

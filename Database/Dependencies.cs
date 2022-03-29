@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using DAL.Repositories;
 
 namespace DAL
 {
@@ -19,6 +20,9 @@ namespace DAL
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //register repositories
+            services.AddTransient<IMedicalSpecialityRepository, MedicalSpecialityRepository>();
 
             return services;
         }

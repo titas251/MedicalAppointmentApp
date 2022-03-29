@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using MiddleProject.Models;
+using DAL.Repositories;
 
 namespace MiddleProject.Commands
 {
@@ -18,11 +19,11 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly ApplicationDbContext _context;
+            private IMedicalSpecialityRepository _medicalSpecialityRepository;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(IMedicalSpecialityRepository medicalSpecialityRepository)
             {
-                _context = context;
+                _medicalSpecialityRepository = medicalSpecialityRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -36,8 +37,8 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    await _context.MedicalSpecialities.AddAsync(medicalSpeciality);
-                    await _context.SaveChangesAsync();
+                    await _medicalSpecialityRepository.AddAsync(medicalSpeciality);
+                    await _medicalSpecialityRepository.SaveChangesAsync();
                 }
                 catch (UniqueConstraintException)
                 {
