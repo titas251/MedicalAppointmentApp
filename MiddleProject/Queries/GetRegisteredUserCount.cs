@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -17,21 +18,16 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, int>
         {
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IUserRepository _userRepository;
 
-            public Handler(UserManager<ApplicationUser> userManager)
+            public Handler(IUserRepository userRepository)
             {
-                _userManager = userManager;
+                _userRepository = userRepository;
             }
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
-                var userRolesViewModel = new List<UserRolesViewModel>();
-
-                var userCount = await _userManager.Users
-                    .CountAsync();
-
-                return userCount;
+                return await _userRepository.GetUsersCountAsync();
             }
         }
     }

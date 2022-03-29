@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -25,22 +26,18 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, List<UserRolesViewModel>>
         {
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IUserRepository _userRepository;
 
-            public Handler(UserManager<ApplicationUser> userManager)
+            public Handler(IUserRepository userRepository)
             {
-                _userManager = userManager;
+                _userRepository = userRepository;
             }
 
             public async Task<List<UserRolesViewModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var userRolesViewModel = new List<UserRolesViewModel>();
 
-                var users = await _userManager.Users
-                    .OrderBy(user => user.Email)
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync();
+                var users = await _userRepository.GetAllWithPagingAsync(request.Page, request.PageSize);
 
                 foreach (var user in users)
                 {
@@ -54,7 +51,7 @@ namespace MiddleProject.Queries
                         UserName = user.UserName,
                         IsBlackListed = user.IsBlackListed,
                         BlackListedEndDate = user.BlackListedEndDate,
-                        Roles = await _userManager.GetRolesAsync(user)
+                        Roles = await _userRepository.GetUserRolesAsync(user.Id)
                     };
                     userRolesViewModel.Add(viewModel);
                 };

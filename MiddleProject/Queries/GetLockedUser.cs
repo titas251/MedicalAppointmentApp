@@ -4,6 +4,7 @@ using MiddleProject.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -21,17 +22,17 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, BlackedListedUser>
         {
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IUserRepository _userRepository;
 
-            public Handler(UserManager<ApplicationUser> userManager)
+            public Handler(IUserRepository userRepository)
             {
-                _userManager = userManager;
+                _userRepository = userRepository;
             }
 
             public async Task<BlackedListedUser> Handle(Query request, CancellationToken cancellationToken)
             {
                 var blackedListedUser = new BlackedListedUser() { UserId = request.UserId };
-                var user = await _userManager.FindByIdAsync(request.UserId);
+                var user = await _userRepository.GetByIdAsync(request.UserId);
                 blackedListedUser.IsBlackListed = user.IsBlackListed;
                 blackedListedUser.BlackListedEndDate = user.BlackListedEndDate;
 

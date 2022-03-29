@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories;
+using System;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -17,11 +20,11 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly DAL.Repositories.Interfaces.IUserRepository _userRepository;
 
-            public Handler(UserManager<ApplicationUser> userManager)
+            public Handler(DAL.Repositories.Interfaces.IUserRepository userRepository)
             {
-                _userManager = userManager;
+                _userRepository = userRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -30,10 +33,9 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    var user = await _userManager.FindByIdAsync(request.Id);
-                    await _userManager.DeleteAsync(user);
+                    await _userRepository.DeleteAsync(request.Id);
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to delete user" });
                 }

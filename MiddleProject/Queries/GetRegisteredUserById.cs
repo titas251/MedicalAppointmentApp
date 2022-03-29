@@ -4,6 +4,7 @@ using MiddleProject.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -20,17 +21,17 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, UpdateUserModel>
         {
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IUserRepository _userRepository;
 
-            public Handler(UserManager<ApplicationUser> userManager)
+            public Handler(IUserRepository userRepository)
             {
-                _userManager = userManager;
+                _userRepository = userRepository;
             }
 
             public async Task<UpdateUserModel> Handle(Query request, CancellationToken cancellationToken)
             {
 
-                ApplicationUser user = await _userManager.FindByIdAsync(request.Id);
+                ApplicationUser user = await _userRepository.GetByIdAsync(request.Id);
                 var updateUserModel = new UpdateUserModel()
                 {
                     UserId = user.Id,
@@ -40,11 +41,6 @@ namespace MiddleProject.Queries
                 };
                 return updateUserModel;
             }
-        }
-
-        public class Response
-        {
-            public UpdateUserModel User { get; set; }
         }
     }
 }

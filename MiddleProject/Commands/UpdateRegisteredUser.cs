@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
+using System;
 
 namespace MiddleProject.Commands
 {
@@ -17,11 +19,11 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IUserRepository _userRepository;
 
-            public Handler(UserManager<ApplicationUser> userManager)
+            public Handler(IUserRepository userRepository)
             {
-                _userManager = userManager;
+                _userRepository = userRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -30,16 +32,16 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    var user = await _userManager.FindByIdAsync(request.UpdateUser.UserId);
+                    var user = await _userRepository.GetByIdAsync(request.UpdateUser.UserId);
 
                     //set updated user fields
                     user.FirstName = request.UpdateUser.FirstName;
                     user.LastName = request.UpdateUser.LastName;
                     user.PhoneNumber = request.UpdateUser.PhoneNumber;
 
-                    await _userManager.UpdateAsync(user);
+                    await _userRepository.UpdateAsync(user);
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to update user" });
                 }

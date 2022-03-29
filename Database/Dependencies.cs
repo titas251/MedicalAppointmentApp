@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
-using DAL.Repositories;
 using DAL.Repositories.Interfaces;
+using DAL.Repositories;
 
 namespace DAL
 {
@@ -25,6 +25,8 @@ namespace DAL
             //register repositories
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IMedicalSpecialityRepository, MedicalSpecialityRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
 
             return services;
         }

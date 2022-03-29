@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -18,11 +19,11 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly UserManager<ApplicationUser> _userManager;
+            private readonly IUserRepository _userRepository;
 
-            public Handler(UserManager<ApplicationUser> userManager)
+            public Handler(IUserRepository userRepository)
             {
-                _userManager = userManager;
+                _userRepository = userRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -31,15 +32,15 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    var user = await _userManager.FindByIdAsync(request.UserId);
+                    var user = await _userRepository.GetByIdAsync(request.UserId);
 
                     //add 14 day lock
                     user.IsBlackListed = true;
                     user.BlackListedEndDate = DateTime.Today.AddDays(14);
 
-                    var result = await _userManager.UpdateAsync(user);
+                    await _userRepository.UpdateAsync(user);
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to black list user" });
                 }
