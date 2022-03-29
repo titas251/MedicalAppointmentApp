@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MiddleProject.Models;
 using DAL.Repositories;
 using System;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -20,11 +21,11 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private IMedicalSpecialityRepository _medicalSpecialityRepository;
+            private IGenericRepository<MedicalSpeciality> _genericRepository;
 
-            public Handler(IMedicalSpecialityRepository medicalSpecialityRepository)
+            public Handler(IGenericRepository<MedicalSpeciality> genericRepository)
             {
-                _medicalSpecialityRepository = medicalSpecialityRepository;
+                _genericRepository = genericRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -38,8 +39,7 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    await _medicalSpecialityRepository.AddAsync(medicalSpeciality);
-                    await _medicalSpecialityRepository.SaveChangesAsync();
+                    await _genericRepository.AddAsync(medicalSpeciality);
                 }
                 catch (UniqueConstraintException)
                 {

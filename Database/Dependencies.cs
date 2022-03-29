@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
 using DAL.Repositories;
+using DAL.Repositories.Interfaces;
 
 namespace DAL
 {
@@ -22,6 +23,7 @@ namespace DAL
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //register repositories
+            services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IMedicalSpecialityRepository, MedicalSpecialityRepository>();
 
             return services;
