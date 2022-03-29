@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class MedicalSpecialityRepository : Repository<MedicalSpeciality>, IMedicalSpecialityRepository
+    public class MedicalSpecialityRepository : GenericRepository<MedicalSpeciality>, IMedicalSpecialityRepository
     {
         public MedicalSpecialityRepository(ApplicationDbContext context) : base(context)
         {

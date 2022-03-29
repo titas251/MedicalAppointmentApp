@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public interface IMedicalSpecialityRepository : IRepository<MedicalSpeciality>
+    public interface IMedicalSpecialityRepository : IGenericRepository<MedicalSpeciality>
     {
         Task<IEnumerable<MedicalSpeciality>> GetAllWithPagingAsync(int pageNumber, int pageSize);
         Task<int> GetCountAsync();

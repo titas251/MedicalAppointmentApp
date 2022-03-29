@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class, new()
     {
         protected readonly ApplicationDbContext _context;
 
-        public Repository(ApplicationDbContext context)
+        public GenericRepository(ApplicationDbContext context)
         {
             _context = context;
         }

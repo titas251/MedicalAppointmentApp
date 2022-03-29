@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories.Interfaces
 {
-    public interface IRepository<TEntity> where TEntity : class, new()
+    public interface IGenericRepository<TEntity> where TEntity : class, new()
     {
         IEnumerable<TEntity> GetAll();
 
