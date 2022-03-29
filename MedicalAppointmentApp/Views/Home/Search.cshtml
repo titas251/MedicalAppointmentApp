@@ -2,7 +2,10 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
+<div class="text-center">
+    <h1>Search for doctor</h1>
+</div>
+<div style="width:100%;height:10px;" ></div> 
 
 <form asp-controller="Home" asp-action="SearchView" asp-route-pageSize="@ViewBag.PageSize" method="get">
     <div class="input-group">
@@ -13,6 +16,9 @@
         </button>
     </div>
 </form>
+
+<div style="width:100%;height:20px;" ></div> 
+
 @if (Model.Count > 0)
 {
     <div class="container">
