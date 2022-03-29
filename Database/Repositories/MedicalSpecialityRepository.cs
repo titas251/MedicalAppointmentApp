@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class MedicalSpecialityRepository : IMedicalSpecialityRepository
+    public class MedicalSpecialityRepository : Repository<MedicalSpeciality>, IMedicalSpecialityRepository
     {
-        private readonly ApplicationDbContext _context;
-        public MedicalSpecialityRepository(ApplicationDbContext context)
+        private new readonly ApplicationDbContext _context;
+        public MedicalSpecialityRepository(ApplicationDbContext context) : base(context)
         {
-            _context = context;
+           _context = context;
         }
 
         public async Task DeleteAsync(int specialityId)
@@ -22,7 +22,7 @@ namespace DAL.Repositories
             _context.MedicalSpecialities.Remove(await _context.MedicalSpecialities.FindAsync(specialityId));
         }
 
-        public async Task<IEnumerable<MedicalSpeciality>> GetAllAsync(int pageNumber, int pageSize)
+        public async Task<IEnumerable<MedicalSpeciality>> GetAllWithPagingAsync(int pageNumber, int pageSize)
         {
             return await _context.MedicalSpecialities
                     .OrderBy(specialty => specialty.Name)
@@ -34,16 +34,6 @@ namespace DAL.Repositories
         public async Task<int> GetCountAsync()
         {
             return await _context.MedicalSpecialities.CountAsync();
-        }
-
-        public async Task AddAsync(MedicalSpeciality medicalSpeciality)
-        {
-            await _context.MedicalSpecialities.AddAsync(medicalSpeciality);
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MiddleProject.Models;
 using DAL.Repositories;
+using System;
 
 namespace MiddleProject.Commands
 {
@@ -44,7 +45,7 @@ namespace MiddleProject.Commands
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Medical speciality with given name already exists" });
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to create medical speciality" });
                 }

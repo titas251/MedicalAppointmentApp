@@ -1,4 +1,5 @@
 ﻿using DAL.Data.Models;
+using DAL.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,14 +7,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public interface IMedicalSpecialityRepository
+    public interface IMedicalSpecialityRepository : IRepository<MedicalSpeciality>
     {
-        Task<IEnumerable<MedicalSpeciality>> GetAllAsync(int pageNumber, int pageSize);
-        //MedicalSpeciality GetById();
+        Task<IEnumerable<MedicalSpeciality>> GetAllWithPagingAsync(int pageNumber, int pageSize);
         Task<int> GetCountAsync();
-        Task AddAsync(MedicalSpeciality MedicalSpeciality);
-        //void Update(MedicalSpeciality MedicalSpeciality);
         Task DeleteAsync(int specialityId);
-        Task SaveChangesAsync();
     }
 }

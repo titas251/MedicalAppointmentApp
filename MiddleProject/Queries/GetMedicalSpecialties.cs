@@ -38,7 +38,7 @@ namespace MiddleProject.Queries
             public async Task<List<GetMedicalSpecialtyModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var medicalSpecialtiesViewModel = new List<GetMedicalSpecialtyModel>();
-                var specialities = await _medicalSpecialityRepository.GetAllAsync(request.Page, request.PageSize);
+                var specialities = await _medicalSpecialityRepository.GetAllWithPagingAsync(request.Page, request.PageSize);
 
                 foreach (var speciality in specialities)
                 {
