@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -26,27 +26,19 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, List<GetDoctorModel>>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IDoctorRepository _doctorRepository;
             private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            public Handler(IDoctorRepository doctorRepository, IMapper mapper)
             {
-                _context = context;
+                _doctorRepository = doctorRepository;
                 _mapper = mapper;
             }
 
             public async Task<List<GetDoctorModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var doctorsViewModel = new List<GetDoctorModel>();
-                var doctors = await _context.Doctors
-                    .Include(doctor => doctor.MedicalSpeciality)
-                    .Include(doctor => doctor.Schedules)
-                        .ThenInclude(schedule => schedule.Institution)
-                    .OrderBy(doctor => doctor.LastName)
-                        .ThenBy(doctor => doctor.FirstName)
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync();
+                var doctors = await _doctorRepository.GetAllWithPagingAsync(request.Page, request.PageSize);
 
                 foreach (var doctor in doctors)
                 {
@@ -56,11 +48,6 @@ namespace MiddleProject.Queries
 
                 return doctorsViewModel;
             }
-        }
-
-        public class Response
-        {
-            public List<GetDoctorModel> Doctors { get; set; }
         }
     }
 }

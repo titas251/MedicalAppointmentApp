@@ -6,6 +6,7 @@ using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -18,11 +19,10 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly ApplicationDbContext _context;
-
-            public Handler(ApplicationDbContext context)
+            private IInstitutionRepository _institutionRepository;
+            public Handler(IInstitutionRepository institutionRepository)
             {
-                _context = context;
+                _institutionRepository = institutionRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -36,8 +36,7 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    await _context.Institutions.AddAsync(institution);
-                    await _context.SaveChangesAsync();
+                    await _institutionRepository.AddAsync(institution);
                 }
                 catch (UniqueConstraintException)
                 {

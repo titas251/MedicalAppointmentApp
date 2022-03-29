@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -26,18 +27,17 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, bool>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IAppointmentRepository _appointmentRepository;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(IAppointmentRepository appointmentRepository)
             {
-                _context = context;
+                _appointmentRepository = appointmentRepository;
             }
 
             public async Task<bool> Handle(Query request, CancellationToken cancellationToken)
             {
-                var appointmentCount = await _context.Appointments
-                    .AnyAsync(a => a.ApplicationUserId.Equals(request.UserId) && a.AppointmentId.Equals(request.AppointmentId));
-                return appointmentCount;
+                var appointment = await _appointmentRepository.GetAppointmentsByUserIdAndAppointmentIdAsync(request.UserId, request.AppointmentId);
+                return appointment;
             }
         }
     }

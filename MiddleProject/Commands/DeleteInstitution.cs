@@ -5,6 +5,8 @@ using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
+using DAL.Repositories;
 
 namespace MiddleProject.Commands
 {
@@ -17,11 +19,11 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly ApplicationDbContext _context;
 
-            public Handler(ApplicationDbContext context)
+            private IInstitutionRepository _institutionRepository;
+            public Handler(IInstitutionRepository institutionRepository)
             {
-                _context = context;
+                _institutionRepository = institutionRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -30,8 +32,8 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    _context.Institutions.Remove(new Institution { InstitutionId = request.Id });
-                    await _context.SaveChangesAsync();
+                    await _institutionRepository.DeleteAsync(request.Id);
+                    await _institutionRepository.SaveChangesAsync();
                 }
                 catch (DbUpdateException)
                 {

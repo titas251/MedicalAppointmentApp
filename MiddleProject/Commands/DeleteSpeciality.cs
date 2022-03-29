@@ -36,7 +36,7 @@ namespace MiddleProject.Commands
                 }
                 catch (DbUpdateException)
                 {
-                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to delete institution" });
+                    response.AddError(new CustomError { Error = "Failed", Message = "Failed to delete medical specialty" });
                 }
 
                 return response;

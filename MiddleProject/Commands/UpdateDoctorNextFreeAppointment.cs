@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -21,28 +22,26 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly ApplicationDbContext _context;
-            public Handler(ApplicationDbContext context)
+            private readonly IDoctorRepository _doctorRepository;
+
+            public Handler(IDoctorRepository doctorRepository)
             {
-                _context = context;
+                _doctorRepository = doctorRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
             {
                 var response = new CustomResponse();
-                var doctors = await _context.Doctors
-                    .Include(a => a.Schedules)
-                    .ThenInclude(a => a.ScheduleDetails)
-                    .ToListAsync();
+                var doctors = await _doctorRepository.GetAllWithIncludeAsync();
 
                 try
                 {
                     foreach (var doctor in doctors)
                     {
                         doctor.NextFreeAppointmentDate = GetNextFreeAppointment(doctor);
-                        _context.Doctors.Update(doctor);
+                        _doctorRepository.UpdateWithoutSaving(doctor);
                     }
-                    _context.SaveChanges();
+                    await _doctorRepository.SaveChangesAsync();
                 }
                 catch (DbUpdateException)
                 {

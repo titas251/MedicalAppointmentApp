@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -27,12 +28,12 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, List<GetAppointmentModel>>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IAppointmentRepository _appointmentRepository;
             private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            public Handler(IAppointmentRepository appointmentRepository, IMapper mapper)
             {
-                _context = context;
+                _appointmentRepository = appointmentRepository;
                 _mapper = mapper;
             }
 
@@ -40,13 +41,7 @@ namespace MiddleProject.Queries
             {
                 var appointmentsViewModel = new List<GetAppointmentModel>();
 
-                var appointments = await _context.Appointments
-                    .Include(a => a.Doctor)
-                    .Where(a => a.ApplicationUserId.Equals(request.Id))
-                    .OrderBy(a => a.StartDateTime)
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync();
+                var appointments = await _appointmentRepository.GetAppointmentsByUserIdAsync(request.Id, request.Page, request.PageSize);
 
                 foreach (var appointment in appointments)
                 {

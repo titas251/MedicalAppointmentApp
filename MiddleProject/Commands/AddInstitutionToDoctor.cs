@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MiddleProject.Models;
 using DAL.Data;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -25,11 +26,18 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IDoctorRepository _doctorRepository;
+            private readonly IInstitutionRepository _institutionRepository;
+            private readonly IScheduleDetailRepository _scheduleDetailRepository;
             private readonly IMapper _mapper;
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            public Handler(IDoctorRepository doctorRepository, 
+                IInstitutionRepository institutionRepository, 
+                IScheduleDetailRepository scheduleDetailRepository, 
+                IMapper mapper)
             {
-                _context = context;
+                _doctorRepository = doctorRepository;
+                _institutionRepository = institutionRepository;
+                _scheduleDetailRepository = scheduleDetailRepository;
                 _mapper = mapper;
             }
 
@@ -37,8 +45,8 @@ namespace MiddleProject.Commands
             {
                 var response = new CustomResponse();
 
-                var doctor = await _context.Doctors.FindAsync(request.DoctorId);
-                var institution = await _context.Institutions.FindAsync(request.InstitutionId);
+                var doctor = await _doctorRepository.GetByIdAsync(request.DoctorId);
+                var institution = await _institutionRepository.GetByIdAsync(request.InstitutionId);
 
                 var schedule = new Schedule
                 {
@@ -53,7 +61,7 @@ namespace MiddleProject.Commands
                     {
                         var scheduleDetailModel = _mapper.Map<ScheduleDetail>(scheduleDetail);
                         scheduleDetailModel.Schedule = schedule;
-                        _context.ScheduleDetails.Add(scheduleDetailModel);
+                        _scheduleDetailRepository.Add(scheduleDetailModel);
                     }
                 }
 
@@ -64,8 +72,8 @@ namespace MiddleProject.Commands
                     //add next free appoitment date
                     doctor.NextFreeAppointmentDate = GetNextFreeAppointment(doctor);
 
-                    _context.Doctors.Update(doctor);
-                    _context.SaveChanges();
+                    _doctorRepository.UpdateWithoutSaving(doctor);
+                    await _doctorRepository.SaveChangesAsync();
                 }
                 catch (DbUpdateException)
                 {

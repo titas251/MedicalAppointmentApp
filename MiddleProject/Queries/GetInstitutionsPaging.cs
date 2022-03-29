@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -26,25 +26,19 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, List<GetInstitutionModel>>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IInstitutionRepository _institutionRepository;
             private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            public Handler(IInstitutionRepository institutionRepository, IMapper mapper)
             {
-                _context = context;
+                _institutionRepository = institutionRepository;
                 _mapper = mapper;
             }
 
             public async Task<List<GetInstitutionModel>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var institutionsViewModel = new List<GetInstitutionModel>();
-                var institutions = await _context.Institutions
-                    .Include(institution => institution.Schedules)
-                        .ThenInclude(schedule => schedule.Doctor)
-                    .OrderBy(institution => institution.InstitutionId)
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync();
+                var institutions = await _institutionRepository.GetAllWithPagingAsync(request.Page, request.PageSize);
 
                 foreach (var institution in institutions)
                 {

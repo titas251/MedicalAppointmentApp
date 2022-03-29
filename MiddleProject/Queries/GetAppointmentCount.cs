@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -15,17 +16,16 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, int>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IAppointmentRepository _appointmentRepository;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(IAppointmentRepository appointmentRepository)
             {
-                _context = context;
+                _appointmentRepository = appointmentRepository;
             }
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
-                var appointmentCount = await _context.Appointments
-                    .CountAsync();
+                var appointmentCount = await _appointmentRepository.GetCountAsync();
 
                 return appointmentCount;
             }

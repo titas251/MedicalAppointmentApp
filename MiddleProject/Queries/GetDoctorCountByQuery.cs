@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -21,22 +22,16 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, int>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IDoctorRepository _doctorRepository;
 
-            public Handler(ApplicationDbContext context)
+            public Handler(IDoctorRepository doctorRepository)
             {
-                _context = context;
+                _doctorRepository = doctorRepository;
             }
 
             public async Task<int> Handle(Query request, CancellationToken cancellationToken)
             {
-                var doctorCount = await _context.Doctors
-                    .Where(doctor => doctor.FirstName.Contains(request.StringQuery)
-                    || doctor.LastName.Contains(request.StringQuery)
-                    || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
-                    || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
-                    || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
-                    .CountAsync();
+                var doctorCount = await _doctorRepository.GetCountByQueryAsync(request.StringQuery);
 
                 return doctorCount;
             }

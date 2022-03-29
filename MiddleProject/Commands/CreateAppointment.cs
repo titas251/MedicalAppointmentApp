@@ -7,7 +7,7 @@ using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
-
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -20,12 +20,12 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IAppointmentRepository _appointmentRepository;
             private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            public Handler(IAppointmentRepository appointmentRepository, IMapper mapper)
             {
-                _context = context;
+                _appointmentRepository = appointmentRepository;
                 _mapper = mapper;
             }
 
@@ -36,8 +36,7 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    await _context.Appointments.AddAsync(appointment);
-                    await _context.SaveChangesAsync();
+                    await _appointmentRepository.AddAsync(appointment);
                 }
                 catch (ReferenceConstraintException)
                 {

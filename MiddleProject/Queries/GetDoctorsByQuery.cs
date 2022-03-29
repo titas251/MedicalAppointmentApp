@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -31,35 +32,18 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, List<GetDoctorsWithNextAppointments>>
         {
-            private readonly ApplicationDbContext _context;
+            private readonly IDoctorRepository _doctorRepository;
             private readonly IMapper _mapper;
 
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            public Handler(IDoctorRepository doctorRepository, IMapper mapper)
             {
-                _context = context;
+                _doctorRepository = doctorRepository;
                 _mapper = mapper;
             }
 
             public async Task<List<GetDoctorsWithNextAppointments>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var doctors = await _context.Doctors
-                    .Include(doctor => doctor.MedicalSpeciality)
-                    .Include(doctor => doctor.Appointments)
-                    .Include(doctor => doctor.Schedules)
-                        .ThenInclude(schedule => schedule.ScheduleDetails)
-                    .Include(doctor => doctor.Schedules)
-                        .ThenInclude(schedule => schedule.Institution)
-                    .Where(doctor => doctor.FirstName.Contains(request.StringQuery)
-                    || doctor.LastName.Contains(request.StringQuery)
-                    || (doctor.FirstName + " " + doctor.LastName).Contains(request.StringQuery)
-                    || doctor.MedicalSpeciality.Name.Contains(request.StringQuery)
-                    || doctor.Schedules.Any(c => c.Institution.Name.Contains(request.StringQuery)))
-                    .OrderByDescending(doctor => doctor.NextFreeAppointmentDate.HasValue)
-                        .ThenBy(doctor => doctor.NextFreeAppointmentDate)
-                        .ThenBy(doctor => doctor.LastName)
-                    .Skip((request.Page - 1) * request.PageSize)
-                    .Take(request.PageSize)
-                    .ToListAsync();
+                var doctors = await _doctorRepository.GetByQueryAsync(request.StringQuery, request.Page, request.PageSize);
 
                 //getting sorted doctors
                 var doctorsWithNextAppointments = GetDoctorWithNextAppointment(doctors, request.NumOfAppointmentsToGet);

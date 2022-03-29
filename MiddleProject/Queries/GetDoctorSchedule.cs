@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {
@@ -28,20 +29,15 @@ namespace MiddleProject.Queries
 
         public class Handler : IRequestHandler<Query, List<ScheduleDetail>>
         {
-            private readonly ApplicationDbContext _context;
-            public Handler(ApplicationDbContext context, IMapper mapper)
+            private readonly IScheduleDetailRepository _scheduleDetailRepository;
+            public Handler(IScheduleDetailRepository scheduleDetailRepository)
             {
-                _context = context;
+                _scheduleDetailRepository = scheduleDetailRepository;
             }
 
             public async Task<List<ScheduleDetail>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var schedule = await _context.ScheduleDetails.Include(s => s.Schedule).ThenInclude(s => s.Institution)
-                    .Where(s => s.Schedule.DoctorId.Equals(request.DoctorId)
-                    && s.Schedule.Institution.Address.Equals(request.Address)
-                    && s.Schedule.StartDate <= request.CurrentDate.AddDays(7)
-                    && s.Schedule.EndDate > request.CurrentDate)
-                    .ToListAsync();
+                var schedule = await _scheduleDetailRepository.GetDoctorScheduleAsync(request.DoctorId, request.Address, request.CurrentDate);
 
                 return schedule;
             }

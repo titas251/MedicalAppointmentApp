@@ -26,7 +26,10 @@ namespace DAL
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IMedicalSpecialityRepository, MedicalSpecialityRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
-
+            services.AddTransient<IInstitutionRepository, InstitutionRepository>();
+            services.AddTransient<IDoctorRepository, DoctorRepository>();
+            services.AddTransient<IAppointmentRepository, AppointmentRepository>();
+            services.AddTransient<IScheduleDetailRepository, ScheduleDetailRepository>();
 
             return services;
         }
