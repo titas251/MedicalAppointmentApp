@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Mediator.Commands;
-using MedicalAppointmentApp.Mediator.Queries;
-using MedicalAppointmentApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiddleProject.Commands;
+using MiddleProject.Models;
+using MiddleProject.Queries;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -81,11 +81,7 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
             ViewBag.CurrentFilter = userId;
-
-            int appointmentCount = await _mediator.Send(new GetAppointmentCountByUserId.Query(userId));
-            if (appointmentCount == 0) ViewBag.HasNextPage = true;
-            else ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
-
+            ViewBag.AppointmentCount = await _mediator.Send(new GetAppointmentCountByUserId.Query(userId));
             var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId, pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
@@ -135,7 +131,7 @@ namespace MedicalAppointmentApp.Controllers
             if (!userAppointments)
             {
                 var response = new CustomResponse();
-                response.AddError(new CustomError { Error = "Failed", Message = "You can only delete your appointments"});
+                response.AddError(new CustomError { Error = "Failed", Message = "You can only delete your appointments" });
                 TempData.Put("CustomResponse", response);
             }
             return userAppointments;
@@ -149,11 +145,7 @@ namespace MedicalAppointmentApp.Controllers
         {
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
-
-            int appointmentCount = await _mediator.Send(new GetAppointmentCount.Query());
-            if (appointmentCount == 0) ViewBag.HasNextPage = true;
-            else ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
-
+            ViewBag.AppointmentCount = await _mediator.Send(new GetAppointmentCount.Query());
             var appointmentsListViewModel = await _mediator.Send(new GetAppointments.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");

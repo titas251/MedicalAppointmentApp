@@ -1,6 +1,6 @@
-﻿using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Models;
+﻿using DAL.Data;
 using Microsoft.EntityFrameworkCore;
+using MiddleProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

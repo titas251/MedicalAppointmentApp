@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Appointment List";
     CustomResponse statusMsg = ViewBag.CustomResponse;
+    int appointmentCount = (int)ViewBag.AppointmentCount;
 }
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -61,7 +62,12 @@
 
 @{
     var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
-    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+    var nextDisabled = true;
+
+    if (appointmentCount != 0)
+    {
+        nextDisabled = Math.Ceiling((double)appointmentCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+    }
 }
 
 <a asp-action="GetAppointmentsByUserId"
@@ -75,7 +81,7 @@
    asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
    asp-route-userId="@ViewBag.CurrentFilter"
    asp-route-pageSize="@ViewBag.PageSize"
-   class="btn btn-default @nextDisabled">
+   class="btn btn-default @(nextDisabled ? "disabled" : "")">
     Next
 </a>
 

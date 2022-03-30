@@ -1,8 +1,9 @@
-﻿@using MedicalAppointmentApp.Models
+﻿@using MiddleProject.Models
 @model List<UserRolesViewModel>
 @{
     ViewData["Title"] = "RegisteredUsers";
     CustomResponse statusMsg = ViewBag.CustomResponse;
+    int userCount = (int)ViewBag.UserCount;
 }
 
 <h1>Registered users</h1>
@@ -100,9 +101,15 @@
         </div>
     </div>
 </div>
+
 @{
     var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
-    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+    var nextDisabled = true;
+
+    if (userCount != 0)
+    {
+        nextDisabled = Math.Ceiling((double)userCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+    }
 }
 
 <a asp-action="RegisteredUsers"
@@ -114,7 +121,7 @@
 <a asp-action="RegisteredUsers"
    asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
    asp-route-pageSize="@ViewBag.PageSize"
-   class="btn btn-default @nextDisabled">
+   class="btn btn-default @(nextDisabled ? "disabled" : "")">
     Next
 </a>
 

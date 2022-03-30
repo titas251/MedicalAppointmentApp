@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Mediator.Commands;
-using MedicalAppointmentApp.Models;
-using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using MiddleProject.Commands;
+using MiddleProject.Models;
+using MiddleProject.Queries;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -35,11 +34,7 @@ namespace MedicalAppointmentApp.Controllers
         {
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
-
-            int specialtyCount = await _mediator.Send(new GetMedicalSpecialtyCount.Query());
-            if (specialtyCount == 0) ViewBag.HasNextPage = true;
-            else ViewBag.HasNextPage = Math.Ceiling((double)specialtyCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
-
+            ViewBag.SpecialityCount = await _mediator.Send(new GetMedicalSpecialtyCount.Query());
             var specialitiesViewModel = await _mediator.Send(new GetMedicalSpecialties.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");

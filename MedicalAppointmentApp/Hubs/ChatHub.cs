@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Hubs
@@ -11,7 +8,7 @@ namespace MedicalAppointmentApp.Hubs
         public async Task SendMessage(string message)
         {
             var user = this.Context.User.Identity.Name;
-            if (user == "admin@gmail.com") 
+            if (user == "admin@gmail.com")
             {
                 user = "admin";
             }

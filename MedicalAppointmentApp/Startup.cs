@@ -1,17 +1,16 @@
+using DAL;
+using DAL.Data;
+using DAL.Data.Models;
 using MediatR;
-using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
 using MedicalAppointmentApp.Hubs;
-using MedicalAppointmentApp.Models.MapperProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Quartz;
+using MiddleProject;
 using System;
 
 
@@ -29,17 +28,17 @@ namespace MedicalAppointmentApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging());
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //Register DbContext from DAL project
+            services.RegisterDbContext(Configuration);
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddRouting(options => options.LowercaseUrls = true);
             services.AddMediatR(typeof(Startup).Assembly);
             services.AddSignalR();
+
+            // Register the MediatR request handlers
+            services.RegisterRequestHandlers();
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -113,10 +112,8 @@ namespace MedicalAppointmentApp
                 facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
             });
 
-            services.AddAutoMapper(c =>
-            {
-                c.AddProfile<WebMappingProfile>();
-            }, typeof(Startup));
+            //register automapper
+            services.RegisterMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

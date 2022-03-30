@@ -1,11 +1,9 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Commands;
-using MedicalAppointmentApp.Mediator.Commands;
-using MedicalAppointmentApp.Models;
-using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using MiddleProject.Commands;
+using MiddleProject.Models;
+using MiddleProject.Queries;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -35,11 +33,7 @@ namespace MedicalAppointmentApp.Controllers
 
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
-
-            int userCount = await _mediator.Send(new GetRegisteredUserCount.Query());
-            if (userCount == 0) ViewBag.HasNextPage = true;
-            else ViewBag.HasNextPage = Math.Ceiling((double)userCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
-
+            ViewBag.UserCount = await _mediator.Send(new GetRegisteredUserCount.Query());
             var userRolesViewModel = await _mediator.Send(new GetRegisteredUsers.Query(pageNumber ?? 1, pageSize ?? 10));
 
             return View(userRolesViewModel);

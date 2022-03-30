@@ -1,5 +1,5 @@
-﻿using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
+﻿using DAL.Data;
+using DAL.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
