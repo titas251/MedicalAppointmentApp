@@ -1,12 +1,10 @@
-﻿using MedicalAppointmentApp.Data;
-using MedicalAppointmentApp.Data.Models;
+﻿using DAL.Data;
+using DAL.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BackgroundJobs.UpdateAppointment

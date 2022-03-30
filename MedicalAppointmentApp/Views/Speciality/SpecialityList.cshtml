@@ -1,8 +1,9 @@
-﻿@using MedicalAppointmentApp.Models
+﻿@using MiddleProject.Models
 @model List<GetMedicalSpecialtyModel>
 @{
     ViewData["Title"] = "Spelialities";
     CustomResponse statusMsg = ViewBag.CustomResponse;
+    int specialityCount = (int)ViewBag.SpecialityCount;
 }
 
 <h1>Medical specialities</h1>
@@ -13,8 +14,9 @@
 {
     <partial name="_StatusMessage" for="@statusMsg" />
 }
-
+<div style="width:100%;height:10px;" ></div> 
 <input type="button" class="btn btn-info" value="Create Medical Speciality" onclick="location.href='@Url.Action("CreateMedicalSpeciality", "Speciality")'" />
+<div style="width:100%;height:20px;" ></div> 
 
 <div class="container">
     <div class="row">
@@ -56,7 +58,12 @@
 
 @{
     var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
-    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+    var nextDisabled = true;
+
+    if (specialityCount != 0)
+    {
+        nextDisabled = Math.Ceiling((double)specialityCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+    }
 }
 
 <a asp-action="SpecialityList"
@@ -68,7 +75,7 @@
 <a asp-action="SpecialityList"
    asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
    asp-route-pageSize="@ViewBag.PageSize"
-   class="btn btn-default @nextDisabled">
+   class="btn btn-default @(nextDisabled ? "disabled" : "")">
     Next
 </a>
 

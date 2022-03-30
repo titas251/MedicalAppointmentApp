@@ -1,6 +1,6 @@
 ﻿using BackgroundJobs.EmailSending;
 using BackgroundJobs.UpdateAppointment;
-using MedicalAppointmentApp.Data;
+using DAL.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

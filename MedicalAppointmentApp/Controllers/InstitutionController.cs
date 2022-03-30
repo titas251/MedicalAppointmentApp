@@ -1,11 +1,9 @@
 ﻿using MediatR;
-using MedicalAppointmentApp.Mediator.Commands;
-using MedicalAppointmentApp.Mediator.Queries;
-using MedicalAppointmentApp.Models;
-using MedicalAppointmentApp.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using MiddleProject.Commands;
+using MiddleProject.Models;
+using MiddleProject.Queries;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -36,11 +34,7 @@ namespace MedicalAppointmentApp.Controllers
         {
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
-
-            int institutionCount = await _mediator.Send(new GetInstitutionCount.Query());
-            if (institutionCount == 0) ViewBag.HasNextPage = true;
-            else ViewBag.HasNextPage = Math.Ceiling((double)institutionCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
-
+            ViewBag.InstitutionCount = await _mediator.Send(new GetInstitutionCount.Query());
             var institutionsViewModel = await _mediator.Send(new GetInstitutionsPaging.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
@@ -54,7 +48,7 @@ namespace MedicalAppointmentApp.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateInstitution([FromForm] CreateInstitutionModel institutionModel)
+        public async Task<IActionResult> CreateInstitution([FromForm] MiddleProject.Models.CreateInstitutionModel institutionModel)
         {
             var response = await _mediator.Send(new CreateInstitution.Command
             {
