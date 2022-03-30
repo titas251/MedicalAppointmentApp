@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Doctors";
     CustomResponse statusMsg = ViewBag.CustomResponse;
+    int doctorCount = (int)ViewBag.DoctorCount;
 }
 
 <h1>Doctors</h1>
@@ -80,7 +81,12 @@
 
 @{
     var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
-    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+    var nextDisabled = true;
+
+    if (doctorCount != 0)
+    {
+         nextDisabled = Math.Ceiling((double)doctorCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+    }
 }
 
 <a asp-action="DoctorList"
