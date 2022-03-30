@@ -1,12 +1,7 @@
-﻿using MediatR;
-using DAL.Data.Models;
-using MiddleProject.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using DAL.Repositories.Interfaces;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {

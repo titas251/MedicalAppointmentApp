@@ -1,9 +1,7 @@
-﻿using MediatR;
-using DAL.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using DAL.Repositories;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using DAL.Repositories;
 
 namespace MiddleProject.Queries
 {

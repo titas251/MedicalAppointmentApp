@@ -1,14 +1,11 @@
-﻿using EntityFramework.Exceptions.Common;
+﻿using DAL.Data.Models;
+using DAL.Repositories.Interfaces;
+using EntityFramework.Exceptions.Common;
 using MediatR;
-using DAL.Data;
-using DAL.Data.Models;
-using Microsoft.EntityFrameworkCore;
+using MiddleProject.Models;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MiddleProject.Models;
-using DAL.Repositories;
-using System;
-using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {

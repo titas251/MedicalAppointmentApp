@@ -1,8 +1,5 @@
 ﻿using DAL.Data.Models;
-using DAL.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Repositories.Interfaces

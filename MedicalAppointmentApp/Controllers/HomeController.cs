@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using MiddleProject.Queries;
-using MiddleProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
+using MiddleProject.Models;
+using MiddleProject.Queries;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers
@@ -47,7 +46,7 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageSize = pageSize ?? 10;
             ViewBag.DoctorCount = await _mediator.Send(new GetDoctorCountByQuery.Query(q ?? ""));
             var doctorsViewModel = await _mediator.Send(new GetDoctorsByQuery.Query(q ?? "", numOfAppointmentsToGet, pageNumber ?? 1, pageSize ?? 10));
-            
+
             return View("Search", doctorsViewModel);
         }
 

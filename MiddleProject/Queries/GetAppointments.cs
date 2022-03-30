@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
+using DAL.Repositories.Interfaces;
 using MediatR;
-using DAL.Data;
 using MiddleProject.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Queries
 {

@@ -1,5 +1,4 @@
 ﻿using DAL.Data;
-using DAL.Data;
 using Microsoft.Extensions.Logging;
 using Quartz;
 using SendGrid;

@@ -1,6 +1,6 @@
 ﻿using DAL.Data;
-using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
+using MiddleProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

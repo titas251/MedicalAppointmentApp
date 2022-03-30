@@ -1,12 +1,9 @@
-﻿using MediatR;
-using DAL.Data.Models;
+﻿using DAL.Repositories.Interfaces;
+using MediatR;
 using MiddleProject.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DAL.Repositories.Interfaces;
-using System;
 
 namespace MiddleProject.Commands
 {

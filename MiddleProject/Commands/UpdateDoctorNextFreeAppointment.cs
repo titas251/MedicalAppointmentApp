@@ -1,15 +1,11 @@
-﻿using AutoMapper;
+﻿using DAL.Data.Models;
+using DAL.Repositories.Interfaces;
 using MediatR;
-using DAL.Data;
-using DAL.Data.Models;
 using MiddleProject.Models;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {

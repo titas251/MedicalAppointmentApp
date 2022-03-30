@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
-using MediatR;
 using DAL.Data.Models;
+using DAL.Repositories.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MiddleProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MiddleProject.Models;
-using DAL.Data;
-using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
 {
@@ -30,9 +29,9 @@ namespace MiddleProject.Commands
             private readonly IInstitutionRepository _institutionRepository;
             private readonly IScheduleDetailRepository _scheduleDetailRepository;
             private readonly IMapper _mapper;
-            public Handler(IDoctorRepository doctorRepository, 
-                IInstitutionRepository institutionRepository, 
-                IScheduleDetailRepository scheduleDetailRepository, 
+            public Handler(IDoctorRepository doctorRepository,
+                IInstitutionRepository institutionRepository,
+                IScheduleDetailRepository scheduleDetailRepository,
                 IMapper mapper)
             {
                 _doctorRepository = doctorRepository;

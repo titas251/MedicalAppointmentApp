@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using MiddleProject.Commands;
-using MiddleProject.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiddleProject.Commands;
 using MiddleProject.Models;
+using MiddleProject.Queries;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -131,7 +131,7 @@ namespace MedicalAppointmentApp.Controllers
             if (!userAppointments)
             {
                 var response = new CustomResponse();
-                response.AddError(new CustomError { Error = "Failed", Message = "You can only delete your appointments"});
+                response.AddError(new CustomError { Error = "Failed", Message = "You can only delete your appointments" });
                 TempData.Put("CustomResponse", response);
             }
             return userAppointments;

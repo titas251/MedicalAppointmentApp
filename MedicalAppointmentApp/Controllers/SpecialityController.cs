@@ -1,10 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiddleProject.Commands;
 using MiddleProject.Models;
 using MiddleProject.Queries;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace MedicalAppointmentApp.Controllers

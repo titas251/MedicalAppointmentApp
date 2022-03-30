@@ -1,12 +1,11 @@
 ﻿using DAL.Data;
 using DAL.Data.Models;
+using DAL.Repositories;
+using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using System.Configuration;
-using DAL.Repositories.Interfaces;
-using DAL.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DAL
 {

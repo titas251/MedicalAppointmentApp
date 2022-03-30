@@ -1,12 +1,10 @@
 ﻿using MediatR;
-using MiddleProject.Commands;
-using MiddleProject.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiddleProject.Commands;
 using MiddleProject.Models;
 using MiddleProject.Models.ViewModels;
-using System;
-using System.Collections.Generic;
+using MiddleProject.Queries;
 using System.Threading.Tasks;
 
 
