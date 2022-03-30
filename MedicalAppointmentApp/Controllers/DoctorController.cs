@@ -91,18 +91,10 @@ namespace MedicalAppointmentApp.Controllers
 
             var institutionsViewModel = await _mediator.Send(new GetInstitutionsPaging.Query(pageNumber ?? 1, pageSize ?? 10));
 
-            List<ScheduleDetailModel> scheduleDetails = new List<ScheduleDetailModel>();
-            for (int i = 0; i < 7; i++)
-            {
-                var scheduleDetail = new ScheduleDetailModel { Day = (DayOfWeek)i };
-                scheduleDetails.Add(scheduleDetail);
-            }
-
             CreateInstitutionDoctorViewModel createInstitutionDoctorViewModel = new CreateInstitutionDoctorViewModel()
             {
                 DoctorId = id,
                 Institutions = institutionsViewModel,
-                scheduleDetails = scheduleDetails
             };
             return View("AddInstitutionToDoctor", createInstitutionDoctorViewModel);
         }

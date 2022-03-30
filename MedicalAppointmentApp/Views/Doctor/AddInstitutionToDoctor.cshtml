@@ -2,6 +2,14 @@
 @model CreateInstitutionDoctorViewModel
 @{
     ViewData["Title"] = "Add Institution";
+
+    List<ScheduleDetailModel> scheduleDetails = new List<ScheduleDetailModel>();
+    for (int k = 0; k < 7; k++)
+    {
+        var scheduleDetail = new ScheduleDetailModel { Day = (DayOfWeek)k };
+        scheduleDetails.Add(scheduleDetail);
+    }
+    Model.scheduleDetails = scheduleDetails;
 }
 
 <style>
