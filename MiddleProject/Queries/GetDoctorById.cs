@@ -34,9 +34,7 @@ namespace MiddleProject.Queries
 
             public async Task<GetDoctorModel> Handle(Query request, CancellationToken cancellationToken)
             {
-
-                var doctor = _doctorRepository.GetByIdWithIncludeAsync(request.Id);
-
+                var doctor = await _doctorRepository.GetByIdWithIncludeAsync(request.Id);
                 var doctorViewModel = _mapper.Map<GetDoctorModel>(doctor);
 
                 return doctorViewModel;

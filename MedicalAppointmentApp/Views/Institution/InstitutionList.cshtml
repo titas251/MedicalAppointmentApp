@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Institutions";
     CustomResponse statusMsg = ViewBag.CustomResponse;
+    int institutionCount = (int)ViewBag.InstitutionCount;
 }
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -70,7 +71,12 @@
 
 @{
     var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
-    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+    var nextDisabled = true;
+
+    if (institutionCount != 0)
+    {
+        nextDisabled = Math.Ceiling((double)institutionCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+    }
 }
 
 <a asp-action="InstitutionList"
@@ -82,7 +88,7 @@
 <a asp-action="InstitutionList"
    asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
    asp-route-pageSize="@ViewBag.PageSize"
-   class="btn btn-default @nextDisabled">
+   class="btn btn-default @(nextDisabled ? "disabled" : "")">
     Next
 </a>
 

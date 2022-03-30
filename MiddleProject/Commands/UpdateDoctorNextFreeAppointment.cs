@@ -43,7 +43,7 @@ namespace MiddleProject.Commands
                     }
                     await _doctorRepository.SaveChangesAsync();
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to update doctors" });
                 }

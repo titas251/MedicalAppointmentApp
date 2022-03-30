@@ -61,9 +61,10 @@ namespace MiddleProject.Commands
                     {
                         var scheduleDetailModel = _mapper.Map<ScheduleDetail>(scheduleDetail);
                         scheduleDetailModel.Schedule = schedule;
-                        _scheduleDetailRepository.Add(scheduleDetailModel);
+                        _scheduleDetailRepository.AddWithoutSaving(scheduleDetailModel);
                     }
                 }
+                await _scheduleDetailRepository.SaveChangesAsync();
 
                 try
                 {

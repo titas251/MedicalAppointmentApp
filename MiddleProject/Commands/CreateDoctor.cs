@@ -20,11 +20,11 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly IDoctorRepository _doctorRepository;
+            private readonly IGenericRepository<Doctor> _genericRepository;
 
-            public Handler(IDoctorRepository doctorRepository)
+            public Handler(IGenericRepository<Doctor> genericRepository)
             {
-                _doctorRepository = doctorRepository;
+                _genericRepository = genericRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -41,7 +41,7 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    await _doctorRepository.AddAsync(doctor);
+                    await _genericRepository.AddAsync(doctor);
                 }
                 catch (UniqueConstraintException)
                 {
@@ -51,7 +51,7 @@ namespace MiddleProject.Commands
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Medical speciality id doesn't exist" });
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to create doctor" });
                 }

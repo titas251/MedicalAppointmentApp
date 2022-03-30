@@ -16,7 +16,7 @@ namespace DAL.Repositories
         {
         }
 
-        public void Add(ScheduleDetail scheduleDetail)
+        public void AddWithoutSaving(ScheduleDetail scheduleDetail)
         {
             _context.ScheduleDetails.Add(scheduleDetail);
         }

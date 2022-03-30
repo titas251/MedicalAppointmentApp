@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using DAL.Repositories;
+using System;
 
 namespace MiddleProject.Commands
 {
@@ -34,7 +35,7 @@ namespace MiddleProject.Commands
                     await _medicalSpecialityRepository.DeleteAsync(request.Id);
                     await _medicalSpecialityRepository.SaveChangesAsync();
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to delete medical specialty" });
                 }

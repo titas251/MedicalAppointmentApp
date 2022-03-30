@@ -85,7 +85,7 @@
 
     if (doctorCount != 0)
     {
-         nextDisabled = Math.Ceiling((double)doctorCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+        nextDisabled = Math.Ceiling((double)doctorCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
     }
 }
 
@@ -98,7 +98,7 @@
 <a asp-action="DoctorList"
    asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
    asp-route-pageSize="@ViewBag.PageSize"
-   class="btn btn-default @nextDisabled">
+   class="btn btn-default @(nextDisabled ? "disabled" : "")">
     Next
 </a>
 

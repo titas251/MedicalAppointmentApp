@@ -9,6 +9,6 @@ namespace DAL.Repositories.Interfaces
     public interface IScheduleDetailRepository : IGenericRepository<ScheduleDetail>
     {
         Task<List<ScheduleDetail>> GetDoctorScheduleAsync(int doctorId, string address, DateTime currentDate);
-        void Add(ScheduleDetail scheduleDetail);
+        void AddWithoutSaving(ScheduleDetail scheduleDetail);
     }
 }

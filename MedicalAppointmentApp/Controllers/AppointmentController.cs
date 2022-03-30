@@ -81,11 +81,7 @@ namespace MedicalAppointmentApp.Controllers
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
             ViewBag.CurrentFilter = userId;
-
-            int appointmentCount = await _mediator.Send(new GetAppointmentCountByUserId.Query(userId));
-            if (appointmentCount == 0) ViewBag.HasNextPage = true;
-            else ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
-
+            ViewBag.AppointmentCount = await _mediator.Send(new GetAppointmentCountByUserId.Query(userId));
             var appointmentsListViewModel = await _mediator.Send(new GetAppointmentsByUserId.Query(userId, pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");
@@ -149,11 +145,7 @@ namespace MedicalAppointmentApp.Controllers
         {
             ViewBag.PageNumber = pageNumber ?? 1;
             ViewBag.PageSize = pageSize ?? 10;
-
-            int appointmentCount = await _mediator.Send(new GetAppointmentCount.Query());
-            if (appointmentCount == 0) ViewBag.HasNextPage = true;
-            else ViewBag.HasNextPage = Math.Ceiling((double)appointmentCount / (double)(pageSize ?? 10)) == (pageNumber ?? 1);
-
+            ViewBag.AppointmentCount = await _mediator.Send(new GetAppointmentCount.Query());
             var appointmentsListViewModel = await _mediator.Send(new GetAppointments.Query(pageNumber ?? 1, pageSize ?? 10));
 
             var customResponse = TempData.Get<CustomResponse>("CustomResponse");

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DAL.Repositories.Interfaces;
 using DAL.Repositories;
+using System;
 
 namespace MiddleProject.Commands
 {
@@ -35,7 +36,7 @@ namespace MiddleProject.Commands
                     await _institutionRepository.DeleteAsync(request.Id);
                     await _institutionRepository.SaveChangesAsync();
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to delete institution" });
                 }

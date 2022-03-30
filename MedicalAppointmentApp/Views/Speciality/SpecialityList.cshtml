@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Spelialities";
     CustomResponse statusMsg = ViewBag.CustomResponse;
+    int specialityCount = (int)ViewBag.SpecialityCount;
 }
 
 <h1>Medical specialities</h1>
@@ -57,7 +58,12 @@
 
 @{
     var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
-    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+    var nextDisabled = true;
+
+    if (specialityCount != 0)
+    {
+        nextDisabled = Math.Ceiling((double)specialityCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+    }
 }
 
 <a asp-action="SpecialityList"
@@ -69,7 +75,7 @@
 <a asp-action="SpecialityList"
    asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
    asp-route-pageSize="@ViewBag.PageSize"
-   class="btn btn-default @nextDisabled">
+   class="btn btn-default @(nextDisabled ? "disabled" : "")">
     Next
 </a>
 

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using DAL.Repositories.Interfaces;
+using System;
 
 namespace MiddleProject.Commands
 {
@@ -19,10 +20,10 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private IInstitutionRepository _institutionRepository;
-            public Handler(IInstitutionRepository institutionRepository)
+            private readonly IGenericRepository<Institution> _genericRepository;
+            public Handler(IGenericRepository<Institution> genericRepository)
             {
-                _institutionRepository = institutionRepository;
+                _genericRepository = genericRepository;
             }
 
             public async Task<CustomResponse> Handle(Command request, CancellationToken cancellationToken)
@@ -36,13 +37,13 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    await _institutionRepository.AddAsync(institution);
+                    await _genericRepository.AddAsync(institution);
                 }
                 catch (UniqueConstraintException)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Institution with given name and address already exists" });
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to create institution" });
                 }

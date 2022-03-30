@@ -7,6 +7,7 @@ using MiddleProject.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
+using System;
 using DAL.Repositories.Interfaces;
 
 namespace MiddleProject.Commands
@@ -20,12 +21,12 @@ namespace MiddleProject.Commands
 
         public class Handler : IRequestHandler<Command, CustomResponse>
         {
-            private readonly IAppointmentRepository _appointmentRepository;
+            private readonly IGenericRepository<Appointment> _genericRepository;
             private readonly IMapper _mapper;
 
-            public Handler(IAppointmentRepository appointmentRepository, IMapper mapper)
+            public Handler(IGenericRepository<Appointment> genericRepository, IMapper mapper)
             {
-                _appointmentRepository = appointmentRepository;
+                _genericRepository = genericRepository;
                 _mapper = mapper;
             }
 
@@ -36,13 +37,13 @@ namespace MiddleProject.Commands
 
                 try
                 {
-                    await _appointmentRepository.AddAsync(appointment);
+                    await _genericRepository.AddAsync(appointment);
                 }
                 catch (ReferenceConstraintException)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Doctor or institution doesn't exist" });
                 }
-                catch (DbUpdateException)
+                catch (Exception)
                 {
                     response.AddError(new CustomError { Error = "Failed", Message = "Failed to create appointment" });
                 }

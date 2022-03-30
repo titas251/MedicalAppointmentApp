@@ -2,6 +2,7 @@
 @model CreateDoctorModel
 @{
     ViewData["Title"] = "CreateDoctor";
+    int specialityCount = (int)ViewBag.SpecialityCount;
 }
 
 <h1>Create Doctor</h1>
@@ -62,9 +63,15 @@
         </div>
     </div>
 </div>
+
 @{
     var prevDisabled = ViewBag.PageNumber == 1 ? "disabled" : "";
-    var nextDisabled = ViewBag.HasNextPage ? "disabled" : "";
+    var nextDisabled = true;
+
+    if (specialityCount != 0)
+    {
+        nextDisabled = Math.Ceiling((double)specialityCount / (double)(ViewBag.PageSize ?? 10)) == (ViewBag.PageNumber ?? 1);
+    }
 }
 
 <a asp-action="CreateDoctor"
@@ -77,7 +84,7 @@
 <a asp-action="CreateDoctor"
    asp-route-pageNumber="@(ViewBag.PageNumber + 1)"
    asp-route-pageSize="@ViewBag.PageSize"
-   class="btn btn-default @nextDisabled"
+   class="btn btn-default @(nextDisabled ? "disabled" : "")"
    method="get">
     Next
 </a>
