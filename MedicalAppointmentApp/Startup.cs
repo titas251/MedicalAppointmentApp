@@ -18,14 +18,12 @@ namespace MedicalAppointmentApp
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            CurrentEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
-        private IWebHostEnvironment CurrentEnvironment { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,7 +34,6 @@ namespace MedicalAppointmentApp
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddRouting(options => options.LowercaseUrls = true);
-            services.AddMediatR(typeof(Startup).Assembly);
             services.AddSignalR();
 
             // Register the MediatR request handlers
@@ -96,40 +93,23 @@ namespace MedicalAppointmentApp
                 });
             });
 
-            if (CurrentEnvironment.IsProduction())
+            services.AddAuthentication()
+            .AddGoogle(options =>
             {
-                services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.ClientId = Configuration["ClientId"];
-                    options.ClientSecret = Configuration["ClientSecret"];
-                })
-                /*.AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = Configuration["AppId"];
-                    facebookOptions.AppSecret = Configuration["AppSecret"];
-                })*/;
-            }
-            else 
+                IConfigurationSection googleAuthNSection =
+                    Configuration.GetSection("Authentication:Google");
+
+                options.ClientId = googleAuthNSection["ClientId"];
+                options.ClientSecret = googleAuthNSection["ClientSecret"];
+            })
+            .AddFacebook(facebookOptions =>
             {
-                services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    IConfigurationSection googleAuthNSection =
-                        Configuration.GetSection("Authentication:Google");
+                IConfigurationSection facebookAuthNSection =
+                    Configuration.GetSection("Authentication:Facebook");
 
-                    options.ClientId = googleAuthNSection["ClientId"];
-                    options.ClientSecret = googleAuthNSection["ClientSecret"];
-                })
-                .AddFacebook(facebookOptions =>
-                {
-                    IConfigurationSection facebookAuthNSection =
-                        Configuration.GetSection("Authentication:Facebook");
-
-                    facebookOptions.AppId = facebookAuthNSection["AppId"];
-                    facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
-                });
-            }
+                facebookOptions.AppId = facebookAuthNSection["AppId"];
+                facebookOptions.AppSecret = facebookAuthNSection["AppSecret"];
+            });
 
             //register automapper
             services.RegisterMapper();
